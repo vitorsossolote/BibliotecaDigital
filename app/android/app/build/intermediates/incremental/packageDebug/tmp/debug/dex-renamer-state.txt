@@ -1,14 +1,14 @@
-#Tue Aug 27 11:08:43 BRT 2024
+#Thu Aug 29 13:45:56 BRT 2024
 path.4=3/classes.dex
 path.3=14/classes.dex
 path.2=0/classes.dex
 path.1=0/classes.dex
 path.0=classes.dex
-base.4=C\:\\Users\\Aluno\\Desktop\\Projeto Senai - 4 semestre\\Git-BibliotecaDigital\\BibliotecaDigital\\BibliotecaDigital\\testeGluestack\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
-base.3=C\:\\Users\\Aluno\\Desktop\\Projeto Senai - 4 semestre\\Git-BibliotecaDigital\\BibliotecaDigital\\BibliotecaDigital\\testeGluestack\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
-base.2=C\:\\Users\\Aluno\\Desktop\\Projeto Senai - 4 semestre\\Git-BibliotecaDigital\\BibliotecaDigital\\BibliotecaDigital\\testeGluestack\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.1=C\:\\Users\\Aluno\\Desktop\\Projeto Senai - 4 semestre\\Git-BibliotecaDigital\\BibliotecaDigital\\BibliotecaDigital\\testeGluestack\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.0=C\:\\Users\\Aluno\\Desktop\\Projeto Senai - 4 semestre\\Git-BibliotecaDigital\\BibliotecaDigital\\BibliotecaDigital\\testeGluestack\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.4=C\:\\Users\\Vitor\\Documents\\Projetos Dev\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
+base.3=C\:\\Users\\Vitor\\Documents\\Projetos Dev\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
+base.2=C\:\\Users\\Vitor\\Documents\\Projetos Dev\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.1=C\:\\Users\\Vitor\\Documents\\Projetos Dev\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.0=C\:\\Users\\Vitor\\Documents\\Projetos Dev\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex

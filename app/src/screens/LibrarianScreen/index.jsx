@@ -17,16 +17,16 @@ import { config } from "@gluestack-ui/config"
 
 
 
-const WelcomeScreen = () => (
+const LibrarianScreen = () => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image size='xs' style={styles.logo} source={require('../../../assets/logo.png')} alt="Logo Senai" />
-                <Image size='xs' style={styles.bemvindo} source={require('../../../assets/welcome.png')} alt="Seja Bem-Vindo" />
+                <Image size='xs' style={styles.bemvindo} source={require('../../../assets/librarianImage.png')} alt="Seja Bem-Vindo" />
             </View>
             <View style={styles.textContainer}>
-            <Heading style={styles.titulo}>Comece a ler conosco</Heading>
-            <Text>Aqui você aluno pode emprestar livros ou até mesmo baixa-los. Além de verificar se seu livro favorito está disponivel</Text>
+            <Heading style={styles.titulo}>Bem vindo Bibliotecário</Heading>
+            <Text style={styles.textStyle}>{'Aqui você pode atualizar o inventário, fazer o cadastro de empréstimos e gerenciar os livros dos alunos '}</Text>
             </View>
             <View style={styles.buttonContainer}>
                 <Button
@@ -57,25 +57,36 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     imageContainer: {
-        padding: 20,
+        marginTop: 60,
         alignSelf: 'center',
+        justifyContent: 'center',
     },
     logo: {
         width: 300,
+        marginTop:-20,
     },
     bemvindo: {
-        width: 300,
-        height: 300,
+        width: 270,
+        height: 270,
+        alignSelf: 'center',
+        marginTop:20,
     },
     textContainer:{
-        width:243,
+        width:292,
         alignSelf:'center',
+        paddingBottom:30,
+        textAlign:'center'
     },
     titulo: {
         fontSize: 25,
         textAlign: 'center',
         color: 'black',
         fontWeight:'bold',
+    },
+    textStyle:{
+        fontSize:16,
+        marginTop:10,
+        textAlign:'center',
     },
     buttonContainer: {
         flex:1,
@@ -105,4 +116,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default WelcomeScreen;
+export default LibrarianScreen;
