@@ -8,11 +8,12 @@ import StudentScreen from './src/screens/StudentScreen';
 import BackHeader from './src/components/BackHeader';
 import LoginLibrarian from './src/screens/Login/LoginLibrarian';
 import InputTest from './src/components/InputTest';
+import LoginStudent from './src/screens/Login/LoginStudent';
 
 export default function app() {
  return (
   <GluestackUIProvider config={config}>
-    <LoginLibrarian/>
+      <LoginLibrarian/>
    </GluestackUIProvider>
   );
 }
