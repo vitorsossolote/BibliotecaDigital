@@ -21,15 +21,16 @@ interface Props {
     formTitle : "string";
     inputText : "string";
     inputType : "string";
+    inputSize : int;
 };
 
-const InputTest = ({inputText,formTitle,inputType}: Props) => (
+const InputTest = ({inputText,formTitle,inputType, inputSize}: Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             
         <FormControl style = {styles.input}>
           <FormControlLabel>
-            <FormControlLabelText style = {styles.formText}>
+            <FormControlLabelText fontSize={inputSize} style = {styles.formText}>
               {formTitle}
             </FormControlLabelText>
           </FormControlLabel>
@@ -44,7 +45,7 @@ const InputTest = ({inputText,formTitle,inputType}: Props) => (
 
 const styles = StyleSheet.create({
     input:{
-        backgroundColor:'#f9f9f9',
+        backgroundColor: '#fff',
         borderRadius:20,
         width:327,
         height:48,
@@ -53,7 +54,6 @@ const styles = StyleSheet.create({
     formText:{
         color:'black',
         fontWeight:'bold',
-        fontSize:18,
     },
     inputText:{
         color:'gray',

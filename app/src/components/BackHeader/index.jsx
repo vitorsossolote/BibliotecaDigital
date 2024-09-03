@@ -18,11 +18,13 @@ import { ArrowLeft } from 'lucide-react-native';
 type Props = PressableProps & {
     title: string;
     subtitle: string;
+    margin : int;
+    pressionar : String;
 };
 
-const BackHeader = ({ onPress, title, subtitle }: Props) => (
+const BackHeader = ({ onPress, title, subtitle,margin,pressionar }: Props) => (
     <GluestackUIProvider config={config}>
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} marginTop={margin}>
             <View style={styles.buttonContainer}>
                 <Button
                     size="lg"
@@ -30,7 +32,7 @@ const BackHeader = ({ onPress, title, subtitle }: Props) => (
                     bg="transparent"
                     marginBottom={30}
                 >
-                    <Pressable onPress={() => console.log(onPress)}>
+                    <Pressable onPress={() => console.log({pressionar})}>
                         {/* EditIcon is imported from 'lucide-react-native' */}
                         <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
                     </Pressable>
@@ -50,7 +52,6 @@ const styles = StyleSheet.create({
         width: 375,
         backgroundColor: '#fff',
         flexDirection: 'row',
-        marginTop: 25,
     },
     buttonContainer: {
         position: 'absolute'
