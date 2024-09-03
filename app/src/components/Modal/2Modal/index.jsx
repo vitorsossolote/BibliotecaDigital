@@ -98,11 +98,9 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
               </Button>
               <View style={styles.linkContainer}>
               <Text size='sm'>Não recebeu o email?
-              <Button
+              <Button style={styles.reenviar}
                   variant='link'
                   size='sm'
-                  marginLeft={10}
-                  marginTop={10}
                   onPress={() => {
                     console.log("codigo reenviado");
                   }}
@@ -111,7 +109,6 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                 </Button>
               </Text>
               </View>
-              <HStack space='xs'>
                 <Button
                   variant='link'
                   size='sm'
@@ -121,7 +118,6 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                 >
                   <ButtonText color="#EE2D32">Voltar</ButtonText>
                 </Button>
-              </HStack>
               </VStack>
             </ModalFooter>
           </ModalContent>
@@ -142,6 +138,9 @@ const styles = StyleSheet.create({
       marginLeft:10,
       marginTop:10,
       flexDirection:'row',
+    },
+    reenviar:{
+      marginLeft:10
     },
 });
 export default ModalComp2;

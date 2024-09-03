@@ -22,12 +22,12 @@ interface Props {
     inputText : "string";
     inputType : "string";
     inputSize : int;
+    kbtype : "string";
 };
 
-const InputTest = ({inputText,formTitle,inputType, inputSize}: Props) => (
+const InputTest = ({inputText,formTitle,inputType, inputSize,kbtype}: Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
-            
         <FormControl style = {styles.input}>
           <FormControlLabel>
             <FormControlLabelText fontSize={inputSize} style = {styles.formText}>
@@ -35,10 +35,9 @@ const InputTest = ({inputText,formTitle,inputType, inputSize}: Props) => (
             </FormControlLabelText>
           </FormControlLabel>
           <Input style = {styles.input}>
-            <InputField type={inputType} style={styles.inputText} placeholder={inputText}/>
+            <InputField keyboardType={kbtype} type={inputType} style={styles.inputText} placeholder={inputText}/>
           </Input>
         </FormControl>
-      
         </SafeAreaView>
     </GluestackUIProvider>
 );
