@@ -23,7 +23,7 @@ const teste = (val) => {
     console.log(val);
 }
 
-const LoginLibrarian = () => (
+const LoginLibrarian = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <BackHeader onPress={() => console.log("a")}
@@ -51,6 +51,7 @@ const LoginLibrarian = () => (
             <View style={styles.createAccountContainer}>
                 <Text style={styles.textAccount}>Não tem uma conta?</Text>
             <Button
+                    onPress ={()=> navigation.navigate('CreateLibrarian')}
                     size="md"
                     variant="link"
                     action="primary"

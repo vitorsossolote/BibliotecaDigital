@@ -17,7 +17,7 @@ import { config } from "@gluestack-ui/config"
 
 
 
-const WelcomeScreen = () => (
+const WelcomeScreen = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
@@ -49,6 +49,9 @@ const WelcomeScreen = () => (
         </SafeAreaView>
     </GluestackUIProvider>
 );
+WelcomeScreen.navigationOptions = {
+    title: 'welcome',
+}
 
 const styles = StyleSheet.create({
     container: {

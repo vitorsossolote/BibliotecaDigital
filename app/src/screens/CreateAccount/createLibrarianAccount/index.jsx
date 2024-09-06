@@ -20,10 +20,10 @@ import InputTest from "../../../components/InputTest";
 import ModalComp from "../../../components/Modal/1Modal";
 
 
-const CreateLibrarianAccount = () => (
+const CreateLibrarianAccount = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
-            <BackHeader onPress={() => console.log("a")}
+            <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
                 title="Bem Vindo"
                 subtitle="Crie sua Conta"
                 margin = {10} />
@@ -58,6 +58,7 @@ const CreateLibrarianAccount = () => (
             <View style={styles.EnterAccountContainer}>
                 <Text style={styles.textAccount}>Já tem uma conta?</Text>
             <Button
+                    onPress ={()=> navigation.navigate('CreateLibrarian')}
                     size="md"
                     variant="link"
                     action="primary"

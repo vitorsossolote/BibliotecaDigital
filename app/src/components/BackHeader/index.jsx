@@ -19,10 +19,10 @@ type Props = PressableProps & {
     title: string;
     subtitle: string;
     margin : int;
-    pressionar : String;
+    onPress : any;
 };
 
-const BackHeader = ({ onPress, title, subtitle,margin,pressionar }: Props) => (
+const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container} marginTop={margin}>
             <View style={styles.buttonContainer}>
@@ -32,7 +32,7 @@ const BackHeader = ({ onPress, title, subtitle,margin,pressionar }: Props) => (
                     bg="transparent"
                     marginBottom={30}
                 >
-                    <Pressable onPress={() => console.log({pressionar})}>
+                    <Pressable onPress={onPress}>
                         {/* EditIcon is imported from 'lucide-react-native' */}
                         <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
                     </Pressable>

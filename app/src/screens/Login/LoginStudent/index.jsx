@@ -17,16 +17,17 @@ import { config } from "@gluestack-ui/config"
 import { createIcons, icons } from 'lucide';
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
+import { Navigation } from "lucide-react-native";
 
 
 const teste = (val) => {
     console.log(val);
 }
 
-const LoginStudent = () => (
+const LoginStudent = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
-            <BackHeader onPress={() => console.log("a")}
+            <BackHeader onPress={() => navigation.navigate('StudentScreen')}
                 title="Entrar"
                 subtitle="Entre na sua Conta" />
             <View style={styles.inputContainer}>
@@ -51,6 +52,7 @@ const LoginStudent = () => (
             <View style={styles.createAccountContainer}>
                 <Text style={styles.textAccount}>Não tem uma conta?</Text>
             <Button
+                    onPress ={()=> navigation.navigate('CreateStudent')}
                     size="md"
                     variant="link"
                     action="primary"

@@ -17,7 +17,7 @@ import { config } from "@gluestack-ui/config"
 
 
 
-const LibrarianScreen = () => (
+const LibrarianScreen = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
@@ -30,6 +30,7 @@ const LibrarianScreen = () => (
             </View>
             <View style={styles.buttonContainer}>
                 <Button
+                    onPress ={()=> navigation.navigate('CreateLibrarian')}
                     size="md"
                     variant="solid"
                     action="primary"
@@ -38,6 +39,7 @@ const LibrarianScreen = () => (
                 <ButtonText>Criar Conta</ButtonText>
                 </Button>
                 <Button
+                    onPress ={()=> navigation.navigate('LoginLibrarian')}
                     size="md"
                     variant="outline"
                     action="primary"

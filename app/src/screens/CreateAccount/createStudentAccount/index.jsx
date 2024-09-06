@@ -68,7 +68,7 @@ const CreateStudentAccount = ({ navigation }) => {
     return (
         <GluestackUIProvider config={config}>
             <SafeAreaView style={styles.container}>
-                <BackHeader onPress={() => console.log("a")}
+                <BackHeader onPress={()=> navigation.navigate('StudentScreen')}
                     title="Bem Vindo"
                     subtitle="Crie sua Conta"
                     margin={10} />
@@ -108,12 +108,13 @@ const CreateStudentAccount = ({ navigation }) => {
                 <View style={styles.EnterAccountContainer}>
                     <Text style={styles.textAccount}>Já tem uma conta?</Text>
                     <Button
+                        onPress ={()=> navigation.navigate('LoginStudent')}
                         size="md"
                         variant="link"
                         action="primary"
                         style={styles.linkButton}
                     >
-                        <ButtonText style={styles.textButton} onPress={this.handleCadastrar}>Entre agora</ButtonText>
+                        <ButtonText style={styles.textButton}>Entre agora</ButtonText>
                     </Button>
                 </View>
             </SafeAreaView>
