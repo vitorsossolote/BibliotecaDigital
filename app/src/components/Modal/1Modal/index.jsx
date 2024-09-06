@@ -2,7 +2,11 @@ import { React, useState } from 'react';
 import { Link, Modal, Center, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText, VStack, Heading, Text, Input, InputField, HStack, SafeAreaView } from '@gluestack-ui/themed';
 import { Pressable, View, StyleSheet} from 'react-native';
 
-const ModalComp = ({onPress}) => {
+type Props = {
+  onPress : any
+}
+
+const ModalComp = ({onPress} : Props) => {
     const [showModal, setShowModal] = useState(false);
     return (
         <SafeAreaView>
