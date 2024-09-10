@@ -11,56 +11,56 @@ import {
 } from "@gluestack-ui/themed"
 import { StyleSheet, Text, View, Alert } from "react-native"
 import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
 import ModalComp from "../../../components/Modal/1Modal";
+import axios from "axios";
 
 const CreateStudentAccount = ({ navigation }) => {
     const [mensagem, setMensagem] = useState("");
-    const [formData, setFormData] = useState({
-        id: '',
-        nome: '',
-        email: '',
-        rm: '',
-        senha: '',
-        confirmarSenha: '',
-    });
+    const [teste, setTeste] = useState("");
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [rm, setRM] = useState("");
+    const [senha, setSenha] = useState("");
+    const [confirmSenha, setConfirmSenha] = useState("");
+
+    const data = {
+        nome: nome,
+        email: email,
+        rm: rm,
+        senha: senha,
+        confirmSenha: confirmSenha,
+    };
 
     const handleInputChange = (name, value) => {
-        setFormData({ ...formData, [name]: value });
     };
 
     const handleCadastrar = async () => {
-        console.log("tete")
-        if (!formData.nome || !formData.email || !formData.rm || !formData.senha || !formData.confirmSenha) {
-            setMensagem('Todos os campos são obrigatórios')
-            return;
+        if (!nome || !email || !rm || !senha || !confirmSenha) {
+            Alert.alert('Todos os campos são obrigatórios')
+            return
         }
-
+            console.log(data)
         //envio de informações para a API cadastrar no banco de dados
         try {
-            await axios.post('http://10.0.2.2:8085/api/createStudent', formData);
+            await axios.post('http://10.0.2.2:8085/api/createStudent', data);
             Alert.alert('Cadastro realizado com sucesso');
-            // navigation.navigate("Login");
-            console.log(formData)
+            navigation.navigate('VerificationScreen')
         } catch (error) {
-            if (error.response.status === 401) {
-                Alert.alert('O email' + formData.email + 'já existe na base de dados')
-                console.log(formData)
+            if (error) {
+                console.log(error)
+                //Alert.alert('O email' + formData.email + 'já existe na base de dados')
             }
             else if (error.response.status === 401) {
-                Alert.alert('O RM' + formData.rm + 'já existe na base de dados')
-                console.log(formData)
+                Alert.alert('O RM' + data.rm + 'já existe na base de dados')
             }
             else if (senha != confirmSenha) {
                 Alert.alert('As senhas não coencidem')
-                console.log(formData)
             }
             else {
                 console.log(error);
                 Alert.alert('Ocorreu um erro ao cadastrar o usuário. Apresente um email valido.')
-                console.log(formData)
             }
         }
     };
@@ -77,30 +77,41 @@ const CreateStudentAccount = ({ navigation }) => {
                         inputText="Seu nome completo"
                         formTitle="Nome"
                         inputSize={15}
-                        onChangeText={(text) => handleInputChange('nome', text)} />
+                        valuee = {nome}
+                        onChangeText= {text => setNome(text)}
+                         />
                     <InputTest
                         inputText="Seu email"
                         formTitle="Email"
                         inputSize={15}
-                        onChangeText={(text) => handleInputChange('email', text)} />
+                        valuee = {email}
+                        onChangeText= {text => setEmail(text)}
+                        />
                     <InputTest
                         inputText="Seu RM"
                         formTitle="RM"
                         inputSize={15}
                         kbtype="phone-pad"
-                        onChangeText={(text) => handleInputChange('rm', text)} />
+                        valuee = {rm}
+                        onChangeText= {text => setRM(text)}
+                        />
+                        
                     <InputTest
                         inputText="Sua senha"
                         formTitle="Senha"
                         inputType="password"
                         inputSize={15}
-                        onChangeText={(text) => handleInputChange('senha', text)} />
+                        valuee = {senha}
+                        onChangeText= {text => setSenha(text)}
+                        />
                     <InputTest
                         inputText="Confirme sua Senha"
                         formTitle="Confirmar Senha"
                         inputType="password"
                         inputSize={15}
-                        onChangeText={(text) => handleInputChange('confirmSenha', text)} />
+                        valuee = {confirmSenha}
+                        onChangeText= {text => setConfirmSenha(text)}
+                        />
                 </View>
                 <View style={styles.buttonContainer}>
                     <ModalComp onPress={() => handleCadastrar()} />

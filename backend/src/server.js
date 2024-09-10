@@ -6,7 +6,7 @@ const router = require("./routers")
 const app = express();
 
 app.use(express.json());
-app.use(router);
+
 
 app.use((req,res,next) => {
     //Qualquer endereço pode realizar requisição
@@ -18,12 +18,11 @@ app.use((req,res,next) => {
     //Permitir o envio de dados para a API
     res.header("Access-Control-Allow-Headers", "Content-Type");
 
-    //Exercutar o Cors
-    app.use(cors());
-
-    //Quando não houver erro deve continuar o processamento
     next();
 });
+
+  app.use(cors());
+  app.use(router);
 
 client.query("select 1").then(()=>{
     console.log("connection success")

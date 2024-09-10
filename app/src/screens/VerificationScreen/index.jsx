@@ -1,6 +1,3 @@
-
-
-
 import {useState,useEffect} from "react";
 import {
     GluestackUIProvider,
@@ -20,14 +17,14 @@ import InputTest from "../../components/InputTest";
 import ModalComp2 from "../../components/Modal/2Modal";
 
 
-const VerificationScreen = () => (
+const VerificationScreen = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <BackHeader 
+                onPress ={()=> navigation.navigate('CreateStudent')}
                 title="Verificação de Email"
                 subtitle="Um ultimo passo para te manter seguro"
-                margin = {15}
-                pressionar = {"teste"} />
+                margin = {15} />
             <View style={styles.inputContainer}>
                 <InputTest
                     inputText="Vamos confirmar seu Email"

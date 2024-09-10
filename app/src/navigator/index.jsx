@@ -8,6 +8,7 @@ import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAcco
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import VerificationScreen from '../screens/VerificationScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ function Navigator() {
       <Stack.Screen name="LoginStudent" component={LoginStudent} options={{ headerShown:false}} />
       <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} options={{ headerShown:false}} />
       <Stack.Screen name="CreateStudent" component={CreateStudentAccount} options={{ headerShown:false}} />
+      <Stack.Screen name="VerificationScreen" component={VerificationScreen} options={{ headerShown:false}} />
     </Stack.Navigator>
     </NavigationContainer>
   );
