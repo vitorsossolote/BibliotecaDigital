@@ -36,7 +36,7 @@ const useController = {
                 res.status(401).json({msg: "O RM já esta cadastrado no Banco de Dados"})
             }
             else{
-                await clientController.registerStudent(id,nome,email,rm,senha,confirmSenha);
+                await clientController.registerStudent(id,nome,email,rm,senha);
                 res.status(201).json({msg:"Usuário cadastrado com sucesso"});
             }
         }
@@ -50,7 +50,6 @@ const useController = {
 
         let {email,senha} = req.body;
 
-       
         try{
             
             const sql = await clientController.validateLogin(email,senha);
@@ -168,7 +167,3 @@ const useController = {
 };
 
 module.exports = useController;
-
-    
-
-

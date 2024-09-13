@@ -29,8 +29,7 @@ const VerificationScreen = ({navigation}) => (
                 <InputTest
                     inputText="Vamos confirmar seu Email"
                     formTitle="Confirmar Email" 
-                    inputSize={15}/>
-                    
+                    inputSize={15}/>  
             </View>
             <View style={styles.buttonContainer}>
                 <ModalComp2

@@ -21,11 +21,10 @@ const useModel = {
         return result;
     },
 
-    registerStudent: async (id,nome,email,rm,senha,confirmSenha) =>{
+    registerStudent: async (id,nome,email,rm,senha) =>{
         const hashPassword = await bcrypt.hash(senha,salt);
-        const hashConfirmPassword = await bcrypt.hash(confirmSenha,salt);
 
-        const [result] = await connection.query("INSERT INTO students values(?,?,?,?,?,?)",[id,nome,email,rm,hashPassword,hashConfirmPassword])
+        const [result] = await connection.query("INSERT INTO students values(?,?,?,?,?)",[id,nome,email,rm,hashPassword,])
         .catch(erro => console.log(erro));
         return result;
     },
@@ -34,7 +33,7 @@ const useModel = {
         const [result] = await connection.query("SELECT * FROM students WHERE email=?",[email])
 
         try{
-            if (result.length > 0) {
+            if (result.length > 0 ) {
               const cliente = result[0]  
              
               const match = await bcrypt.compare(senha, cliente.senha)

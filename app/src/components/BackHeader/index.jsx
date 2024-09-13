@@ -25,7 +25,20 @@ type Props = PressableProps & {
 const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container} marginTop={margin}>
-            <View style={styles.buttonContainer}>
+            <View style={styles.searchContainer}>
+                <Button
+                    size="lg"
+                    p="$3.5"
+                    bg="transparent"
+                    marginBottom={30}
+                >
+                    <Pressable onPress={onPress}>
+                        {/* EditIcon is imported from 'lucide-react-native' */}
+                        <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
+                    </Pressable>
+                </Button>
+            </View>
+            <View style={styles.bellContainer}>
                 <Button
                     size="lg"
                     p="$3.5"
@@ -53,7 +66,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
     },
-    buttonContainer: {
+    searchContainer: {
+        position: 'absolute'
+    },
+    Container: {
+        position: 'absolute'
+    },
+    searchContainer: {
         position: 'absolute'
     },
     textContainer:{
