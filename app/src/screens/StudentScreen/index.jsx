@@ -17,7 +17,7 @@ import { config } from "@gluestack-ui/config"
 
 
 
-const StudentScreen = () => (
+const StudentScreen = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
@@ -30,6 +30,7 @@ const StudentScreen = () => (
             </View>
             <View style={styles.buttonContainer}>
                 <Button
+                    onPress ={()=> navigation.navigate('CreateStudent')}
                     size="md"
                     variant="solid"
                     action="primary"
@@ -38,6 +39,7 @@ const StudentScreen = () => (
                 <ButtonText>Criar Conta</ButtonText>
                 </Button>
                 <Button
+                    onPress ={()=> navigation.navigate('LoginStudent')}
                     size="md"
                     variant="outline"
                     action="primary"
@@ -49,7 +51,6 @@ const StudentScreen = () => (
         </SafeAreaView>
     </GluestackUIProvider>
 );
-
 const styles = StyleSheet.create({
     container: {
         height: "100%",

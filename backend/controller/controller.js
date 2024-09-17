@@ -8,8 +8,13 @@ const useController = {
         res.status(200).json({ msg: "The API is running!!!" })
     },
     
+<<<<<<< HEAD
     createNewUser: async(req,res)=>{
         const {id,nome,email,telefone,senha} = req.body;
+=======
+    createNewStudent: async(req,res)=>{
+        const {id,nome,email,rm,senha,confirmSenha} = req.body;
+>>>>>>> desenvolvimento
 
         console.log(req.body);
 
@@ -17,6 +22,7 @@ const useController = {
         return res.status(400).json({msg:'O email Não é valido (@)'})
         }
 
+<<<<<<< HEAD
         try{
             const sql = await clientController.getByEmail(email);
 
@@ -27,6 +33,28 @@ const useController = {
             }
             else{
                 await clientController.registerCliente(id,nome,email,telefone,senha);
+=======
+        if (senha != confirmSenha){
+        return res.status(400).json({msg:'As senhas não coincidem'})
+        }
+
+        try{
+            const sql = await clientController.getByEmail(email);
+            console.log(sql);
+
+            const sqlConfirmRm = await clientController.getByRm(rm);
+            console.log(sqlConfirmRm);
+
+
+            if(sql.length > 0){
+                res.status(401).json({msg: "O email já esta cadastrado no Banco de Dados"})
+            }
+            else if(sqlConfirmRm.length > 0){
+                res.status(401).json({msg: "O RM já esta cadastrado no Banco de Dados"})
+            }
+            else{
+                await clientController.registerStudent(id,nome,email,rm,senha);
+>>>>>>> desenvolvimento
                 res.status(201).json({msg:"Usuário cadastrado com sucesso"});
             }
         }
@@ -36,6 +64,7 @@ const useController = {
         }
     },
 
+<<<<<<< HEAD
     login: async(req,res) => {
 
         let {email,senha} = req.body;
@@ -44,6 +73,77 @@ const useController = {
         try{
             
             const sql = await clientController.validateLogin(email,senha);
+=======
+    loginStudent: async(req,res) => {
+
+        let {email,senha} = req.body;
+
+        try{
+            
+            const sql = await clientController.validateLoginStudents(email,senha);
+
+            if(sql != null) {
+                res.status(200).json({msg: "Email e senha validados com sucesso!!"})
+            }
+
+            else{
+                res.status(401).json({msg:"Email ou senha incorretos"});
+            }
+        }
+        catch(error) {
+            if(error) {
+                console.log(error)
+                res.status(500).json(error);
+            }
+        }
+    },
+
+    createNewBiblio: async(req,res)=>{
+        const {id,nome,email,cfb,senha,confirmSenha} = req.body;
+
+        console.log(req.body);
+
+        if (!email.includes('@' && '.com')) {
+        return res.status(400).json({msg:'O email Não é valido (@)'})
+        }
+
+        if (senha != confirmSenha){
+        return res.status(400).json({msg:'As senhas não coincidem'})
+        }
+
+        try{
+            const sql = await clientController.getByEmail(email);
+            console.log(sql);
+
+            const sqlConfirmCfb = await clientController.getByCfb(cfb);
+            console.log(sqlConfirmCfb);
+
+
+            if(sql.length > 0){
+                res.status(401).json({msg: "O email já esta cadastrado no Banco de Dados"})
+            }
+            else if(sqlConfirmCfb.length > 0){
+                res.status(401).json({msg: "O CFB já esta cadastrado no Banco de Dados"})
+            }
+            else{
+                await clientController.registerBiblio(id,nome,email,cfb,senha);
+                res.status(201).json({msg:"Usuário cadastrado com sucesso"});
+            }
+        }
+        catch(error){
+            console.log(error)
+            return error
+        }
+    },
+
+    loginBiblio: async(req,res) => {
+
+        let {email,senha} = req.body;
+
+        try{
+            
+            const sql = await clientController.validateLoginBiblio(email,senha);
+>>>>>>> desenvolvimento
 
             if(sql != null) {
                 res.status(200).json({msg: "Email e senha validados com sucesso!!"})

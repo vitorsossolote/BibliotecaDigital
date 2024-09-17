@@ -4,30 +4,99 @@ const salt = 10;
 
 const useModel = {
     getByID: async (id) => {
+<<<<<<< HEAD
         const [result] = await connection.query("SELECT * FROM cliente WHERE id =?", [id])
         .catch(err => console.log(err));
+=======
+        const [result] = await connection.query("SELECT * FROM students WHERE id =?", [id])
+        .catch(erro => console.log(erro));
+>>>>>>> desenvolvimento
         return result
     },
 
     getByEmail: async(email)=>{
+<<<<<<< HEAD
         const [result] = await connection.query("SELECT * FROM cliente WHERE email=?", [email])
+=======
+        const [result] = await connection.query("SELECT * FROM students WHERE email=?", [email])
+>>>>>>> desenvolvimento
         .catch(erro => console.log(erro));
         return result;
     },
 
+<<<<<<< HEAD
     registerCliente: async (id,nome,email,telefone,senha) =>{
         const hashPassword = await bcrypt.hash(senha,salt);
 
         const [result] = await connection.query("INSERT INTO cliente values(?,?,?,?,?)",[id,nome,email,telefone,hashPassword])
+=======
+    getByRm: async(rm)=>{
+        const [result] = await connection.query("SELECT * FROM students WHERE rm=?", [rm])
         .catch(erro => console.log(erro));
         return result;
     },
 
+    getByCfb: async(rm)=>{
+        const [result] = await connection.query("SELECT * FROM bibliotecario WHERE cfb=?", [rm])
+        .catch(erro => console.log(erro));
+        return result;
+    },
+
+    registerStudent: async (id,nome,email,rm,senha) =>{
+        const hashPassword = await bcrypt.hash(senha,salt);
+
+        const [result] = await connection.query("INSERT INTO students values(?,?,?,?,?)",[id,nome,email,rm,hashPassword,])
+>>>>>>> desenvolvimento
+        .catch(erro => console.log(erro));
+        return result;
+    },
+
+<<<<<<< HEAD
     validateLogin: async(email, senha)=> {
         const [result] = await connection.query("SELECT * FROM cliente WHERE email=?",[email])
 
         try{
             if (result.length > 0) {
+=======
+    validateLoginStudents: async(email, senha)=> {
+        const [result] = await connection.query("SELECT * FROM students WHERE email=?",[email])
+
+        try{
+            if (result.length > 0 ) {
+              const cliente = result[0]  
+             
+              const match = await bcrypt.compare(senha, cliente.senha)
+
+                if (match) {
+                    return result;
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
+        }
+        catch(erro) {
+            console.log(erro)
+        };
+    }, 
+
+    registerBiblio: async (id,nome,email,cfb,senha) =>{
+        const hashPassword = await bcrypt.hash(senha,salt);
+
+        const [result] = await connection.query("INSERT INTO bibliotecario values(?,?,?,?,?)",[id,nome,email,cfb,hashPassword,])
+        .catch(erro => console.log(erro));
+        return result;
+    },
+
+    validateLoginBiblio: async(email, senha)=> {
+        const [result] = await connection.query("SELECT * FROM bibliotecario WHERE email=?",[email])
+
+        try{
+            if (result.length > 0 ) {
+>>>>>>> desenvolvimento
               const cliente = result[0]  
              
               const match = await bcrypt.compare(senha, cliente.senha)

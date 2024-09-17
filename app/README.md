@@ -2,6 +2,7 @@
 ## Java 17
 ## Gradle 8.?
 ## Gluestack v1
+## Lucide React-Native for Icons
 
 
 ## Cores:

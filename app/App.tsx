@@ -1,15 +1,29 @@
 import React from 'react';
-import SplashScreen, {  } from './src/screens/SplashScreen';
-import { GluestackUIProvider } from "@gluestack-ui/themed"
+import {useState,useEffect} from 'react';
+import { GluestackUIProvider} from "@gluestack-ui/themed"
 import { config } from "@gluestack-ui/config"
-import LibrarianScreen from './src/screens/LibrarianScreen';
-import UserSelectScreen from './src/screens/UserSelectScreen';
-import StudentScreen from './src/screens/StudentScreen';
+import SplashScreen from './src/screens/SplashScreen';
+import Navigator from './src/navigator';
+import Home from './src/screens/home'
+import Carrosel from './src/components/Carrousel';
+import Login from './src/screens/Login/LoginStudent';
+
 
 export default function app() {
- return (
-  <GluestackUIProvider config={config}>
-   <SplashScreen/>
-   </GluestackUIProvider>
-  );
+//   const [isShowSplash, setIsShowSplash] = useState(true);
+
+//   useEffect(()=> {
+//     setTimeout(()=> {
+//       setIsShowSplash(false);
+//     },3000);
+//   });
+//  return (
+//     <>{isShowSplash ? <SplashScreen/> : <Navigator/>}</>
+  // );
+return (
+    <GluestackUIProvider config={config}>
+    <Home/>
+     </GluestackUIProvider>
+    );
+
 }

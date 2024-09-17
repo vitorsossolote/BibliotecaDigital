@@ -17,7 +17,7 @@ import { config } from "@gluestack-ui/config"
 
 
 
-const UserSelectScreen = () => (
+const UserSelectScreen = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
@@ -30,6 +30,7 @@ const UserSelectScreen = () => (
             </View>
             <View style={styles.buttonContainer}>
                 <Button
+                    onPress={() => navigation.navigate('StudentScreen')}
                     size="md"
                     variant="solid"
                     action="primary"
@@ -38,6 +39,7 @@ const UserSelectScreen = () => (
                 <ButtonText>Aluno</ButtonText>
                 </Button>
                 <Button
+                    onPress={() => navigation.navigate('LibrarianScreen')}
                     size="md"
                     variant="outline"
                     action="primary"
