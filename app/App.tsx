@@ -10,20 +10,20 @@ import Login from './src/screens/Login/LoginStudent';
 
 
 export default function app() {
-  const [isShowSplash, setIsShowSplash] = useState(true);
+//   const [isShowSplash, setIsShowSplash] = useState(true);
 
-  useEffect(()=> {
-    setTimeout(()=> {
-      setIsShowSplash(false);
-    },3000);
-  });
- return (
-    <>{isShowSplash ? <SplashScreen/> : <Navigator/>}</>
-  );
-// return (
-//     <GluestackUIProvider config={config}>
-//     <SplashScreen/>
-//      </GluestackUIProvider>
-//     );
+//   useEffect(()=> {
+//     setTimeout(()=> {
+//       setIsShowSplash(false);
+//     },3000);
+//   });
+//  return (
+//     <>{isShowSplash ? <SplashScreen/> : <Navigator/>}</>
+  // );
+return (
+    <GluestackUIProvider config={config}>
+    <Home/>
+     </GluestackUIProvider>
+    );
 
 }

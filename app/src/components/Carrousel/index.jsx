@@ -15,7 +15,7 @@ import book from "../../../assets/book.png"
 const { width: screenWidth } = Dimensions.get('window');
 
 const dummyData = [
-    { id: 1, rating: '91%'},
+    { id: 1, rating: '93%' },
     { id: 2, rating: '85%' },
     { id: 3, rating: '89%' },
     { id: 4, rating: '93%' },
@@ -36,7 +36,7 @@ const MyCarousel = ({ data }) => {
                     <ButtonText>Reservar Agora</ButtonText>
                 </Button>
             </View>
-                <View style={styles.imageContainer}>
+            <View style={styles.imageContainer}>
                     <Image style={styles.Image} source={book} alt="Parabéns" />
                 </View>
         </View>
@@ -64,11 +64,16 @@ const styles = StyleSheet.create({
         flex:1,
         width: screenWidth - 40,
         marginHorizontal: 20,
-        height: 200,
+        height: 160,
+        flexDirection:'row',
+        backgroundColor:"#f6f6f6",
+        borderRadius:20,
+        marginTop:15,
     },
     textContainer: {
-        flex: 1,
-        marginTop: 20,
+        width: 240,
+        padding:15,
+        paddingLeft:23,
     },
     title: {
         fontSize: 24,
@@ -82,17 +87,15 @@ const styles = StyleSheet.create({
     Button:{
         backgroundColor:"#EE2D32",
         borderRadius:25,
-        marginTop:10,
+        marginTop:20,
         width:170,
     },
     imageContainer:{
-        marginBottom:50,
-        alignItems:'flex-end',
+        height:"100%",
     },
     Image:{
-        width:100,
-        height:100,
-        marginRight:20,
+        width:145,
+        height:160,
     },
 });
 
