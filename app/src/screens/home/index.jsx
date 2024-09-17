@@ -35,6 +35,8 @@ const Home = () => (
             <TrendingGenders/>
             <Section title="Autores"/>
             <Authors/>
+            <TrendingBooks/>
+
         </ScrollView>
     </SafeAreaView>
     </GluestackUIProvider>
