@@ -21,6 +21,12 @@ const useModel = {
         return result;
     },
 
+    getByCfb: async(rm)=>{
+        const [result] = await connection.query("SELECT * FROM bibliotecario WHERE cfb=?", [rm])
+        .catch(erro => console.log(erro));
+        return result;
+    },
+
     registerStudent: async (id,nome,email,rm,senha) =>{
         const hashPassword = await bcrypt.hash(senha,salt);
 
@@ -29,8 +35,41 @@ const useModel = {
         return result;
     },
 
-    validateLogin: async(email, senha)=> {
+    validateLoginStudents: async(email, senha)=> {
         const [result] = await connection.query("SELECT * FROM students WHERE email=?",[email])
+
+        try{
+            if (result.length > 0 ) {
+              const cliente = result[0]  
+             
+              const match = await bcrypt.compare(senha, cliente.senha)
+
+                if (match) {
+                    return result;
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
+        }
+        catch(erro) {
+            console.log(erro)
+        };
+    }, 
+
+    registerBiblio: async (id,nome,email,cfb,senha) =>{
+        const hashPassword = await bcrypt.hash(senha,salt);
+
+        const [result] = await connection.query("INSERT INTO bibliotecario values(?,?,?,?,?)",[id,nome,email,cfb,hashPassword,])
+        .catch(erro => console.log(erro));
+        return result;
+    },
+
+    validateLoginBiblio: async(email, senha)=> {
+        const [result] = await connection.query("SELECT * FROM bibliotecario WHERE email=?",[email])
 
         try{
             if (result.length > 0 ) {

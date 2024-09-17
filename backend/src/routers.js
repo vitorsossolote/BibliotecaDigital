@@ -4,7 +4,9 @@ const router = express.Router();
 
 router.get("/", clientController.getRoot);
 router.post("/api/createStudent", clientController.createNewStudent); //Cadastrar novo usuario
-router.post("/api/validade", clientController.login);//Validar o login
+router.post("/api/createBiblio", clientController.createNewBiblio); //Cadastrar novo Bibliotecario
+router.post("/api/validadeStudent", clientController.loginStudent);//Validar o login
+router.post("/api/validadeBiblio", clientController.loginBiblio);//Validar o login
 
 // router.post("/api/contato", clientController.createNewMensagem)
 

@@ -11,35 +11,36 @@ import {
 } from "@gluestack-ui/themed"
 import { StyleSheet, Text, View, Alert } from "react-native"
 import { config } from "@gluestack-ui/config"
+import { createIcons, icons } from 'lucide';
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
 import ModalComp from "../../../components/Modal/1Modal";
 import axios from "axios";
 
-const CreateStudentAccount = ({ navigation }) => {
+const CreateBiblioAccount = ({ navigation }) => {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
-    const [rm, setRM] = useState("");
+    const [cfb, setCFB] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmSenha, setConfirmSenha] = useState("");
 
     const data = {
         nome: nome,
         email: email,
-        rm: rm,
+        cfb: cfb,
         senha: senha,
         confirmSenha: confirmSenha,
     };
 
     const handleCadastrar = async () => {
-        if (!nome || !email || !rm || !senha || !confirmSenha) {
+        if (!nome || !email || !cfb || !senha || !confirmSenha) {
             Alert.alert('Todos os campos são obrigatórios')
             return
         }
-            console.log(data)
+        console.log(data)
         //envio de informações para a API cadastrar no banco de dados
         try {
-            await axios.post('http://10.0.2.2:8085/api/createStudent', data);
+            await axios.post('http://10.0.2.2:8085/api/createBiblio', data);
             Alert.alert('Cadastro realizado com sucesso');
             navigation.navigate('VerificationScreen')
         } catch (error) {
@@ -48,8 +49,8 @@ const CreateStudentAccount = ({ navigation }) => {
                 //Alert.alert('O email' + formData.email + 'já existe na base de dados')
             }
             else if (error.response.status === 401) {
-                console.log('O RM' + data.rm + 'já existe na base de dados')
-                Alert.alert('O RM' + data.rm + 'já existe na base de dados')
+                console.log('O CFB' + data.cfb + 'já existe na base de dados')
+                Alert.alert('O CFB' + data.cfb + 'já existe na base de dados')
             }
             else if (senha != confirmSenha) {
                 console.log(Alert.alert('As senhas não coencidem'))
@@ -65,7 +66,7 @@ const CreateStudentAccount = ({ navigation }) => {
     return (
         <GluestackUIProvider config={config}>
             <SafeAreaView style={styles.container}>
-                <BackHeader onPress={()=> navigation.navigate('StudentScreen')}
+                <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
                     title="Bem Vindo"
                     subtitle="Crie sua Conta"
                     margin={10} />
@@ -74,40 +75,40 @@ const CreateStudentAccount = ({ navigation }) => {
                         inputText="Seu nome completo"
                         formTitle="Nome"
                         inputSize={15}
-                        valuee = {nome}
-                        onChangeText= {text => setNome(text)}
-                         />
+                        valuee={nome}
+                        onChangeText={text => setNome(text)}
+                    />
                     <InputTest
                         inputText="Seu email"
                         formTitle="Email"
                         inputSize={15}
-                        valuee = {email}
-                        onChangeText= {text => setEmail(text)}
-                        />
+                        valuee={email}
+                        onChangeText={text => setEmail(text)}
+                    />
                     <InputTest
-                        inputText="Seu RM"
-                        formTitle="RM"
+                        inputText="Sua CFB"
+                        formTitle="CFB"
                         inputSize={15}
-                        kbtype="phone-pad"
-                        valuee = {rm}
-                        onChangeText= {text => setRM(text)}
-                        />  
+                        valuee={cfb}
+                        onChangeText={text => setCFB(text)}
+                    />
                     <InputTest
                         inputText="Sua senha"
                         formTitle="Senha"
                         inputType="password"
                         inputSize={15}
-                        valuee = {senha}
-                        onChangeText= {text => setSenha(text)}
-                        />
+                        valuee={senha}
+                        onChangeText={text => setSenha(text)}
+                    />
                     <InputTest
                         inputText="Confirme sua Senha"
                         formTitle="Confirmar Senha"
                         inputType="password"
                         inputSize={15}
-                        valuee = {confirmSenha}
-                        onChangeText= {text => setConfirmSenha(text)}
-                        />
+                        valuee={confirmSenha}
+                        onChangeText={text => setConfirmSenha(text)}
+                    />
+
                 </View>
                 <View style={styles.buttonContainer}>
                     <ModalComp onPress={() => handleCadastrar()} />
@@ -115,7 +116,7 @@ const CreateStudentAccount = ({ navigation }) => {
                 <View style={styles.EnterAccountContainer}>
                     <Text style={styles.textAccount}>Já tem uma conta?</Text>
                     <Button
-                        onPress ={()=> navigation.navigate('LoginStudent')}
+                        onPress={() => navigation.navigate('LoginLibrarian')}
                         size="md"
                         variant="link"
                         action="primary"
@@ -126,8 +127,8 @@ const CreateStudentAccount = ({ navigation }) => {
                 </View>
             </SafeAreaView>
         </GluestackUIProvider>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -181,5 +182,4 @@ const styles = StyleSheet.create({
     },
 });
 
-
-export default CreateStudentAccount;
+export default CreateBiblioAccount;

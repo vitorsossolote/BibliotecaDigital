@@ -14,9 +14,6 @@ import {
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
 
-
-
-
 const LibrarianScreen = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
