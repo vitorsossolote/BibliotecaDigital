@@ -18,6 +18,3 @@ router.post("/api/validadeBiblio", clientController.loginBiblio);//Validar o log
 // router.get('/api/pedidos', clientController.getAllPedidos);
 
 module.exports = router;
-
-
-

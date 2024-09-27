@@ -33,14 +33,20 @@
     <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"Deljenje z:"</string>
     <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"Deljenje z drugimi prek aplikacije <ns1:g id="APPLICATION_NAME">%s</ns1:g>"</string>
     <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Strnitev"</string>
+    <string gender="unknown" name="alert_description">Opozorilo</string>
     <string name="bottomsheet_action_expand_halfway">Razširjanje na pol višine</string>
     <string name="character_counter_content_description">Število vnesenih znakov je %1$d od %2$d</string>
     <string name="character_counter_overflowed_content_description">Omejitev števila znakov je presegla %1$d od %2$d</string>
     <string name="clear_text_end_icon_content_description">Izbris besedila</string>
+    <string gender="unknown" name="combobox_description">Kombinirano polje</string>
     <string name="error_icon_content_description">Napaka</string>
     <string name="exposed_dropdown_menu_content_description">Prikaz spustnega menija</string>
+    <string gender="unknown" name="header_description">Naslov</string>
     <string name="icon_content_description">Ikona pogovornega okna</string>
+    <string gender="unknown" name="image_description">Slika</string>
+    <string gender="unknown" name="imagebutton_description">Gumb, slika</string>
     <string name="item_view_role_description">Zavihek</string>
+    <string gender="unknown" name="link_description">Povezava</string>
     <string name="material_clock_toggle_content_description">Izberite dopoldanski ali popoldanski čas.</string>
     <string name="material_hour_selection">Izberite uro</string>
     <string name="material_hour_suffix">%1$s</string>
@@ -53,6 +59,9 @@
     <string name="material_timepicker_pm">pop.</string>
     <string name="material_timepicker_select_time">Izberite uro</string>
     <string name="material_timepicker_text_input_mode_description">Preklopite na način za vnašanje besedila, da vnesete čas.</string>
+    <string gender="unknown" name="menu_description">Meni</string>
+    <string gender="unknown" name="menubar_description">Meni</string>
+    <string gender="unknown" name="menuitem_description">Element v meniju</string>
     <string name="mtrl_badge_numberless_content_description">Novo obvestilo</string>
     <string name="mtrl_chip_close_icon_content_description">Odstranite %1$s</string>
     <string name="mtrl_exceed_max_badge_number_content_description">Več kot toliko novih obvestil: %1$d</string>
@@ -87,6 +96,22 @@
     <string name="mtrl_picker_toggle_to_text_input_mode">Preklop na način vnosa besedila</string>
     <string name="mtrl_picker_toggle_to_year_selection">Dotik za preklop na izbiro leta</string>
     <string name="password_toggle_content_description">Prikaz gesla</string>
+    <string gender="unknown" name="progressbar_description">Črta napredka</string>
+    <string gender="unknown" name="radiogroup_description">Radio skupina</string>
+    <string gender="unknown" name="rn_tab_description">Zavihek</string>
+    <string gender="unknown" name="scrollbar_description">Drsnik</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Iskanje"</string>
+    <string gender="unknown" name="spinbutton_description">Vrtljivi gumb</string>
+    <string gender="unknown" name="state_busy_description">zasedeno</string>
+    <string gender="unknown" name="state_collapsed_description">strnjeno</string>
+    <string gender="unknown" name="state_expanded_description">razširjen</string>
+    <string gender="unknown" name="state_mixed_description">mešano</string>
+    <string gender="unknown" name="state_off_description">izključeno</string>
+    <string gender="unknown" name="state_on_description">vklopljeno</string>
+    <string gender="unknown" name="state_unselected_description">neizbrano</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string gender="unknown" name="summary_description">Povzetek</string>
+    <string gender="unknown" name="tablist_description">Seznam z zavihki</string>
+    <string gender="unknown" name="timer_description">Časovnik</string>
+    <string gender="unknown" name="toolbar_description">Vrstica z orodji</string>
 </resources>

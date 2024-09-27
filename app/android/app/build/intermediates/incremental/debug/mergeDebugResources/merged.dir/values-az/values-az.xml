@@ -35,10 +35,14 @@
     <string name="character_counter_content_description">%1$d/%2$d simvol daxil edilib</string>
     <string name="character_counter_overflowed_content_description">Simvol limiti %1$d/%2$d dəyərini keçdi</string>
     <string name="clear_text_end_icon_content_description">Mətni silin</string>
+    <string gender="unknown" name="combobox_description">Kombo siyahısı</string>
     <string name="error_icon_content_description">Xəta</string>
     <string name="exposed_dropdown_menu_content_description">Açılan menyunu göstərin</string>
     <string name="icon_content_description">Dialoq ikonası</string>
+    <string gender="unknown" name="image_description">Şəkil</string>
+    <string gender="unknown" name="imagebutton_description">Düymə, şəkil</string>
     <string name="item_view_role_description">Tab</string>
+    <string gender="unknown" name="link_description">Keçid</string>
     <string name="material_clock_toggle_content_description">Gündüz və ya axşam seçin</string>
     <string name="material_hour_selection">Saatı seçin</string>
     <string name="material_hour_suffix">Saat %1$s</string>
@@ -51,6 +55,7 @@
     <string name="material_timepicker_pm">GƏ</string>
     <string name="material_timepicker_select_time">Vaxt seçin</string>
     <string name="material_timepicker_text_input_mode_description">Zamanı daxil etmək üçün mətnlə daxiletmə rejiminə keçin</string>
+    <string gender="unknown" name="menu_description">Menyu</string>
     <string name="mtrl_badge_numberless_content_description">Yeni bildiriş</string>
     <string name="mtrl_chip_close_icon_content_description">%1$s silin</string>
     <string name="mtrl_exceed_max_badge_number_content_description">Minimum %1$d yeni bildiriş</string>
@@ -86,5 +91,7 @@
     <string name="mtrl_picker_toggle_to_year_selection">İl seçiminə keçmək üçün toxunun</string>
     <string name="password_toggle_content_description">Parolu göstərin</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Axtarın"</string>
+    <string gender="unknown" name="state_off_description">deaktiv</string>
+    <string gender="unknown" name="state_on_description">aktivdir</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

@@ -35,10 +35,14 @@
     <string name="character_counter_content_description">Մուտքագրված նիշեր՝ %1$d/%2$d</string>
     <string name="character_counter_overflowed_content_description">Նիշերի առավելագույն քանակը գերազանցվել է (%1$d/%2$d)</string>
     <string name="clear_text_end_icon_content_description">Ջնջել տեքստը</string>
+    <string gender="unknown" name="combobox_description">Կոմբո արկղ</string>
     <string name="error_icon_content_description">Սխալ</string>
     <string name="exposed_dropdown_menu_content_description">Ցույց տալ իջնող ընտրացանկը</string>
     <string name="icon_content_description">Երկխոսության պատուհանի պատկերակ</string>
+    <string gender="unknown" name="image_description">Նկար</string>
+    <string gender="unknown" name="imagebutton_description">Կոճակ, նկար</string>
     <string name="item_view_role_description">Ներդիր</string>
+    <string gender="unknown" name="link_description">Հղում</string>
     <string name="material_clock_toggle_content_description">Ընտրել AM կամ PM</string>
     <string name="material_hour_selection">Ընտրել ժամը</string>
     <string name="material_hour_suffix">Ժամը %1$s է</string>
@@ -51,6 +55,7 @@
     <string name="material_timepicker_pm">PM</string>
     <string name="material_timepicker_select_time">Ժամանակի ընտրություն</string>
     <string name="material_timepicker_text_input_mode_description">Ժամը մուտքագրելու համար միացրեք տեքստի մուտքագրման ռեժիմը:</string>
+    <string gender="unknown" name="menu_description">Ընտրացանկ</string>
     <string name="mtrl_badge_numberless_content_description">Նոր ծանուցում</string>
     <string name="mtrl_chip_close_icon_content_description">Հեռացնել (%1$s)</string>
     <string name="mtrl_exceed_max_badge_number_content_description">Ավելի քան %1$d նոր ծանուցում</string>
@@ -86,5 +91,7 @@
     <string name="mtrl_picker_toggle_to_year_selection">Հպեք՝ տարեթվի ընտությանն անցնելու համար</string>
     <string name="password_toggle_content_description">Ցուցադրել գաղտնաբառը</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Որոնել"</string>
+    <string gender="unknown" name="state_off_description">անջատած</string>
+    <string gender="unknown" name="state_on_description">միացրած</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

@@ -12,16 +12,16 @@ import {
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
 import { createIcons, icons } from 'lucide';
-import BackHeader from "../../components/BackHeader";
-import InputTest from "../../components/InputTest";
-import ModalComp2 from "../../components/Modal/2Modal";
+import BackHeader from "../../Components/BackHeader/index";
+import InputTest from "../../Components/InputTest/index";
+import ModalComp2 from "../../Components/Modal/2Modal/index";
 
 
-const VerificationScreen = ({navigation}) => (
+const VerificationScreen = () => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <BackHeader 
-                onPress ={()=> navigation.navigate('CreateStudent')}
+                onPress ={()=> console.log("pressionado")}
                 title="Verificação de Email"
                 subtitle="Um ultimo passo para te manter seguro"
                 margin = {15} />

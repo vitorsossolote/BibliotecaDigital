@@ -33,14 +33,20 @@
     <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"שיתוף עם"</string>
     <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"שיתוף עם <ns1:g id="APPLICATION_NAME">%s</ns1:g>"</string>
     <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"כיווץ"</string>
+    <string gender="unknown" name="alert_description">התראה</string>
     <string name="bottomsheet_action_expand_halfway">הרחבה עד האמצע</string>
     <string name="character_counter_content_description">הוזנו %1$d תווים מתוך %2$d</string>
     <string name="character_counter_overflowed_content_description">מגבלת התווים חורגת ב-%1$d מתוך %2$d</string>
     <string name="clear_text_end_icon_content_description">מחיקת הטקסט</string>
+    <string gender="unknown" name="combobox_description">תיבה משולבת</string>
     <string name="error_icon_content_description">שגיאה</string>
     <string name="exposed_dropdown_menu_content_description">הצגת התפריט הנפתח</string>
+    <string gender="unknown" name="header_description">כותרת</string>
     <string name="icon_content_description">סמל לתיבת דו-שיח</string>
+    <string gender="unknown" name="image_description">תמונה</string>
+    <string gender="unknown" name="imagebutton_description">לחצן, תמונה</string>
     <string name="item_view_role_description">מקש Tab</string>
+    <string gender="unknown" name="link_description">קישור</string>
     <string name="material_clock_toggle_content_description">יש לבחור ב-AM או ב-PM</string>
     <string name="material_hour_selection">בחר שעה</string>
     <string name="material_hour_suffix">השעה %1$s</string>
@@ -53,6 +59,9 @@
     <string name="material_timepicker_pm">אחה\"צ</string>
     <string name="material_timepicker_select_time">בחר שעה</string>
     <string name="material_timepicker_text_input_mode_description">העבר למצב קלט טקסט לצורך הזנת השעה</string>
+    <string gender="unknown" name="menu_description">תפריט</string>
+    <string gender="unknown" name="menubar_description">סרגל תפריטים</string>
+    <string gender="unknown" name="menuitem_description">פריט בתפריט</string>
     <string name="mtrl_badge_numberless_content_description">התראה חדשה</string>
     <string name="mtrl_chip_close_icon_content_description">הסרה של %1$s</string>
     <string name="mtrl_exceed_max_badge_number_content_description">יותר מ-%1$d התראות חדשות</string>
@@ -87,6 +96,22 @@
     <string name="mtrl_picker_toggle_to_text_input_mode">החלפה לשיטת קלט של טקסט</string>
     <string name="mtrl_picker_toggle_to_year_selection">יש להקיש כדי להחליף לבחירת שנה</string>
     <string name="password_toggle_content_description">הצגת סיסמה</string>
+    <string gender="unknown" name="progressbar_description">סרגל התקדמות</string>
+    <string gender="unknown" name="radiogroup_description">קבוצת רדיו</string>
+    <string gender="unknown" name="rn_tab_description">לשונית</string>
+    <string gender="unknown" name="scrollbar_description">סרגל גלילה</string>
     <string msgid="6264217191555673260" name="search_menu_title">"חיפוש"</string>
+    <string gender="unknown" name="spinbutton_description">לחצן מסתובב</string>
+    <string gender="unknown" name="state_busy_description">תפוס</string>
+    <string gender="unknown" name="state_collapsed_description">מצומצם</string>
+    <string gender="unknown" name="state_expanded_description">מורחב</string>
+    <string gender="unknown" name="state_mixed_description">משולב</string>
+    <string gender="unknown" name="state_off_description">כבוי</string>
+    <string gender="unknown" name="state_on_description">מופעל</string>
+    <string gender="unknown" name="state_unselected_description">הבחירה בוטלה</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string gender="unknown" name="summary_description">סיכום</string>
+    <string gender="unknown" name="tablist_description">רשימת לשוניות</string>
+    <string gender="unknown" name="timer_description">טיימר</string>
+    <string gender="unknown" name="toolbar_description">סרגל כלים</string>
 </resources>

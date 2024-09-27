@@ -13,10 +13,6 @@ import {
 } from "@gluestack-ui/themed"
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
-import BackHeader from "../../components/BackHeader";
-import InputTest from "../../components/InputTest";
-import { Subtitles } from "lucide-react-native";
 import { Span } from "@expo/html-elements";
 
 const CongratulationsScreen = () => (

@@ -31,14 +31,20 @@
     <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"આની સાથે શેર કરો"</string>
     <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"<ns1:g id="APPLICATION_NAME">%s</ns1:g>ની સાથે શેર કરો"</string>
     <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"સંકુચિત કરો"</string>
+    <string gender="unknown" name="alert_description">એલર્ટ</string>
     <string name="bottomsheet_action_expand_halfway">અડધે સુધી મોટું કરો</string>
     <string name="character_counter_content_description">%2$dમાંથી %1$d અક્ષરો દાખલ કર્યા</string>
     <string name="character_counter_overflowed_content_description">%2$dમાંથી %1$dની વર્ણ મર્યાદા ઓળંગાઈ ગઈ છે</string>
     <string name="clear_text_end_icon_content_description">ટેક્સ્ટ સાફ કરો</string>
+    <string gender="unknown" name="combobox_description">કોમ્બો બોક્સ</string>
     <string name="error_icon_content_description">ભૂલ</string>
     <string name="exposed_dropdown_menu_content_description">ડ્રૉપડાઉન મેનૂ બતાવો</string>
+    <string gender="unknown" name="header_description">શીર્ષક</string>
     <string name="icon_content_description">સંવાદનું આઇકન</string>
+    <string gender="unknown" name="image_description">ફોટો</string>
+    <string gender="unknown" name="imagebutton_description">બટન, ફોટો</string>
     <string name="item_view_role_description">ટૅબ</string>
+    <string gender="unknown" name="link_description">લિંક</string>
     <string name="material_clock_toggle_content_description">AM અથવા PM પસંદ કરો</string>
     <string name="material_hour_selection">સમય પસંદ કરો</string>
     <string name="material_hour_suffix">%1$s વાગ્યા છે</string>
@@ -51,6 +57,9 @@
     <string name="material_timepicker_pm">PM</string>
     <string name="material_timepicker_select_time">સમય પસંદ કરો</string>
     <string name="material_timepicker_text_input_mode_description">સમય દાખલ કરવા માટે ટેક્સ્ટ ઇનપુટ મોડમાં સ્વિચ કરો.</string>
+    <string gender="unknown" name="menu_description">મેનૂ</string>
+    <string gender="unknown" name="menubar_description">મેનૂ બાર</string>
+    <string gender="unknown" name="menuitem_description">મેનૂ આઇટમ</string>
     <string name="mtrl_badge_numberless_content_description">નવું નોટિફિકેશન</string>
     <string name="mtrl_chip_close_icon_content_description">%1$s કાઢી નાખો</string>
     <string name="mtrl_exceed_max_badge_number_content_description">%1$dથી વધુ નવા નોટિફિકેશન</string>
@@ -85,6 +94,22 @@
     <string name="mtrl_picker_toggle_to_text_input_mode">ટેક્સ્ટ ઇનપુટ મોડ પર સ્વિચ કરો</string>
     <string name="mtrl_picker_toggle_to_year_selection">વર્ષની પસંદગી પર સ્વિચ કરવા માટે ટૅપ કરો</string>
     <string name="password_toggle_content_description">પાસવર્ડ બતાવો</string>
+    <string gender="unknown" name="progressbar_description">પ્રગતિ બાર</string>
+    <string gender="unknown" name="radiogroup_description">રેડિયો ગ્રૂપ</string>
+    <string gender="unknown" name="rn_tab_description">ટેબ</string>
+    <string gender="unknown" name="scrollbar_description">સ્ક્રોલ બાર</string>
     <string msgid="6264217191555673260" name="search_menu_title">"શોધો"</string>
+    <string gender="unknown" name="spinbutton_description">સ્પિન બટન</string>
+    <string gender="unknown" name="state_busy_description">વ્યસ્ત</string>
+    <string gender="unknown" name="state_collapsed_description">નાનું</string>
+    <string gender="unknown" name="state_expanded_description">વિસ્તૃત</string>
+    <string gender="unknown" name="state_mixed_description">મિક્સ કરેલ</string>
+    <string gender="unknown" name="state_off_description">બંધ</string>
+    <string gender="unknown" name="state_on_description">ચાલુ</string>
+    <string gender="unknown" name="state_unselected_description">પસંદગીમાંથી કાઢી નાખ્યું</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string gender="unknown" name="summary_description">સારાંશ</string>
+    <string gender="unknown" name="tablist_description">ટેબ લિસ્ટ</string>
+    <string gender="unknown" name="timer_description">ટાઇમર</string>
+    <string gender="unknown" name="toolbar_description">ટૂલ બાર</string>
 </resources>

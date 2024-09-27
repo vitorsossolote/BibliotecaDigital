@@ -1,3 +1,4 @@
+
 import { React, useState } from 'react';
 import { Link, Modal, Center, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText, VStack, Heading, Text, Input, InputField, HStack, SafeAreaView } from '@gluestack-ui/themed';
 import { Pressable, View, StyleSheet} from 'react-native';
@@ -174,4 +175,3 @@ const styles = StyleSheet.create({
     },
 });
 export default ModalComp;
-

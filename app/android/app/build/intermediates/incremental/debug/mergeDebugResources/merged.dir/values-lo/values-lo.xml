@@ -35,10 +35,14 @@
     <string name="character_counter_content_description">ຕົວອັກສອນທີ່ປ້ອນເຂົ້າ %1$d ຕົວຈາກທັງໝົດ %2$d ຕົວ</string>
     <string name="character_counter_overflowed_content_description">ຂີດຈຳກັດຕົວອັກສອນເກີນ %1$d ຈາກທັງໝົດ %2$d</string>
     <string name="clear_text_end_icon_content_description">ລຶບລ້າງຂໍ້ຄວາມ</string>
+    <string gender="unknown" name="combobox_description">ກ່ອງຄອມໂບ</string>
     <string name="error_icon_content_description">ຜິດພາດ</string>
     <string name="exposed_dropdown_menu_content_description">ສະແດງເມນູເລື່ອນລົງ</string>
     <string name="icon_content_description">ໄອຄອນກ່ອງໂຕ້ຕອບ</string>
+    <string gender="unknown" name="image_description">ຮູບພາບ</string>
+    <string gender="unknown" name="imagebutton_description">ປຸ່ມ, ຮູບພາບ</string>
     <string name="item_view_role_description">ແຖບ</string>
+    <string gender="unknown" name="link_description">ລິ້ງ</string>
     <string name="material_clock_toggle_content_description">ເລືອກຕອນເຊົ້າ ຫຼື ຕອນແລງ</string>
     <string name="material_hour_selection">ເລືອກຊົ່ວໂມງ</string>
     <string name="material_hour_suffix">%1$s ໂມງ</string>
@@ -51,6 +55,7 @@
     <string name="material_timepicker_pm">ໂມງແລງ</string>
     <string name="material_timepicker_select_time">ເລືອກເວ​ລາ</string>
     <string name="material_timepicker_text_input_mode_description">ສະຫຼັບໄປໃຊ້ໂໝດປ້ອນຂໍ້ຄວາມສຳລັບການປ້ອນເວລາ.</string>
+    <string gender="unknown" name="menu_description">ເມນູ</string>
     <string name="mtrl_badge_numberless_content_description">ການແຈ້ງເຕືອນໃໝ່</string>
     <string name="mtrl_chip_close_icon_content_description">ລຶບ %1$s ອອກ</string>
     <string name="mtrl_exceed_max_badge_number_content_description">ການແຈ້ງເຕືອນໃໝ່ຫຼາຍກວ່າ %1$d ລາຍການ</string>
@@ -86,5 +91,7 @@
     <string name="mtrl_picker_toggle_to_year_selection">ແຕະເພື່ອປ່ຽນເປັນການເລືອກປີ</string>
     <string name="password_toggle_content_description">ສະແດງລະຫັດຜ່ານ</string>
     <string msgid="6264217191555673260" name="search_menu_title">"ຊອກຫາ"</string>
+    <string gender="unknown" name="state_off_description">ປິດ</string>
+    <string gender="unknown" name="state_on_description">ເປີດ</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

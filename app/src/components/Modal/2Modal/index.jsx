@@ -144,4 +144,3 @@ const styles = StyleSheet.create({
     },
 });
 export default ModalComp2;
-

@@ -35,10 +35,14 @@
     <string name="character_counter_content_description">%2$d ичинен %1$d символ киргизилди</string>
     <string name="character_counter_overflowed_content_description">Символдордун саны коюлган %2$d чегинен %1$d символго ашып кетти</string>
     <string name="clear_text_end_icon_content_description">Текстти тазалоо</string>
+    <string gender="unknown" name="combobox_description">Айкалыштырылган тизме</string>
     <string name="error_icon_content_description">Ката</string>
     <string name="exposed_dropdown_menu_content_description">Түрүлмө менюну көрсөтүү</string>
     <string name="icon_content_description">Диалог сүрөтчөсү</string>
+    <string gender="unknown" name="image_description">Сүрөт</string>
+    <string gender="unknown" name="imagebutton_description">Баскыч, сүрөт</string>
     <string name="item_view_role_description">Өтмөк</string>
+    <string gender="unknown" name="link_description">Шилтеме</string>
     <string name="material_clock_toggle_content_description">Тандоо: AM же PM</string>
     <string name="material_hour_selection">Саат тандоо</string>
     <string name="material_hour_suffix">Саат %1$s</string>
@@ -51,6 +55,7 @@
     <string name="material_timepicker_pm">PM</string>
     <string name="material_timepicker_select_time">Убакыт тандоо</string>
     <string name="material_timepicker_text_input_mode_description">Убакытты текст киргизүү режиминде киргизиңиз.</string>
+    <string gender="unknown" name="menu_description">Меню</string>
     <string name="mtrl_badge_numberless_content_description">Жаңы билдирме</string>
     <string name="mtrl_chip_close_icon_content_description">Мазмунду алып салуу (%1$s)</string>
     <string name="mtrl_exceed_max_badge_number_content_description">%1$d ашуун жаңы билдирме</string>
@@ -86,5 +91,7 @@
     <string name="mtrl_picker_toggle_to_year_selection">Жыл тандоо үчүн таптап коюңуз</string>
     <string name="password_toggle_content_description">Сырсөздү көрсөтүү</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Издөө"</string>
+    <string gender="unknown" name="state_off_description">өчүк</string>
+    <string gender="unknown" name="state_on_description">күйүк</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

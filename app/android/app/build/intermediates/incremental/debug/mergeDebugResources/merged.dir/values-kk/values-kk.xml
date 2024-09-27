@@ -35,10 +35,14 @@
     <string name="character_counter_content_description">%1$d/%2$d таңба енгізілді</string>
     <string name="character_counter_overflowed_content_description">Таңба саны шегінен асты: %1$d/%2$d</string>
     <string name="clear_text_end_icon_content_description">Мәтінді өшіру</string>
+    <string gender="unknown" name="combobox_description">Біріктірілген тізім</string>
     <string name="error_icon_content_description">Қате</string>
     <string name="exposed_dropdown_menu_content_description">Ашылмалы мәзірді көрсету</string>
     <string name="icon_content_description">Диалог белгішесі</string>
+    <string gender="unknown" name="image_description">Кескін</string>
+    <string gender="unknown" name="imagebutton_description">Түйме, кескін</string>
     <string name="item_view_role_description">Қойынды</string>
+    <string gender="unknown" name="link_description">Сілтеме</string>
     <string name="material_clock_toggle_content_description">\"AM\" немесе \"PM\" форматын таңдау</string>
     <string name="material_hour_selection">Сағатты таңдау</string>
     <string name="material_hour_suffix">Сағат: %1$s</string>
@@ -51,6 +55,7 @@
     <string name="material_timepicker_pm">PM</string>
     <string name="material_timepicker_select_time">Уақытты таңдау</string>
     <string name="material_timepicker_text_input_mode_description">Уақытты енгізу үшін мәтін енгізу режиміне өтіңіз.</string>
+    <string gender="unknown" name="menu_description">Мәзір</string>
     <string name="mtrl_badge_numberless_content_description">Жаңа хабарландыру</string>
     <string name="mtrl_chip_close_icon_content_description">%1$s мазмұнын өшіру</string>
     <string name="mtrl_exceed_max_badge_number_content_description">%1$d санынан көп жаңа хабарландыру</string>
@@ -86,5 +91,7 @@
     <string name="mtrl_picker_toggle_to_year_selection">Жылды таңдауға ауысу үшін түртіңіз.</string>
     <string name="password_toggle_content_description">Құпия сөзді көрсету</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Іздеу"</string>
+    <string gender="unknown" name="state_off_description">өшірулі</string>
+    <string gender="unknown" name="state_on_description">қосулы</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

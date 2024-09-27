@@ -13,11 +13,10 @@ import { StyleSheet, Text, View, Alert } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
 import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../components/BackHeader";
-import InputTest from "../../../components/InputTest";
-import { Navigation } from "lucide-react-native";
+import BackHeader from "../../../Components/BackHeader/index";
+import InputTest from "../../../Components/InputTest/index";
 
-const LoginStudent = ({ navigation }) => {
+const LoginStudent = () => {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');

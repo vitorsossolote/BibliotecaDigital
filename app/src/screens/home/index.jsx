@@ -14,13 +14,13 @@ import {
 } from "@gluestack-ui/themed"
 import { StyleSheet, Text, View,} from "react-native"
 import { config } from "@gluestack-ui/config"
-import MainHeader from "../../components/MainHeader";
-import Carrosel from "../../components/Carrousel";
-import Reservar from "../../components/ReservarNovamente";
-import Section from "../../components/Section";
-import TrendingBooks from "../../components/TrendingBooks";
-import TrendingGenders from "../../components/TrendingGenders";
-import Authors from "../../components/Authors";
+import MainHeader from "../../Components/MainHeader/index";
+import Carrosel from "../../Components/Carrousel/index";
+import Reservar from "../../Components/ReservarNovamente/index";
+import Section from "../../Components/Section/index";
+import TrendingBooks from "../../Components/TrendingBooks/index";
+import TrendingGenders from "../../Components/TrendingGenders/index";
+import Authors from "../../Components/Authors/index";
 
 const Home = () => (
     <GluestackUIProvider config={config}>

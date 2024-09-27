@@ -1,6 +1,3 @@
-
-
-
 import {useState,useEffect} from "react";
 import {
     GluestackUIProvider,
@@ -15,15 +12,12 @@ import {
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
 import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../components/BackHeader";
-import InputTest from "../../../components/InputTest";
+import BackHeader from "../../../Components/BackHeader/index";
+import InputTest from "../../../Components/InputTest/index";
 
 
-const teste = (val) => {
-    console.log(val);
-}
 
-const LoginLibrarian = ({navigation}) => (
+const LoginLibrarian = () => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <BackHeader onPress={() => console.log("a")}
@@ -51,7 +45,7 @@ const LoginLibrarian = ({navigation}) => (
             <View style={styles.createAccountContainer}>
                 <Text style={styles.textAccount}>Não tem uma conta?</Text>
             <Button
-                    onPress ={()=> navigation.navigate('CreateLibrarian')}
+                    onPress ={()=> console.log("pressionado")}
                     size="md"
                     variant="link"
                     action="primary"
