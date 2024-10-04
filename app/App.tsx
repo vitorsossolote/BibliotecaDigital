@@ -7,19 +7,19 @@ import Navigator from './src/Navigator/index';
 import Home from './src/screens/Home/index';
 
 export default function app() {
-    const [isShowSplash, setIsShowSplash] = useState(true);
+//     const [isShowSplash, setIsShowSplash] = useState(true);
 
-  useEffect(()=> {
-    setTimeout(()=> {
-      setIsShowSplash(false);
-    },3000);
-  });
- return (
-    <>{isShowSplash ? <SplashScreen/> : <Navigator/>}</>
-  );
-// return(
-//   <Home/>
-// )
+//   useEffect(()=> {
+//     setTimeout(()=> {
+//       setIsShowSplash(false);
+//     },3000);
+//   });
+//  return (
+//     <>{isShowSplash ? <SplashScreen/> : <Navigator/>}</>
+//   );
+return(
+  <Home/>
+)
     
 
 

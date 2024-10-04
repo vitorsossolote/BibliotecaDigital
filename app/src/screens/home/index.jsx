@@ -36,7 +36,6 @@ const Home = () => (
             <Section title="Autores"/>
             <Authors/>
             <TrendingBooks/>
-
         </ScrollView>
     </SafeAreaView>
     </GluestackUIProvider>
