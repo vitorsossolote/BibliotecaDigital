@@ -15,7 +15,7 @@ import book3 from "../../../assets/book4.png"
 
 const TrendingBooks = () => {
     return (
-        <ScrollView horizontal>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.container}>
                 <View style={styles.card}>
                 <View style={styles.imageContainer}>
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
         height:220,
         paddingHorizontal:20,
         gap:15,
+        
     },
     card:{
         flex:1,

@@ -28,3 +28,6 @@
 
 ## Instalado Native Stack | npm install @react-navigation/native-stack
 ## Instalado Masked View | npm install @react-native-masked-view/masked-view
+
+## npm install deprecated-react-native-prop-types
+

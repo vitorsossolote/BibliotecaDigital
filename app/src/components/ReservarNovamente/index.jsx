@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
 import {
     Button,
     ButtonText,
@@ -44,7 +43,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         backgroundColor:"#f6f6f6",
         borderRadius:20,
-        marginTop:15,
+        bottom:20,
+        right:10,
     },
     textContainer: {
         width: 240,
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     Image:{
         width:110,
         height:160,
+        borderRadius:10,
     },
 });
 

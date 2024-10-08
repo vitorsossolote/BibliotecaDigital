@@ -19,6 +19,10 @@ export function Navigator() {
       <Stack.Screen name="UserSelectScreen" component={UserSelectScreen}options={{ headerShown:false}} />
       <Stack.Screen name="StudentScreen" component={StudentScreen} options={{ headerShown:false}}/>
       <Stack.Screen name="LibrarianScreen" component={LibrarianScreen} options={{ headerShown:false}} />
+      <Stack.Screen name="LoginLibrarian" component={LoginLibrarian} options={{ headerShown:false}} />
+      <Stack.Screen name="CreateLibrarian" component={CreateBiblioAccount} options={{ headerShown:false}} />
+      <Stack.Screen name="CreateStudent" component={CreateStudentAccount} options={{ headerShown:false}} />
+      <Stack.Screen name="LoginStudent" component={LoginStudent} options={{ headerShown:false}} />
     </Stack.Navigator>
     </NavigationContainer>
   );

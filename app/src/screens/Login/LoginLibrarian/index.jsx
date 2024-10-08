@@ -17,10 +17,10 @@ import InputTest from "../../../Components/InputTest/index";
 
 
 
-const LoginLibrarian = () => (
+const LoginLibrarian = ({navigation}) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
-            <BackHeader onPress={() => console.log("a")}
+            <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
                 title="Entrar"
                 subtitle="Entre na sua Conta" />
             <View style={styles.inputContainer}>

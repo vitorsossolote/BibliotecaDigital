@@ -16,7 +16,7 @@ import { createIcons, icons } from 'lucide';
 import BackHeader from "../../../Components/BackHeader/index";
 import InputTest from "../../../Components/InputTest/index";
 
-const LoginStudent = () => {
+const LoginStudent = ({navigation}) => {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
