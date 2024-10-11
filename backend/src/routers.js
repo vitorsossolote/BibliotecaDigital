@@ -8,6 +8,9 @@ router.post("/api/createBiblio", clientController.createNewBiblio); //Cadastrar 
 router.post("/api/validadeStudent", clientController.loginStudent);//Validar o login
 router.post("/api/validadeBiblio", clientController.loginBiblio);//Validar o login
 
+//teste
+router.post("/api/validade", clientController.loginBiblio);
+
 // router.post("/api/contato", clientController.createNewMensagem)
 
 // router.post('/api/reset', clientController.getEmailReset)
