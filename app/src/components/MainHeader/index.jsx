@@ -14,15 +14,17 @@ import {Search, Bell} from 'lucide-react-native';
 
 interface Props{
     title: 'String',
+    icon1:any,
+    icon2:any
 };
 
-const MainHeader = ({title}:Props) => (
+const MainHeader = ({title,icon1,icon2}:Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.SearchContainer}>
                 <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
                     <Pressable onPress={()=> console.log("teste")}>
-                        <ButtonIcon as={Search} color={'$black'} size={30} />
+                        <ButtonIcon as={icon1} color={'$black'} size={30} />
                     </Pressable>
                 </Button>
             </View>
@@ -32,7 +34,7 @@ const MainHeader = ({title}:Props) => (
             <View style={styles.bellContainer}>
                 <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
                     <Pressable onPress={()=> console.log("teste")}>
-                        <ButtonIcon as={Bell} color={'$black'} size={30} />
+                        <ButtonIcon as={icon2} color={'$black'} size={30} />
                     </Pressable>
                 </Button>
             </View>  

@@ -1,16 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import {
-    Button,
-    ButtonText,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonGroup,
-    Image,
-} from "@gluestack-ui/themed"
+import { Image } from "@gluestack-ui/themed"
 import book1 from "../../../assets/book2.png"
 import book2 from "../../../assets/book3.png"
 import book3 from "../../../assets/book4.png"
+
 
 
 const TrendingBooks = () => {

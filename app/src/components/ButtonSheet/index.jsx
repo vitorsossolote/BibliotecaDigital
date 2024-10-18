@@ -19,12 +19,15 @@ import { AirbnbRating } from "react-native-ratings";
 import book from "../../../assets/book2.png"
 import marca from "../../../assets/genero3.png"
 
+
+
 export default function ButtonSheet() {
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], [])
 
     const handleCloseAction = () => bottomSheetref.current?.close()
     const handleOpenPress = () => bottomSheetref.current?.expand();
+    
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
