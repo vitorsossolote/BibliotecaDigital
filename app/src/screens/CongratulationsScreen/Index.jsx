@@ -13,7 +13,6 @@ import {
 } from "@gluestack-ui/themed"
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
-import { Span } from "@expo/html-elements";
 
 const CongratulationsScreen = () => (
     <GluestackUIProvider config={config}>

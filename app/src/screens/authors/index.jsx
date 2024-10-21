@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, FlatList, Pressable, Image } from "react-native"
 import {Avatar, AvatarImage, AvatarFallbackText} from "@gluestack-ui/themed"
 import { MotiView, } from 'moti'
-import MainHeader from "../../Components/MainHeader/index";
+import MainHeader from "../../components/MainHeader/index";
 import { Search, ArrowLeft } from 'lucide-react-native';
 
 import autor1 from "../../../assets/autor1.png"

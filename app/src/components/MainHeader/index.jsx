@@ -7,7 +7,7 @@ import {
     Pressable,
     Heading,
 } from "@gluestack-ui/themed"
-
+import {MotiView} from 'moti'
 import { config } from "@gluestack-ui/config"
 import { StyleSheet, Text, View } from "react-native"
 import {Search, Bell} from 'lucide-react-native';
@@ -20,6 +20,7 @@ interface Props{
 
 const MainHeader = ({title,icon1,icon2}:Props) => (
     <GluestackUIProvider config={config}>
+      <MotiView from={{translateY:-50}} animate={{translateY:[10]}} transition={{duration:3000}}>
         <SafeAreaView style={styles.container}>
             <View style={styles.SearchContainer}>
                 <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
@@ -39,6 +40,7 @@ const MainHeader = ({title,icon1,icon2}:Props) => (
                 </Button>
             </View>  
         </SafeAreaView>
+        </MotiView>
     </GluestackUIProvider>
 );
 
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
 });
+
 
 
 export default MainHeader;

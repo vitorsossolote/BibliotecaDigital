@@ -16,7 +16,7 @@ import autor3 from "../../../assets/autor3.png"
 
 const Authors = () => {
     return(
-        <ScrollView horizontal>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.container}>
                 <View style={styles.card}>
                     <Image source={autor1} alt="genero 1" style={styles.image}/>
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     image:{
         width:102,
         height:102,
+        bottom:10,
     },
 });
 

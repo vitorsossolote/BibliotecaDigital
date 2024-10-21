@@ -1,19 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Image } from "@gluestack-ui/themed"
+import { View, Text, StyleSheet, ScrollView,Pressable, } from 'react-native';
+import {
+    Button,
+    ButtonText,
+    ButtonIcon,
+    ButtonSpinner,
+    ButtonGroup,
+    Image,
+    
+} from "@gluestack-ui/themed"
+import ButtonSheet from '../ButtonSheet/index';
+import { teste } from '../ButtonSheet/index';
 import book1 from "../../../assets/book2.png"
 import book2 from "../../../assets/book3.png"
 import book3 from "../../../assets/book4.png"
 
 
-
 const TrendingBooks = () => {
+    const HandleClick = () => {
+        teste()
+    }
     return (
-        <ScrollView horizontal>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.container}>
                 <View style={styles.card}>
                 <View style={styles.imageContainer}>
+                    <Pressable>
                     <Image source={book1} alt="livro 1" style={styles.image} />
+                    </Pressable>
                 </View>
                     <Text style={styles.title}>The Kite Runner</Text>
                     <Text style={styles.status}>Reservado</Text>
@@ -51,6 +65,7 @@ const styles = StyleSheet.create({
         height:220,
         paddingHorizontal:20,
         gap:15,
+        
     },
     card:{
         flex:1,

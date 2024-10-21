@@ -11,6 +11,7 @@ import {
     ButtonGroup,
     Heading,
 } from "@gluestack-ui/themed"
+import {MotiImage,MotiView} from 'moti'
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
 
@@ -18,14 +19,38 @@ const UserSelectScreen = ({navigation}) => (
     <GluestackUIProvider config = {config}>
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
-                <Image size='xs' style={styles.logo} source={require('../../../assets/logo.png')} alt="Logo Senai" />
-                <Image size='xs' style={styles.bemvindo} source={require('../../../assets/welcome.png')} alt="Seja Bem-Vindo" />
+                <MotiImage 
+                size='xs' 
+                style={styles.logo} 
+                source={require('../../../assets/logo.png')} 
+                alt="Logo Senai" 
+                from={{opacity:0,translateY: -20}}
+                animate={{opacity:1, translateY: 20}}
+                transition={{duration:2000, type:"spring"}}
+                />
+                <MotiImage
+                 size='xs' 
+                 style={styles.bemvindo} 
+                 source={require('../../../assets/welcome.png')} 
+                 alt="Seja Bem-Vindo" 
+                 from={{translateX: -100}}
+                 animate={{translateX: 0}}
+                 transition={{duration:3000,type:"spring"}}
+                 />
             </View>
-            <View style={styles.textContainer}>
+            <MotiView style={styles.textContainer}
+            from={{opacity: 0,}}
+            animate={{opacity:1,}}
+            transition={{duration:2000}}>
             <Heading style={styles.titulo}>Você é Aluno ou Bibliotecário?</Heading>
             <Text style={styles.textStyle}>{'Fique por dentro dos melhores livros do  nosso acervo ou atualize nosso            inventário'}</Text>
-            </View>
+            </MotiView>
             <View style={styles.buttonContainer}>
+                <MotiView
+                from={{translateX:-100}}
+                animate={{translateX:0}}
+                transition={{duration:3000, type:"spring"}}
+                >
                 <Button
                     onPress={() => navigation.navigate('StudentScreen')}
                     size="md"
@@ -35,6 +60,12 @@ const UserSelectScreen = ({navigation}) => (
                 >
                 <ButtonText>Aluno</ButtonText>
                 </Button>
+                </MotiView>
+                <MotiView
+                from={{translateX:100, opacity:0}}
+                animate={{translateX:0, opacity:1}}
+                transition={{duration:3000,type:"spring"}}
+                >
                 <Button
                     onPress={() => navigation.navigate('LibrarianScreen')}
                     size="md"
@@ -44,6 +75,7 @@ const UserSelectScreen = ({navigation}) => (
                 >
                 <ButtonText style={styles.buttonText}>Bibliotecário</ButtonText>
                 </Button>
+                </MotiView>
             </View>
         </SafeAreaView>
     </GluestackUIProvider>

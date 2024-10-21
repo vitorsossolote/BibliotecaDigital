@@ -9,14 +9,15 @@ import {
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
+import { MotiView } from "moti"
 import { StyleSheet, Text, View, Alert } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
 import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../Components/BackHeader/index";
-import InputTest from "../../../Components/InputTest/index";
+import BackHeader from "../../../components/BackHeader/index";
+import InputTest from "../../../components/InputTest/index";
 
-const LoginStudent = () => {
+const LoginStudent = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
@@ -77,52 +78,84 @@ const LoginStudent = () => {
                     title="Entrar"
                     subtitle="Entre na sua Conta" />
                 <View style={styles.inputContainer}>
-                    <InputTest
-                        inputText="Seu Email"
-                        formTitle="Email" 
-                        valuee = {email}
-                        onChangeText= {text => setEmail(text)}
+                    <MotiView
+                        from={{ translateX: -50 }}
+                        animate={{ translateX: 0 }}
+                        transition={{ duration: 3000, type: "spring" }}>
+                        <InputTest
+                            inputText="Seu Email"
+                            formTitle="Email"
+                            valuee={email}
+                            onChangeText={text => setEmail(text)}
                         />
-                    <InputTest
-                        inputText="Sua senha"
-                        formTitle="Senha"
-                        valuee = {senha}
-                        onChangeText= {text => setSenha(text)}
-                        inputType="password" />
+                    </MotiView>
+                    <MotiView
+                        from={{ translateX: -50 }}
+                        animate={{ translateX: 0 }}
+                        transition={{ duration: 4000, type: "spring" }}>
+                        <InputTest
+                            inputText="Sua senha"
+                            formTitle="Senha"
+                            valuee={senha}
+                            onChangeText={text => setSenha(text)}
+                            inputType="password" />
+                    </MotiView>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button
-                        onPress={() => handleLogin()}
-                        size="md"
-                        variant="solid"
-                        action="primary"
-                        style={styles.buttonSolid}
-                    >
-                        <ButtonText>Entrar</ButtonText>
-                    </Button>
+                    <MotiView
+                        from={{ translateX: 370, }}
+                        animate={{ translateX: 0, }}
+                        transition={{ duration: 4000, delay: 500 }}>
+                        <Button
+                            onPress={() => handleLogin()}
+                            size="md"
+                            variant="solid"
+                            action="primary" w
+                            style={styles.buttonSolid}
+                        >
+                            <ButtonText>Entrar</ButtonText>
+                        </Button>
+                    </MotiView>
                 </View>
                 <View style={styles.createAccountContainer}>
-                    <Text style={styles.textAccount}>Não tem uma conta?</Text>
-                    <Button
-                        onPress={() => navigation.navigate('CreateStudent')}
-                        size="md"
-                        variant="link"
-                        action="primary"
-                        style={styles.linkButton}
+                    <MotiView
+                        from={{ opacity: 0, }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1000, }}>
+                        <Text style={styles.textAccount}>Não tem uma conta?</Text>
+                    </MotiView>
+                    <MotiView
+                        from={{ translateX: 300 }}
+                        animate={{ translateX: 0 }}
+                        transition={{ duration: 3000, }}
                     >
-                        <ButtonText style={styles.textButton}>Crie Agora</ButtonText>
-                    </Button>
+                        <Button
+                            onPress={() => navigation.navigate('CreateStudent')}
+                            size="md"
+                            variant="link"
+                            action="primary"
+                            style={styles.linkButton}
+                        >
+                            <ButtonText style={styles.textButton}>Crie Agora</ButtonText>
+                        </Button>
+                    </MotiView>
                 </View>
-                <Text style={styles.textTerms}>Criando uma conta você aceita nossos</Text>
                 <View style={styles.termsContainer}>
-                    <Button
-                        size="md"
-                        variant="link"
-                        action="primary"
-                        style={styles.linkButton}
+                    <MotiView
+                    from={{translateY:45, }}
+                    animate={{translateY:0,}}
+                    transition={{duration:2000, type:"timing"}}
                     >
-                        <ButtonText style={styles.textButton}>Termos e Politicas de dados</ButtonText>
-                    </Button>
+                        <Text style={styles.textTerms}>Criando uma conta você aceita nossos</Text>
+                        <Button
+                            size="md"
+                            variant="link"
+                            action="primary"
+                            style={styles.linkButton}
+                        >
+                            <ButtonText style={styles.textButton}>Termos e Politicas de dados</ButtonText>
+                        </Button>
+                    </MotiView>
                 </View>
             </SafeAreaView>
         </GluestackUIProvider>
@@ -168,16 +201,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         flexDirection: 'column-reverse',
         alignSelf: 'center',
-        marginTop: 120,
+        top: 3
     },
     termsContainer: {
         height: 20,
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: "center",
-        gap: 7,
         alignSelf: 'center',
-        marginTop: 650,
-        position: "absolute"
+        justifyContent: "flex-end",
+        top: 190,
     },
 });
 

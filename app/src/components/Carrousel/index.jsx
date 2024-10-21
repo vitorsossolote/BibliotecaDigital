@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useState,useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import Carousel,{Pagination} from 'react-native-snap-carousel';
 import {
     Button,
     ButtonText,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonGroup,
     Image,
 } from "@gluestack-ui/themed"
 
@@ -32,7 +29,7 @@ const MyCarousel = ({ data }) => {
                     size="md"
                     variant="solid"
                     action="primary"
-                >
+                    >
                     <ButtonText>Reservar Agora</ButtonText>
                 </Button>
             </View>
@@ -41,15 +38,41 @@ const MyCarousel = ({ data }) => {
                 </View>
         </View>
     );
-
+    
+    const [index, setIndex] = useState(0);
+    const isCarousel = useRef(null);
     return (
+        <>
         <Carousel
+            ref={isCarousel}
             data={data}
             renderItem={renderItem}
             sliderWidth={screenWidth}
             itemWidth={screenWidth}
             layout={'default'}
+            onSnapToItem={index => setIndex(index)}
         />
+        <Pagination
+        dotsLength={data.length}
+        activeDotIndex={index}
+        carouselRef={isCarousel}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: -1,
+          backgroundColor: '#ee2d32',
+          bottom:20
+        }}
+        tappableDots={true}
+        inactiveDotStyle={{
+          backgroundColor: 'black',
+          // Define styles for inactive dots here
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
+      </>
     );
 };
 
@@ -69,6 +92,7 @@ const styles = StyleSheet.create({
         backgroundColor:"#f6f6f6",
         borderRadius:20,
         marginTop:15,
+        right:8,
     },
     textContainer: {
         width: 240,
@@ -96,6 +120,7 @@ const styles = StyleSheet.create({
     Image:{
         width:145,
         height:160,
+        borderRadius:15,
     },
 });
 
