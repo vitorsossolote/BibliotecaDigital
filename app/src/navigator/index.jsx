@@ -4,11 +4,10 @@ import LibrarianScreen from '../screens/LibrarianScreen/index';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginLibrarian from '../screens/Login/LoginLibrarian';
-import LoginStudent from '../screens/Login/LoginStudent';
-import CreateStudentAccount from '../screens/CreateAccount/createStudentAccount';
-import CreateBiblioAccount from '../screens/CreateAccount/createLibrarianAccount';
-import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount';
+import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
+import LoginStudent from '../screens/Login/LoginStudent/index';
+import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/index';
+import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
 
 const Stack = createStackNavigator();
 
