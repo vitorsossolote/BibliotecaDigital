@@ -6,7 +6,7 @@ import Navigator from './src/navigator/index';
 import Home from './src/screens/home/index';
 import { LogBox } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import ButtonSheet from './src/components/ButtonSheet/index';
+import Author from './src/screens/authors';
 
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
@@ -26,7 +26,7 @@ export default function app() {
   //   );
   return (
     <GestureHandlerRootView>
-      <Home/>
+      <Author/>
     </GestureHandlerRootView>
   )
 }

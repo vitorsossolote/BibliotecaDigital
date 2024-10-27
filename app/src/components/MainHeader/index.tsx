@@ -32,7 +32,7 @@ const MainHeader = ({title,icon1,icon2}:Props) => (
             <View style={styles.textContainer}>
                 <Heading style={styles.title}>{title}</Heading>
             </View>
-            <View style={styles.bellContainer}>
+            <View style={styles.BellContainer}>
                 <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
                     <Pressable onPress={()=> console.log("teste")}>
                         <ButtonIcon as={icon2} color={'$black'} size={30} />
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize:24,
+        color:"#000"
     },
     subtitle: {
         fontSize: 16,
