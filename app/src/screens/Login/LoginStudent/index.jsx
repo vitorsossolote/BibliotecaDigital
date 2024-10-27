@@ -1,11 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState,} from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
-    Pressable,
-    Heading,
-    Input,
-    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
@@ -13,9 +9,8 @@ import { MotiView } from "moti"
 import { StyleSheet, Text, View, Alert } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../Components/BackHeader/index";
-import InputTest from "../../../Components/InputTest/index";
+import BackHeader from "../../../components/BackHeader/index";
+import InputTest from "../../../components/InputTest/index";
 
 const LoginStudent = ({ navigation }) => {
 

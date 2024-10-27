@@ -9,9 +9,9 @@ import {
 import { MotiView } from "moti"
 import { StyleSheet, Text, View, Alert } from "react-native"
 import { config } from "@gluestack-ui/config"
-import BackHeader from "../../../Components/BackHeader";
-import InputTest from "../../../Components/InputTest";
-import ModalComp from "../../../Components/Modal/1Modal";
+import BackHeader from "../../../components/BackHeader";
+import InputTest from "../../../components/InputTest";
+import ModalComp from "../../../components/Modal/1Modal";
 import axios from "axios";
 
 const SignInStudent = ({ navigation }) => {
@@ -39,7 +39,7 @@ const SignInStudent = ({ navigation }) => {
                 console.error(error);
             });
     }
-
+    
     return (
         <GluestackUIProvider config={config}>
             <SafeAreaView style={styles.container}>

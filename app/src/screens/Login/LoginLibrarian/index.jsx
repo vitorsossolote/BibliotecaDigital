@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
+import React from "react"
 import {
     GluestackUIProvider,
     SafeAreaView,
-    Pressable,
-    Heading,
-    Input,
-    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
 import { MotiView } from 'moti'
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../Components/BackHeader/index";
-import InputTest from "../../../Components/InputTest/index";
+import BackHeader from "../../../components/BackHeader/index";
+import InputTest from "../../../components/InputTest/index";
 
 
 
