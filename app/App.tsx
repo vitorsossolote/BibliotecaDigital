@@ -4,10 +4,11 @@ import 'react-native-gesture-handler'
 import SplashScreen from './src/screens/SplashScreen/index';
 import Navigator from './src/navigator/index';
 import Home from './src/screens/home/index';
-import { LogBox } from 'react-native';
+import { LogBox,StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Author from './src/screens/authors';
 import ForgotPassword from './src/screens/forgotPassword';
+import LoanScreen from './src/screens/loanScreen';
 
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
@@ -27,7 +28,10 @@ export default function app() {
   //   );
   return (
     <GestureHandlerRootView>
-      <ForgotPassword/>
+      <>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <LoanScreen/>
+      </>
     </GestureHandlerRootView>
   )
 }

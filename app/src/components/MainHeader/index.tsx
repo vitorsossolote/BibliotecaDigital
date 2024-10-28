@@ -30,7 +30,7 @@ const MainHeader = ({title,icon1,icon2}:Props) => (
                 </Button>
             </View>
             <View style={styles.textContainer}>
-                <Heading style={styles.title}>{title}</Heading>
+                <Text style={styles.title}>TESTE</Text>
             </View>
             <View style={styles.BellContainer}>
                 <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     title: {
-        fontSize:24,
+        fontSize:50,
         color:"#000"
     },
     subtitle: {
