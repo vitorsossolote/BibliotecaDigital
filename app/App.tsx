@@ -9,6 +9,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Author from './src/screens/authors';
 import ForgotPassword from './src/screens/forgotPassword';
 import LoanScreen from './src/screens/loanScreen';
+import BorrowedBooks from './src/screens/borrowedBooks';
+import NotificationsScreen from './src/screens/notificationsScreen/notificationsScreen';
 
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
@@ -30,7 +32,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      <LoanScreen/>
+      <BorrowedBooks/>
       </>
     </GestureHandlerRootView>
   )
