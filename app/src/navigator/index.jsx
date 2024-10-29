@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
 import LoginStudent from '../screens/Login/LoginStudent/index';
 import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
-import SignInStudent from '../screens/CreateAccount/createStudentAccount';
+import SignInStudent from '../screens/CreateAccount/CreateStudentAccount/SignInStudent';
 
 const Stack = createStackNavigator();
 

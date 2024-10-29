@@ -1,4 +1,5 @@
 import React, { useRef, useMemo } from "react";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {
     GluestackUIProvider,
     SafeAreaView,
@@ -25,8 +26,9 @@ import { AirbnbRating } from "react-native-ratings";
 import book from "../../../assets/book2.png"
 import marca from "../../../assets/genero3.png"
 
-
-
+function signOut() {
+    auth().signOut()
+}
 
 export default function Home() {
     const bottomSheetref = useRef(null);
@@ -42,11 +44,20 @@ export default function Home() {
             <SafeAreaView>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <MainHeader title="Inicio" />
+                    <Button
+                                onPress={() => signOut()}
+                                size="md"
+                                variant="outline"
+                                action="primary"
+                                style={styles.buttonOutline}
+                            >
+                                <ButtonText style={styles.buttonText}>Logout</ButtonText>
+                            </Button>
                     <MotiView from={{ translateX: 200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateX: -200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
-                        <Reservar onPress={() => console.log("teste")}/>
+                        <Reservar onPress={() => console.log("teste")} />
                     </MotiView>
                     <MotiView from={{ translateY: 200 }} animate={{ translateY: 0 }} trainsition={{ duration: 3000, type: "timing" }}>
                         <Section title="Melhores da Semana" />
@@ -117,6 +128,7 @@ export default function Home() {
                             >
                                 <ButtonText style={styles.buttonSecondaryText}>Ver Livros</ButtonText>
                             </Button>
+                            
                         </View>
                     </BottomSheetScrollView>
                 </BottomSheet>
