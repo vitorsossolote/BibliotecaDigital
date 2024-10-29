@@ -11,6 +11,9 @@ import ForgotPassword from './src/screens/forgotPassword';
 import LoanScreen from './src/screens/loanScreen';
 import BorrowedBooks from './src/screens/borrowedBooks';
 import NotificationsScreen from './src/screens/notificationsScreen/notificationsScreen';
+import CreateLibrarianAccount from './src/screens/CreateAccount/createLibrarianAccount/index';
+import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/SignInStudent';
+import LoginStudent from './src/screens/Login/LoginStudent/index';
 
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
@@ -32,7 +35,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      <BorrowedBooks/>
+      <LoginStudent/>
       </>
     </GestureHandlerRootView>
   )
