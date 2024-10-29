@@ -6,9 +6,6 @@ import {
     Image,
     Button,
     ButtonText,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonGroup,
     Pressable ,
     GluestackUIProvider
 } from "@gluestack-ui/themed";

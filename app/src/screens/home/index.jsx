@@ -6,13 +6,13 @@ import {
 } from "@gluestack-ui/themed";
 import {MotiView,MotiImage} from 'moti';
 import { config } from "@gluestack-ui/config";
-import MainHeader from "../../components/MainHeader/index";
-import Carrosel from "../../components/Carrousel/index";
-import Reservar from "../../components/ReservarNovamente/index";
-import Section from "../../components/Section/index";
-import TrendingBooks from "../../components/TrendingBooks/index";
-import TrendingGenders from "../../components/TrendingGenders/index";
-import Authors from "../../components/Authors/index";
+import MainHeader from "../../Components/MainHeader/index";
+import Carrosel from "../../Components/Carrousel/index";
+import Reservar from "../../Components/ReservarNovamente/index";
+import Section from "../../Components/Section/index";
+import TrendingBooks from "../../Components/TrendingBooks/index";
+import TrendingGenders from "../../Components/TrendingGenders/index";
+import Authors from "../../Components/Authors/index";
 
 const Home = () => (
     <GluestackUIProvider config={config}>
