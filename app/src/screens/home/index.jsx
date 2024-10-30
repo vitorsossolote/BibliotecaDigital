@@ -1,3 +1,6 @@
+//Tela Home 
+
+//Bibliotecas Utilizadas
 import React, { useRef, useMemo } from "react";
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {
@@ -13,7 +16,9 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MotiView } from 'moti';
 import { config } from "@gluestack-ui/config";
 import { StyleSheet, Text, View, } from "react-native"
+import { AirbnbRating } from "react-native-ratings";
 
+//Componentes Utilizados
 import MainHeader from "../../components/MainHeader/index";
 import Carrosel from "../../components/Carrousel/index";
 import Reservar from "../../components/ReservarNovamente/index";
@@ -21,11 +26,13 @@ import Section from "../../components/Section/index";
 import TrendingBooks from "../../components/TrendingBooks/index";
 import TrendingGenders from "../../components/TrendingGenders/index";
 import Authors from "../../components/Authors/index";
+
+//Imagens Utilizadas
 import Heart from "../../../assets/Heart.png";
-import { AirbnbRating } from "react-native-ratings";
 import book from "../../../assets/book2.png"
 import marca from "../../../assets/genero3.png"
 
+//Inicio Do Codigo
 function signOut() {
     auth().signOut()
 }
@@ -128,7 +135,6 @@ export default function Home() {
                             >
                                 <ButtonText style={styles.buttonSecondaryText}>Ver Livros</ButtonText>
                             </Button>
-                            
                         </View>
                     </BottomSheetScrollView>
                 </BottomSheet>
