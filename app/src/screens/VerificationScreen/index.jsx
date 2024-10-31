@@ -17,7 +17,8 @@ const VerificationScreen = () => (
                 onPress ={()=> console.log("pressionado")}
                 title="Verificação de Email"
                 subtitle="Um ultimo passo para te manter seguro"
-                margin = {15} />
+                top={50}
+                gap={8}/>
             <View style={styles.inputContainer}>
                 <InputTest
                     inputText="Vamos confirmar seu Email"
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         backgroundColor: '#fff',
-        marginTop:40,
+        marginTop:70,
         gap: 35,
     },
     buttonSolid: {

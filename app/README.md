@@ -28,3 +28,5 @@
 
 ## Instalado Native Stack | npm install @react-navigation/native-stack
 ## Instalado Masked View | npm install @react-native-masked-view/masked-view
+
+## react-native-otp-entry | npm i react-native-otp-entry

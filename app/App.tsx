@@ -9,6 +9,7 @@ import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/SignInStudent';
 import Profile from './src/screens/Profile';
+import VerificationScreen from './src/screens/VerificationScreen';
 
 export default function app() {
 
@@ -50,7 +51,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <Profile/>
+        <VerificationScreen/>
       </>
     </GestureHandlerRootView>
   )

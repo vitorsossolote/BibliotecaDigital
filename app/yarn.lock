@@ -7310,6 +7310,11 @@ react-native-gesture-handler@^2.20.2, "react-native-gesture-handler@>= 1.0.0", r
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-otp-entry@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.npmjs.org/react-native-otp-entry/-/react-native-otp-entry-1.7.3.tgz"
+  integrity sha512-BN/oEpNMfA0cnw9tB9Oq6PZZQztOiq1Ow/M+rAFd0Nll9aO1gwfCwymgIGI89/+63FkmMbv39LcgsfkZNAYzWw==
+
 react-native-ratings@^8.1.0:
   version "8.1.0"
   resolved "https://registry.npmjs.org/react-native-ratings/-/react-native-ratings-8.1.0.tgz"
