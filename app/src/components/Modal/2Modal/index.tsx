@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React,{ useState } from 'react';
 import { Link, Modal, Center, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText, VStack, Heading, Text, Input, InputField, HStack, SafeAreaView } from '@gluestack-ui/themed';
 import { Pressable, View, StyleSheet} from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
@@ -8,9 +8,9 @@ interface Props{
     ModalTitle: String;
     ModalTitle2: String;
     ModalSubtitle2: String;
-
+    Type:String
 };
-const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) => {
+const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Props) => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -101,7 +101,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                 <ButtonText>Continuar</ButtonText>
               </Button>
               <View style={styles.linkContainer}>
-              <Text size='sm'>Não recebeu o email?</Text>
+              <Text size='sm'>Não recebeu o {Type}</Text>
               <Button style={styles.reenviar}
                   variant='link'
                   size='sm'

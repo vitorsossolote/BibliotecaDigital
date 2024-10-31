@@ -10,6 +10,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/SignInStudent';
 import Profile from './src/screens/Profile';
 import VerificationScreen from './src/screens/VerificationScreen';
+import NumberScreen from './src/screens/VerificationScreen/numberScreen';
 
 export default function app() {
 
@@ -51,7 +52,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <VerificationScreen/>
+        <NumberScreen/>
       </>
     </GestureHandlerRootView>
   )
