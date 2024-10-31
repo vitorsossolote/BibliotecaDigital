@@ -4,22 +4,24 @@ import { Modal, ModalBackdrop, ModalBody, ModalContent, ModalFooter, ModalHeader
 import { View, StyleSheet} from 'react-native';
 
 type Props = {
-  onPress : any
+  onPress : any;
+  buttonTitle:String;
 }
 
-const ModalComp = ({onPress} : Props) => {
+const ModalComp = (props : Props) => {
     const [showModal, setShowModal] = useState(false);
     return (
         <SafeAreaView>
             <View>
-                <Button onPress={onPress}
+                <Button
                     size="md"
                     variant="solid"
                     action="primary"
                     style={styles.buttonSolid}
-                    
+                    onPress={props.onPress}
+                  
                 >
-                    <ButtonText>Criar Conta</ButtonText>
+                    <ButtonText>{props.buttonTitle}</ButtonText>
                 </Button>
             </View>
             <Modal

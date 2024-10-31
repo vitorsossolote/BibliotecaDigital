@@ -11,6 +11,7 @@ import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/Sign
 import Profile from './src/screens/Profile';
 import VerificationScreen from './src/screens/VerificationScreen';
 import NumberScreen from './src/screens/VerificationScreen/numberScreen';
+import RegisterBooks from './src/screens/RegisterBooks';
 
 export default function app() {
 
@@ -52,7 +53,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <NumberScreen/>
+        <RegisterBooks/>
       </>
     </GestureHandlerRootView>
   )
