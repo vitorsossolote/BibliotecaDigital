@@ -13,52 +13,59 @@ import VerificationScreen from './src/screens/VerificationScreen';
 import NumberScreen from './src/screens/VerificationScreen/numberScreen';
 import RegisterBooks from './src/screens/RegisterBooks/index';
 import UserProfileScreen from './src/screens/UserProfileScreen/index';
-
+import LoanScreen from './src/screens/loanScreen/index';
 
 export default function app() {
 
-    // Mudanças do Fausto
 
-    // const [initializing, setInitializing] = useState(true);
-    // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  // Ignore log notification by message
+  LogBox.ignoreLogs(['Warning: ...']);
 
-    // useEffect(() => {
-    //   const unsubscribe = auth().onAuthStateChanged(_user => {
-    //     if (initializing) {
-    //       setInitializing(false);
-    //     }
-    //     setUser(_user);
-    //   });
+  //Ignore all log notifications
+  LogBox.ignoreAllLogs();
 
-    //   return unsubscribe;
-    // }, [initializing]);
+  // Mudanças do Fausto
 
-    // if (initializing) {
-    //   return (
-    //     <GestureHandlerRootView>
-    //       <>
-    //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-    //         <Home/>
-    //       </>
-    //     </GestureHandlerRootView>
-    //   );
-    // }
+  // const [initializing, setInitializing] = useState(true);
+  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
-    // return (
-    //   <GestureHandlerRootView style={{ flex: 1 }}>
-    //      {user ? <Home /> : <SignInStudent/>} 
-    //   </GestureHandlerRootView>
-    // )
+  // useEffect(() => {
+  //   const unsubscribe = auth().onAuthStateChanged(_user => {
+  //     if (initializing) {
+  //       setInitializing(false);
+  //     }
+  //     setUser(_user);
+  //   });
+
+  //   return unsubscribe;
+  // }, [initializing]);
+
+  // if (initializing) {
+  //   return (
+  //     <GestureHandlerRootView>
+  //       <>
+  //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+  //         <Home/>
+  //       </>
+  //     </GestureHandlerRootView>
+  //   );
+  // }
+
+  // return (
+  //   <GestureHandlerRootView style={{ flex: 1 }}>
+  //      {user ? <Home /> : <SignInStudent/>} 
+  //   </GestureHandlerRootView>
+  // )
   //{/* se ele estiver logado vai pra pagina da esquerda, caso nao a da direita */
 
   return (
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <UserProfileScreen/>
+        <LoanScreen />
       </>
     </GestureHandlerRootView>
   )
 
 
-  };
+};

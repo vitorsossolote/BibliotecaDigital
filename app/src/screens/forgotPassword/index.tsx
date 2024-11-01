@@ -29,7 +29,6 @@ const ForgotPassword = () => (
                 <OptionGroup
                     options={['Email','Telefone']}
                     doSomethingAfterClick={printOptionLabel}
-
                 />
             </View>
             <View>
