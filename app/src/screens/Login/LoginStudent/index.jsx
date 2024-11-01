@@ -1,5 +1,5 @@
 import { useState, } from "react";
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {
     GluestackUIProvider,
     SafeAreaView,
@@ -66,6 +66,8 @@ const LoginStudent = ({ navigation }) => {
             }
         }
     }
+
+    const [inicializing, setInicializing] = useState(true);
 
     function signIn() {
         auth()

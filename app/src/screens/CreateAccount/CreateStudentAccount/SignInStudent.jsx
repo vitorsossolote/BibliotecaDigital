@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {
     GluestackUIProvider,
     SafeAreaView,
@@ -20,6 +20,14 @@ const SignInStudent = ({ navigation }) => {
     const [rm, setRM] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmSenha, setConfirmSenha] = useState("");
+
+    const data = {
+        nome: nome,
+        email: email,
+        rm: rm,
+        senha: senha,
+        confirmSenha: confirmSenha,
+    };
 
     const handleCadastrar = async () => {
         if (!nome || !email || !rm || !senha || !confirmSenha) {
@@ -99,6 +107,11 @@ const SignInStudent = ({ navigation }) => {
             });
 
 
+    }
+
+    const cadastrarFireXamp = () => {
+        handleCadastrar();
+        signUp();
     }
 
     return (
@@ -181,7 +194,7 @@ const SignInStudent = ({ navigation }) => {
                     animate={{ translateY: 0 }}
                     transition={{ duration: 3000, delay: 1000 }}>
                     <View style={styles.buttonContainer}>
-                        <ModalComp onPress={() => signUp()} />
+                        <ModalComp onPress={() => cadastrarFireXamp()} />
                     </View>
                 </MotiView>
                 <View style={styles.EnterAccountContainer}>
@@ -196,7 +209,7 @@ const SignInStudent = ({ navigation }) => {
                         animate={{ translateX: 0 }}
                         transition={{ duration: 1000, delay: 1500, type: "timing" }}>
                         <Button
-                            onPress={() => navigation.navigate('LoginStudent')}
+                            onPress={() => handleCadastrar()}
                             size="md"
                             variant="link"
                             action="primary"

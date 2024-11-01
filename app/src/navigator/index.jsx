@@ -11,8 +11,12 @@ import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/
 import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
 =======
 import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
+<<<<<<< HEAD
 import SignInStudent from '../screens/CreateAccount/createStudentAccount';
 >>>>>>> bf1efae36cb039c664c3d317c0a02688bb1707e8
+=======
+import SignInStudent from '../screens/CreateAccount/CreateStudentAccount/SignInStudent';
+>>>>>>> 70c0f36b7aafc8e0dfabfd1bec849d71b286d2df
 
 const Stack = createStackNavigator();
 

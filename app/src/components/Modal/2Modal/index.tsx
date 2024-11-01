@@ -1,15 +1,16 @@
-import { React, useState } from 'react';
+import React,{ useState } from 'react';
 import { Link, Modal, Center, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText, VStack, Heading, Text, Input, InputField, HStack, SafeAreaView } from '@gluestack-ui/themed';
 import { Pressable, View, StyleSheet} from 'react-native';
+import { OtpInput } from 'react-native-otp-entry';
 
 interface Props{
     ButtonTitle : String;
     ModalTitle: String;
     ModalTitle2: String;
     ModalSubtitle2: String;
-
+    Type:String
 };
-const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) => {
+const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Props) => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -38,7 +39,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                     <ModalHeader borderBottomWidth='$0'>
                         <VStack space='sm'>
                             <Heading size='lg'>{ModalTitle}</Heading>
-                            <Text size='sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus magnam quasi nemo tempora, vitae rem pariatur. Nam praesentium unde officia quaerat reprehenderit placeat molestias facilis amet cum voluptatem libero, adipisci obcaecati ab minima repellendus sunt exercitationem, ducimus suscipit! Veritatis, facere? Commodi, quidem magnam minus architecto necessitatibus temporibus neque vel, mollitia cumque, reiciendis beatae aliquid ea culpa exercitationem quibusdam. Accusantium hic cupiditate et quis sunt minima incidunt, odio rerum quidem, obcaecati quo reiciendis veritatis ipsa deserunt. Quo praesentium repellendus, sed, sequi blanditiis adipisci nihil iure odio molestias maiores iusto deleniti excepturi repellat eum nam ipsam cumque amet consequuntur unde mollitia? Ipsum!</Text>
+                            <Text size='sm'>A [Nome da Biblioteca] valoriza sua privacidade. Coletamos informações como nome, e-mail, livros lidos e dados do dispositivo para melhorar nossos serviços e personalizar sua experiência. Não vendemos suas informações e as compartilhamos apenas com prestadores de serviços ou conforme exigido por lei. Implementamos medidas de segurança para proteger seus dados. Você pode solicitar a exclusão de suas informações a qualquer momento. Para dúvidas, entre em contato conosco pelo e-mail [email de contato].</Text>
                         </VStack>
                     </ModalHeader>
                     <ModalBody>
@@ -50,7 +51,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                                     setShowModal2(true);
                                 }} backgroundColor='#EE2D32'
                             >
-                                <ButtonText>Li e concordo com n sei oq</ButtonText>
+                                <ButtonText>Concordo com os termos</ButtonText>
                             </Button>
                             <HStack>
                                 <Button
@@ -82,9 +83,12 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
               </VStack>
             </ModalHeader>
             <ModalBody>
-              <Input>
-                <InputField placeholder="Insira o Código de Verificação" />
-              </Input>
+              <OtpInput
+                numberOfDigits={6}
+                onTextChange={(text) => console.log(text)}
+                focusColor={"#ee2d32"}
+                focusStickBlinkingDuration={400}
+              />
             </ModalBody>
             <ModalFooter borderTopWidth='$0'>
             <VStack space='lg' w='$full'>
@@ -97,7 +101,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                 <ButtonText>Continuar</ButtonText>
               </Button>
               <View style={styles.linkContainer}>
-              <Text size='sm'>Não recebeu o email?
+              <Text size='sm'>Não recebeu o {Type}</Text>
               <Button style={styles.reenviar}
                   variant='link'
                   size='sm'
@@ -107,7 +111,6 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2}:Props) =
                 >
                   <ButtonText color="#EE2D32">Reenviar</ButtonText>
                 </Button>
-              </Text>
               </View>
                 <Button
                   variant='link'
@@ -140,7 +143,8 @@ const styles = StyleSheet.create({
       flexDirection:'row',
     },
     reenviar:{
-      marginLeft:10
+      marginLeft:10,
+      bottom:8
     },
 });
 export default ModalComp2;

@@ -9,45 +9,28 @@ import {
 } from "@gluestack-ui/themed"
 
 import { config } from "@gluestack-ui/config"
-import { StyleSheet, Text, View } from "react-native"
-import { ArrowLeft } from 'lucide-react-native';
+import { StyleSheet, Text, View, PressableProps } from "react-native"
+import { ArrowLeft, Bell } from 'lucide-react-native';
 
 type Props = PressableProps & {
     title: string;
     subtitle: string;
-    margin : int;
-    onPress : any;
+    onPress: any;
+    top:number;
+    gap:number
 };
 
-const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
+const BackHeader = (props: Props) => (
     <GluestackUIProvider config={config}>
-        <SafeAreaView style={styles.container} marginTop={margin}>
-            <View style={styles.FirstIconContainer}>
-                <Button
-                    size="lg"
-                    p="$3.5"
-                    bg="transparent"
-                >
-                    <Pressable onPress={onPress}>
-                        <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
-                    </Pressable>
-                </Button>
+        <SafeAreaView style={styles.container} >
+            <View style={styles.firstIconContainer}>
+                <Pressable onPress={props.onPress}>
+                    <ArrowLeft color={"#000"} />
+                </Pressable>
             </View>
-            {/* <View style={styles.SecondIconContainer}>
-                <Button
-                    size="lg"
-                    p="$3.5"
-                    bg="transparent"
-                    marginBottom={30}
-                >
-                    <Pressable onPress={onPress}>
-                        <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
-                    </Pressable>
-                </Button>
-            </View> */}
-            <View style={styles.textContainer}>
-                <Heading style={styles.title}>{title}</Heading>
-                <Text style={styles.subtitle}>{subtitle}</Text>
+            <View style={{left:20, top:props.top, gap:props.gap}}>
+                <Heading style={styles.title}>{props.title}</Heading>
+                <Text style={styles.subtitle}>{props.subtitle}</Text>
             </View>
         </SafeAreaView>
     </GluestackUIProvider>
@@ -55,29 +38,26 @@ const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
 
 const styles = StyleSheet.create({
     container: {
-        height: 140,
+        height: 100,
         width: "100%",
         flexDirection: 'row',
+        padding: 20,
     },
-    FirstIconContainer: {
-        backgroundColor:"#ee2d",
-        flex:0.5,
-        width:25,
-        height:25,
-        justifyContent:"center",
-        alignItems:'center'
+    firstIconContainer: {
+        width: 30,
+        height: 30,
+        justifyContent: "center",
+        alignItems: "center"
     },
-    textContainer:{
-        marginTop:60,
-        marginRight:40,
-        backgroundColor:"#ee2d32"
+    textContainer: {
+        left: 20,
     },
     title: {
-        fontSize:28,
+        fontSize: 28,
+        
     },
     subtitle: {
         fontSize: 16,
-        marginTop:10,
     },
 });
 

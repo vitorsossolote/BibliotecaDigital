@@ -10,28 +10,28 @@ import InputTest from "../../components/InputTest/index";
 import ModalComp2 from "../../components/Modal/2Modal/index";
 
 
-const VerificationScreen = () => (
+const NumberScreen = () => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
             <BackHeader 
                 onPress ={()=> console.log("pressionado")}
-                title="Verificação de Email"
+                title="Verificação de Telefone"
                 subtitle="Um ultimo passo para te manter seguro"
                 top={50}
                 gap={8}/>
             <View style={styles.inputContainer}>
                 <InputTest
-                    inputText="Vamos confirmar seu Email"
+                    inputText="Vamos confirmar seu Número"
                     formTitle="Confirmar Email" 
                     inputSize={15}/>  
             </View>
             <View style={styles.buttonContainer}>
                 <ModalComp2
-                ButtonTitle={"Confirmar Email"}
-                ModalTitle={"Confirmação de Email"}
+                ButtonTitle={"Confirmar Numero"}
+                ModalTitle={"Confirmação de Numer0"}
                 ModalTitle2={"Verifique o Código"}
-                ModalSubtitle2={"Nessa etapa iremos enviar um código ao seu e-mail e você deverá inseri-lo abaixo. Por questões de segurança não compartilhe esse codigo com ninguém"}
-                Type={"email?"}
+                ModalSubtitle2={"Nessa etapa iremos enviar um código ao seu sms e você deverá inseri-lo abaixo. Por questões de segurança não compartilhe esse codigo com ninguém"}
+                Type={"código?"}
                 />
             </View>
         </SafeAreaView>
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default VerificationScreen;
+export default NumberScreen;
