@@ -21,14 +21,16 @@ export default function LoanScreen() {
     const books = [
         {
             id: 1,
-            title: 'Bem vindo ao EduLink',
+            title: 'The Trials Of Apollo',
             Book: "../../../assets/book1.png",
+            Data: "02.11.2024",
             avaliacao: 4
         },
         {
             id: 2,
-            title: 'Dificuldade em escolher seu trabalho',
+            title: 'Cronicas de SpiderWick',
             Book: "../../../assets/book2.png",
+            Data: "02.11.2024",
             avaliacao: 3
         },
     ]
@@ -38,9 +40,9 @@ export default function LoanScreen() {
             <View style={Detailstyles.carroselContainer}>
                 <Image source={book1} alt="Livro" resizeMode="contain" style={Detailstyles.Image} />
                 <View style={Detailstyles.carroselTextContainer}>
-                    <Text style={Detailstyles.carroselTitle}>Nome do Livro</Text>
+                    <Text style={Detailstyles.carroselTitle}>{item.title}</Text>
                     <Text style={Detailstyles.carroselTitle}>Data de entrega</Text>
-                    <Text style={Detailstyles.carroselData}>02.Nov.2024</Text>
+                    <Text style={Detailstyles.carroselData}>{item.Data}</Text>
                     <Text style={Detailstyles.carroselTitle}>Avaliação:</Text>
                     <AirbnbRating
                         count={5}
@@ -559,7 +561,7 @@ const Detailstyles = StyleSheet.create({
         fontWeight: "bold",
     },
     starRating: {
-        right: 10,
+        right: 28,
     },
 
 })

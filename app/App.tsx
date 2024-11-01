@@ -4,7 +4,7 @@ import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import SplashScreen from './src/screens/SplashScreen/index';
 import Navigator from './src/Navigator/index';
-import Home from './src/screens/home/index';
+import Home from './src/screens/Home/index';
 import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/SignInStudent';
@@ -14,6 +14,7 @@ import NumberScreen from './src/screens/VerificationScreen/numberScreen';
 import RegisterBooks from './src/screens/RegisterBooks/index';
 import UserProfileScreen from './src/screens/UserProfileScreen/index';
 import LoanScreen from './src/screens/loanScreen/index';
+import HomeNavigator from './src/Navigator/homeNavigator';
 
 export default function app() {
 
@@ -62,7 +63,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <LoanScreen />
+        <HomeNavigator/>
       </>
     </GestureHandlerRootView>
   )
