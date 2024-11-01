@@ -4,59 +4,69 @@ import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import SplashScreen from './src/screens/SplashScreen/index';
 import Navigator from './src/Navigator/index';
-import Home from './src/screens/home/index';
+import Home from './src/screens/Home/index';
 import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/SignInStudent';
-import Profile from './src/screens/Profile';
+import Profile from './src/screens/Profile/index';
 import VerificationScreen from './src/screens/VerificationScreen';
 import NumberScreen from './src/screens/VerificationScreen/numberScreen';
-import RegisterBooks from './src/screens/RegisterBooks';
+import RegisterBooks from './src/screens/RegisterBooks/index';
+import UserProfileScreen from './src/screens/UserProfileScreen/index';
+import LoanScreen from './src/screens/loanScreen/index';
+import HomeNavigator from './src/Navigator/homeNavigator';
 
 export default function app() {
 
-    // Mudanças do Fausto
 
-    // const [initializing, setInitializing] = useState(true);
-    // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  // Ignore log notification by message
+  LogBox.ignoreLogs(['Warning: ...']);
 
-    // useEffect(() => {
-    //   const unsubscribe = auth().onAuthStateChanged(_user => {
-    //     if (initializing) {
-    //       setInitializing(false);
-    //     }
-    //     setUser(_user);
-    //   });
+  //Ignore all log notifications
+  LogBox.ignoreAllLogs();
 
-    //   return unsubscribe;
-    // }, [initializing]);
+  // Mudanças do Fausto
 
-    // if (initializing) {
-    //   return (
-    //     <GestureHandlerRootView>
-    //       <>
-    //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-    //         <Home/>
-    //       </>
-    //     </GestureHandlerRootView>
-    //   );
-    // }
+  // const [initializing, setInitializing] = useState(true);
+  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
-    // return (
-    //   <GestureHandlerRootView style={{ flex: 1 }}>
-    //      {user ? <Home /> : <SignInStudent/>} 
-    //   </GestureHandlerRootView>
-    // )
+  // useEffect(() => {
+  //   const unsubscribe = auth().onAuthStateChanged(_user => {
+  //     if (initializing) {
+  //       setInitializing(false);
+  //     }
+  //     setUser(_user);
+  //   });
+
+  //   return unsubscribe;
+  // }, [initializing]);
+
+  // if (initializing) {
+  //   return (
+  //     <GestureHandlerRootView>
+  //       <>
+  //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+  //         <Home/>
+  //       </>
+  //     </GestureHandlerRootView>
+  //   );
+  // }
+
+  // return (
+  //   <GestureHandlerRootView style={{ flex: 1 }}>
+  //      {user ? <Home /> : <SignInStudent/>} 
+  //   </GestureHandlerRootView>
+  // )
   //{/* se ele estiver logado vai pra pagina da esquerda, caso nao a da direita */
 
   return (
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <RegisterBooks/>
+        <HomeNavigator/>
       </>
     </GestureHandlerRootView>
   )
 
 
-  };
+};

@@ -32,7 +32,7 @@ const VerificationScreen = () => (
                 ModalTitle2={"Verifique o Código"}
                 ModalSubtitle2={"Nessa etapa iremos enviar um código ao seu e-mail e você deverá inseri-lo abaixo. Por questões de segurança não compartilhe esse codigo com ninguém"}
                 Type={"email?"}
-                >
+                />
             </View>
         </SafeAreaView>
     </GluestackUIProvider>

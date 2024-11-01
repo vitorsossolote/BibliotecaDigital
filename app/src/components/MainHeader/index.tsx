@@ -6,72 +6,70 @@ import {
     ButtonIcon,
     Pressable,
     Heading,
+    PressableProps
 } from "@gluestack-ui/themed"
-import {MotiView} from 'moti'
+import { MotiView } from 'moti'
 import { config } from "@gluestack-ui/config"
 import { StyleSheet, Text, View } from "react-native"
-import {Search, Bell} from 'lucide-react-native';
+import { Search, Bell } from 'lucide-react-native';
 
-interface Props{
-    title: 'String',
-    icon1:any,
-    icon2:any
+type Props = PressableProps & {
+    title: string;
+    onPress: any;
+    icon1: any,
+    icon2: any
 };
 
-const MainHeader = ({title,icon1,icon2}:Props) => (
+const MainHeader = (props: Props) => (
     <GluestackUIProvider config={config}>
-      <MotiView from={{translateY:-50}} animate={{translateY:[10]}} transition={{duration:3000}}>
-        <SafeAreaView style={styles.container}>
-            <View style={styles.SearchContainer}>
-                <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
-                    <Pressable onPress={()=> console.log("teste")}>
-                        <ButtonIcon as={icon1} color={'$black'} size={30} />
+        <View style={styles.container}>
+            <View style={styles.FirstIconContainer}>
+                <Button size="lg" p="$3.5" bg="transparent" marginTop={3}>
+                    <Pressable onPress={props.onPress}>
+                        <ButtonIcon as={props.icon1} color={'$black'} size={30} />
                     </Pressable>
                 </Button>
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.title}>TESTE</Text>
+                <Text style={styles.title}>{props.title}</Text>
             </View>
-            <View style={styles.BellContainer}>
-                <Button size="lg" p="$3.5" bg="transparent"marginTop={3}>
-                    <Pressable onPress={()=> console.log("teste")}>
-                        <ButtonIcon as={icon2} color={'$black'} size={30} />
+            <View style={styles.SecondIconContainer}>
+                <Button size="lg" p="$3.5" bg="transparent" marginTop={3}>
+                    <Pressable onPress={() => console.log("teste")}>
+                        <ButtonIcon as={props.icon2} color={'$black'} size={30} />
                     </Pressable>
                 </Button>
-            </View>  
-        </SafeAreaView>
-        </MotiView>
+            </View>
+        </View>
     </GluestackUIProvider>
 );
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
         height: 50,
         width: 'full',
-        backgroundColor: '#fff',
         flexDirection: 'row',
-        
+        justifyContent:"space-between",
+        paddingHorizontal:20
     },
-    SearchContainer: {
-        justifyContent:'center',
+    FirstIconContainer: {
+        alignSelf:"center",
+        justifyContent: 'center',
+        width:50,
     },
-    textContainer:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
+    textContainer: {
+        fleX:0.5,
+        justifyContent: 'center',
     },
     title: {
-        fontSize:50,
-        color:"#000"
+        fontSize: 24,
+        color: "#000",
+        fontWeight:"bold",
+        top:2,
     },
-    subtitle: {
-        fontSize: 16,
-        marginTop:10,
-    },
-    BellContainer:{
-        flex:1,
-        justifyContent:'center',
+    SecondIconContainer: {
+        width:50,
+        justifyContent: 'center',
     },
 });
 

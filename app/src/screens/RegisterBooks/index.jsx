@@ -9,7 +9,7 @@ import {
 import { MotiView } from "moti"
 import { StyleSheet, Text, View, Alert, Pressable } from "react-native"
 import { config } from "@gluestack-ui/config"
-import BackHeader from "../../components/BackHeader";
+import BackHeader from "../../components/BackHeader/index";
 import InputTest from "../../components/InputTest";
 import ModalComp from "../../components/Modal/1Modal";
 
