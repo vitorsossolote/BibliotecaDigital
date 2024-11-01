@@ -6,8 +6,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
 import LoginStudent from '../screens/Login/LoginStudent/index';
+<<<<<<< HEAD
 import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/index';
 import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
+=======
+import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
+import SignInStudent from '../screens/CreateAccount/createStudentAccount';
+>>>>>>> bf1efae36cb039c664c3d317c0a02688bb1707e8
 
 const Stack = createStackNavigator();
 
@@ -20,7 +25,7 @@ export function Navigator() {
       <Stack.Screen name="LibrarianScreen" component={LibrarianScreen} options={{ headerShown:false}} />
       <Stack.Screen name="LoginLibrarian" component={LoginLibrarian} options={{ headerShown:false}} />
       <Stack.Screen name="LoginStudent" component={LoginStudent} options={{ headerShown:false}} />
-      <Stack.Screen name="CreateStudent" component={CreateStudentAccount} options={{ headerShown:false}} />
+      <Stack.Screen name="CreateStudent" component={SignInStudent} options={{ headerShown:false}} />
       <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} options={{ headerShown:false}} />
     </Stack.Navigator>
     </NavigationContainer>

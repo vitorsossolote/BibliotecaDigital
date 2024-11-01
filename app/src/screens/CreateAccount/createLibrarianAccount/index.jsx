@@ -2,20 +2,22 @@ import { useState, useEffect } from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
-    Pressable,
-    Heading,
-    Input,
-    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
 import { MotiView } from 'moti'
 import { StyleSheet, Text, View, Alert } from "react-native"
 import { config } from "@gluestack-ui/config"
+<<<<<<< HEAD
 import { createIcons, icons } from 'lucide';
 import BackHeader from "../../../Components/BackHeader";
 import InputTest from "../../../Components/InputTest";
 import ModalComp from "../../../Components/Modal/1Modal";
+=======
+import BackHeader from "../../../components/BackHeader";
+import InputTest from "../../../components/InputTest";
+import ModalComp from "../../../components/Modal/1Modal";
+>>>>>>> bf1efae36cb039c664c3d317c0a02688bb1707e8
 import axios from "axios";
 
 const CreateLibrarianAccount = ({ navigation }) => {

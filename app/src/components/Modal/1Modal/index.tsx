@@ -1,7 +1,7 @@
 
-import { React, useState } from 'react';
-import { Link, Modal, Center, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText, VStack, Heading, Text, Input, InputField, HStack, SafeAreaView } from '@gluestack-ui/themed';
-import { Pressable, View, StyleSheet} from 'react-native';
+import React, {useState } from 'react';
+import { Modal, ModalBackdrop, ModalBody, ModalContent, ModalFooter, ModalHeader, Button, ButtonText, VStack, Heading, Text, Input, InputField, HStack, SafeAreaView } from '@gluestack-ui/themed';
+import { View, StyleSheet} from 'react-native';
 
 type Props = {
   onPress : any

@@ -1,11 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, } from "react";
+import auth from '@react-native-firebase/auth';
 import {
     GluestackUIProvider,
     SafeAreaView,
-    Pressable,
-    Heading,
-    Input,
-    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
@@ -13,9 +10,8 @@ import { MotiView } from "moti"
 import { StyleSheet, Text, View, Alert } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../Components/BackHeader/index";
-import InputTest from "../../../Components/InputTest/index";
+import BackHeader from "../../../components/BackHeader/index";
+import InputTest from "../../../components/InputTest/index";
 
 const LoginStudent = ({ navigation }) => {
 
@@ -69,7 +65,57 @@ const LoginStudent = ({ navigation }) => {
                 Alert.alert('Erro', 'Email ou senha incorretos. Por favor tente novamente')
             }
         }
-    };
+    }
+
+    function signIn() {
+        auth()
+            .signInWithEmailAndPassword(email, senha)
+            .then(() => {
+                console.log('Usuário esta Autenticado');
+            })
+            .catch(error => {
+                if (error.code === 'auth/invalid-credential') {
+                    console.log('A credencial de autenticação fornecida está incorreta, malformada ou expirou');
+                }
+
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('Esse email já foi utilizado');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('Esse email é invalido');
+                }
+
+                if (error.code === 'auth/app-deleted') {
+                    console.log('O banco de dados não foi localizado.');
+                }
+
+                if (error.code === 'auth/expired-action-code') {
+                    console.log('O código da ação o ou link expirou.');
+                }
+
+                if (error.code === 'auth/invalid-action-code') {
+                    console.log('O código da ação é inválido. Isso pode acontecer se o código estiver malformado ou já tiver sido usado.');
+                }
+
+                if (error.code === 'auth/user-disabled') {
+                    console.log('O usuário correspondente à credencial fornecida foi desativado.');
+                }
+
+                if (error.code === 'auth/user-not-found') {
+                    console.log('O usuário não correponde à nenhuma credencial.');
+                }
+
+                if (error.code === 'auth/weak-password') {
+                    console.log('A senha é muito fraca.');
+                }
+
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    console.log('E-mail já associado a outra conta.');
+                }
+                console.error(error);
+            });
+    }
 
     return (
         <GluestackUIProvider config={config}>
@@ -107,7 +153,7 @@ const LoginStudent = ({ navigation }) => {
                         animate={{ translateX: 0, }}
                         transition={{ duration: 4000, delay: 500 }}>
                         <Button
-                            onPress={() => handleLogin()}
+                            onPress={() => signIn()}
                             size="md"
                             variant="solid"
                             action="primary" w
@@ -142,9 +188,9 @@ const LoginStudent = ({ navigation }) => {
                 </View>
                 <View style={styles.termsContainer}>
                     <MotiView
-                    from={{translateY:45, }}
-                    animate={{translateY:0,}}
-                    transition={{duration:2000, type:"timing"}}
+                        from={{ translateY: 45, }}
+                        animate={{ translateY: 0, }}
+                        transition={{ duration: 2000, type: "timing" }}
                     >
                         <Text style={styles.textTerms}>Criando uma conta você aceita nossos</Text>
                         <Button

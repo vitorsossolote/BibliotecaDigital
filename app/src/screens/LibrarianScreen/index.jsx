@@ -1,14 +1,9 @@
 import React from "react";
 import {
     GluestackUIProvider,
-    Spinner,
     SafeAreaView,
-    Image,
     Button,
     ButtonText,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonGroup,
     Heading,
 } from "@gluestack-ui/themed"
 import {MotiImage,MotiView} from 'moti'

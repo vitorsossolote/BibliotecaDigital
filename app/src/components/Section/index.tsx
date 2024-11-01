@@ -3,10 +3,6 @@ import { View, Text, StyleSheet} from 'react-native';
 import {
     Button,
     ButtonText,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonGroup,
-    Image,
 } from "@gluestack-ui/themed"
 
 interface Props{

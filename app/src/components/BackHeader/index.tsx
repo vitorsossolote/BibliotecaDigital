@@ -22,7 +22,18 @@ type Props = PressableProps & {
 const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container} marginTop={margin}>
-            <View style={styles.searchContainer}>
+            <View style={styles.FirstIconContainer}>
+                <Button
+                    size="lg"
+                    p="$3.5"
+                    bg="transparent"
+                >
+                    <Pressable onPress={onPress}>
+                        <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
+                    </Pressable>
+                </Button>
+            </View>
+            {/* <View style={styles.SecondIconContainer}>
                 <Button
                     size="lg"
                     p="$3.5"
@@ -30,24 +41,10 @@ const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
                     marginBottom={30}
                 >
                     <Pressable onPress={onPress}>
-                        {/* EditIcon is imported from 'lucide-react-native' */}
                         <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
                     </Pressable>
                 </Button>
-            </View>
-            <View style={styles.bellContainer}>
-                <Button
-                    size="lg"
-                    p="$3.5"
-                    bg="transparent"
-                    marginBottom={30}
-                >
-                    <Pressable onPress={onPress}>
-                        {/* EditIcon is imported from 'lucide-react-native' */}
-                        <ButtonIcon as={ArrowLeft} color={'$black'} size={30} />
-                    </Pressable>
-                </Button>
-            </View>
+            </View> */}
             <View style={styles.textContainer}>
                 <Heading style={styles.title}>{title}</Heading>
                 <Text style={styles.subtitle}>{subtitle}</Text>
@@ -58,23 +55,22 @@ const BackHeader = ({ onPress, title, subtitle,margin,}: Props) => (
 
 const styles = StyleSheet.create({
     container: {
-        height: 100,
-        width: 375,
-        backgroundColor: '#fff',
+        height: 140,
+        width: "100%",
         flexDirection: 'row',
     },
-    searchContainer: {
-        position: 'absolute'
-    },
-    Container: {
-        position: 'absolute'
-    },
-    searchContainer: {
-        position: 'absolute'
+    FirstIconContainer: {
+        backgroundColor:"#ee2d",
+        flex:0.5,
+        width:25,
+        height:25,
+        justifyContent:"center",
+        alignItems:'center'
     },
     textContainer:{
         marginTop:60,
-        marginLeft: 30,
+        marginRight:40,
+        backgroundColor:"#ee2d32"
     },
     title: {
         fontSize:28,

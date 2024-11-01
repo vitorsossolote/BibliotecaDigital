@@ -1,11 +1,7 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import {
     GluestackUIProvider,
-    SafeAreaView,
-    Pressable,
     Heading,
-    Input,
-    InputField,
     Button,
     ButtonText,
     Center,

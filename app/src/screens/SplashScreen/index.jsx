@@ -1,13 +1,11 @@
 import React from "react";
 import {
   GluestackUIProvider,
-  Button,
   Spinner,
-  ButtonText,
   SafeAreaView,
   Image,
 } from "@gluestack-ui/themed"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet,View } from "react-native"
 
 const SplashScreen = () => (
   <GluestackUIProvider>

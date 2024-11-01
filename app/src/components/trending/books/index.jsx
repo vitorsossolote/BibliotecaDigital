@@ -1,4 +1,4 @@
-import { View, Pressable, Text, Image    } from 'react-native';
+import { View, Pressable, Text, } from 'react-native';
 
 export default function CardHorizontalBook() {
  return (

@@ -1,11 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import {
-    Button,
-    ButtonText,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonGroup,
     Image,
     ScrollView,
 } from "@gluestack-ui/themed"

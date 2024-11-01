@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920521724715",
+    "project_id": "bibliotecadigital-24d99",
+    "storage_bucket": "bibliotecadigital-24d99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920521724715:android:8c2f635b7bf2a5f9d8ab6e",
+        "android_client_info": {
+          "package_name": "com.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD537nPtHhx7J6K3qk4KKbBhl4h2XxQYfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

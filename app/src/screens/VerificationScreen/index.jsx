@@ -1,14 +1,13 @@
-import {useState,useEffect} from "react";
+import React from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
 } from "@gluestack-ui/themed"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
-import BackHeader from "../../Components/BackHeader/index";
-import InputTest from "../../Components/InputTest/index";
-import ModalComp2 from "../../Components/Modal/2Modal/index";
+import BackHeader from "../../components/BackHeader/index";
+import InputTest from "../../components/InputTest/index";
+import ModalComp2 from "../../components/Modal/2Modal/index";
 
 
 const VerificationScreen = () => (
