@@ -46,7 +46,7 @@ export default function Profile() {
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
-                    <Button onPress={handleOpenPress}>
+                    <Button onPress={handleOpenPress} variant="link">
                         <ButtonText style={styles.buttonText}>Logout</ButtonText>
                     </Button>
                 </View>

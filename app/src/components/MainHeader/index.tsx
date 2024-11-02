@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
         alignSelf:"center",
         justifyContent: 'center',
         width:50,
+        backgroundColor:"#fafafa"
     },
     textContainer: {
         fleX:0.5,
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     SecondIconContainer: {
         width:50,
         justifyContent: 'center',
+        backgroundColor:"#fafafa"
     },
 });
 

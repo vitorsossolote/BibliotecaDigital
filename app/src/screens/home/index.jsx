@@ -48,18 +48,9 @@ export default function Home() {
     return (
 
         <GluestackUIProvider config={config}>
-            <SafeAreaView>
+            <SafeAreaView style={{backgroundColor:"#fafafa"}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <MainHeader title="Inicio" />
-                    <Button
-                                onPress={() => signOut()}
-                                size="md"
-                                variant="outline"
-                                action="primary"
-                                style={styles.buttonOutline}
-                            >
-                                <ButtonText style={styles.buttonText}>Logout</ButtonText>
-                            </Button>
                     <MotiView from={{ translateX: 200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>

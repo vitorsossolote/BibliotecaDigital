@@ -210,7 +210,7 @@ export default function LoanScreen() {
                     </View>
                     <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, width: "90%", left: 20, top: 10 }} />
                     <View>
-                        <Button onPress={handleOpenPressDetails} style={styles.buttonContainer}>
+                        <Button onPress={handleOpenPressDetails} style={styles.buttonContainer} variant="link">
                             <ButtonText style={styles.buttonText}>Ver detalhes</ButtonText>
                         </Button>
                     </View>
