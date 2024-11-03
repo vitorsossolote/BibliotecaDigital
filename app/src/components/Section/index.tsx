@@ -6,14 +6,15 @@ import {
 } from "@gluestack-ui/themed"
 
 interface Props{
-    title: "String"
+    title: "String",
+    onPress: any
 }
-
-const Section = ({title}: Props) => {
+ 
+const Section = (props: Props) => {
     return(
         <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
-            <Button variant="link" onPress={() => console.log("Apertou Ver todos")}>
+            <Text style={styles.title}>{props.title}</Text>
+            <Button variant="link" onPress={props.onPress}>
                 <ButtonText style={styles.buttonTextStyle}>Ver todos</ButtonText>
             </Button>
         </View>

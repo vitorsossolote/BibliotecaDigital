@@ -22,7 +22,7 @@ const BorrowedBooks = () => (
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        marginTop:10
+        backgroundColor:"#fff"
     },
     headerContainer: {
         flexDirection: "row",
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     bellIcon: {
         alignSelf: "flex-end",
-        left: 80
+        left: 80,
     },
     contentContainer:{
         alignSelf:"center", 

@@ -30,3 +30,4 @@
 ## Instalado Masked View | npm install @react-native-masked-view/masked-view
 
 ## react-native-otp-entry | npm i react-native-otp-entry
+## file loader for typesScript | npm install --save-dev file-loader

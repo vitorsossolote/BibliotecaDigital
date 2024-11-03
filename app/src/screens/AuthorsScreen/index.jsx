@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Text, Image } from "@gluestack-ui/themed"
-import { ScrollView, StyleSheet } from "react-native"
+import { ScrollView, StyleSheet,Pressable } from "react-native"
 import { BookImage, MoveLeft } from "lucide-react-native"
 import { Rating, AirbnbRating } from 'react-native-ratings';
 
@@ -10,12 +10,14 @@ import book6 from "../../../assets/book6.png"
 import book7 from "../../../assets/book7.png"
 import book8 from "../../../assets/book8.png"
 
-const Author = () => (
+const AuthorsScreen = ({ navigation }) => (
     //TODO arrumar scrollView
     <ScrollView>
         <View style={styles.container}>
             <View style={styles.header}>
-                <MoveLeft color={"#000"} size={35} />
+                <Pressable onPress={() => navigation.navigate("Home")}>
+                    <MoveLeft color={"#000"} size={35} />
+                </Pressable>
                 <Text style={styles.headerText}>Autores</Text>
             </View>
             <View style={styles.authorContentContainer}>
@@ -40,7 +42,7 @@ const Author = () => (
             </View>
             <View style={styles.bookContainer}>
                 <Text style={styles.bookHeader}>Livros</Text>
-                <View style={{flexDirection:"column", gap:30}}>
+                <View style={{ flexDirection: "column", gap: 30 }}>
                     <View style={styles.bookGaleryContainer}>
                         <View style={styles.bookContent}>
                             <Image source={book5} alt="livro" resizeMode="contain" style={styles.bookImage} />
@@ -178,4 +180,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Author
+export default AuthorsScreen

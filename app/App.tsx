@@ -13,7 +13,7 @@ import VerificationScreen from './src/screens/VerificationScreen';
 import NumberScreen from './src/screens/VerificationScreen/numberScreen';
 import RegisterBooks from './src/screens/RegisterBooks/index';
 import UserProfileScreen from './src/screens/UserProfileScreen/index';
-import LoanScreen from './src/screens/loanScreen/index';
+import LoanScreen from './src/screens/LoanScreen/index';
 import HomeNavigator from './src/Navigator/homeNavigator';
 
 export default function app() {

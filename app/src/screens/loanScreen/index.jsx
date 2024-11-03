@@ -16,7 +16,7 @@ import library from "../../../assets/library.jpg"
 
 
 
-export default function LoanScreen() {
+export default function LoanScreen({ navigation }) {
     const { width: screenWidth } = Dimensions.get('window');
     const books = [
         {
@@ -182,9 +182,10 @@ export default function LoanScreen() {
         <SafeAreaView style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
             <View style={styles.headerContainer}>
-                <MoveLeft color={"#000"} size={30} />
+                <Pressable onPress={() => navigation.navigate("Home")}>
+                    <MoveLeft color={"#000"} size={30} />
+                </Pressable>
                 <Text style={styles.headerTitle}>Confirmar Empréstimo</Text>
-                <Bell color={"#000"} />
             </View>
             <View style={styles.contentContainer}>
                 <View style={styles.detailsContainer}>
@@ -235,16 +236,16 @@ export default function LoanScreen() {
                             </Pressable>
                         </View>
                     </View>
-                    <View style={styles.dateHourContainer}>
-                        <Text style={styles.dateHourTitle}>Livros</Text>
-                        <View style={styles.dateHourContent}>
+                    <View style={styles.addBookContainer}>
+                        <Text style={styles.addBookTitle}>Livros</Text>
+                        <View style={styles.addBookContent}>
                             <View style={styles.ImageContainer}>
                                 <Image source={Calendar} style={styles.ImageStyle} resizeMode="contain" />
                             </View>
                             <View>
-                                <View style={styles.dateHourTextContainer}>
-                                    <Text style={styles.dateHour}>Livros</Text>
-                                    <Text style={styles.dateHourSubtitle}>Adicione ou Remova Livros</Text>
+                                <View style={styles.addBookTextContainer}>
+                                    <Text style={styles.addBook}>Livros</Text>
+                                    <Text style={styles.addBookSubtitle}>Adicione ou Remova Livros</Text>
                                 </View>
                             </View>
                             <View style={styles.iconContainer}>
@@ -257,6 +258,8 @@ export default function LoanScreen() {
                     <ButtonText style={styles.finishButtonText}>Confirmar</ButtonText>
                 </Button>
             </View>
+
+            {/* Inicio dos BottomSheets */}
             <BottomSheet
                 ref={bottomSheetrefData}
                 snapPoints={snapDataPoints}
@@ -314,11 +317,11 @@ export default function LoanScreen() {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
+        backgroundColor: "#fff"
     },
     headerContainer: {
         width: "100%",
         flexDirection: "row",
-        justifyContent: "space-between",
         marginTop: 20,
         paddingHorizontal: 20
     },
@@ -326,6 +329,7 @@ const styles = StyleSheet.create({
         color: "#000",
         fontSize: 20,
         fontWeight: "bold",
+        left:50
     },
     contentContainer: {
         flexDirection: "column",
@@ -395,7 +399,6 @@ const styles = StyleSheet.create({
         height: 120,
         borderRadius: 15,
         padding: 10,
-
     },
     dateHourTitle: {
         color: "#000",
@@ -453,6 +456,39 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         left: 10,
+    },
+    addBookContainer: {
+        borderWidth: 2,
+        borderColor: "#E8E8E8",
+        width: "90%",
+        left: 20,
+        height: 120,
+        borderRadius: 15,
+        padding: 10,
+    },
+    addBookTitle: {
+        color: "#000",
+        fontSize: 22,
+        fontWeight: "bold",
+        left: 10,
+    },
+    addBookContent: {
+        flexDirection: "row",
+        marginTop: 15,
+        justifyContent: "space-between"
+    },
+    addBookTextContainer: {
+        top: 3,
+        right: 25,
+        width: 200
+    },
+    addBook: {
+        color: "#000",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    addBookSubtitle: {
+        fontWeight: 'bold'
     },
     finishButton: {
         backgroundColor: "#ee2d32",
@@ -534,8 +570,8 @@ const Detailstyles = StyleSheet.create({
     carroselContainer: {
         justifyContent: "center",
         flexDirection: "row",
-        borderRadius:20,
-        marginTop:15,
+        borderRadius: 20,
+        marginTop: 15,
     },
     Image: {
         width: 220,

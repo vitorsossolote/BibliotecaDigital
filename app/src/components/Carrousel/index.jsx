@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         borderRadius:20,
         marginTop:15,
         right:8,
+        elevation:5
     },
     textContainer: {
         width: 240,

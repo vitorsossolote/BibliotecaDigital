@@ -37,7 +37,7 @@ function signOut() {
     auth().signOut()
 }
 
-export default function Home() {
+export default function Home({ navigation }) {
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], [])
 
@@ -58,13 +58,13 @@ export default function Home() {
                         <Reservar onPress={() => console.log("teste")} />
                     </MotiView>
                     <MotiView from={{ translateY: 200 }} animate={{ translateY: 0 }} trainsition={{ duration: 3000, type: "timing" }}>
-                        <Section title="Melhores da Semana" />
-                        <TrendingBooks onPress={handleOpenPress} />
+                        <Section title="Melhores da Semana"  onPress={() => console.log("Clicou em ver todos")}/>
+                        <TrendingBooks onPress={handleOpenPress} /> 
                     </MotiView>
-                    <Section title="Melhores Generos" />
+                    <Section title="Melhores Generos" onPress={() => console.log("Clicou em ver todos")} />
                     <TrendingGenders />
-                    <Section title="Autores" />
-                    <Authors />
+                    <Section title="Autores" onPress={() => console.log("Clicou em ver todos")}/>
+                    <Authors onPress1={() => navigation.navigate("AuthorsScreen")}/>
                 </ScrollView>
 
                 {/* BottomSheet */}

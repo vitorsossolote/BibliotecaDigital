@@ -11,15 +11,15 @@ import {
 } from "@gluestack-ui/themed"
 import BackHeader from '../../components/BackHeader/index';
 import MainHeader from '../../components/MainHeader/index';
-import { ArrowLeft } from "lucide-react-native"
+import { ArrowLeft, Navigation } from "lucide-react-native"
 
 import InputTest from '../../components/InputTest/index';
 
 import changeProfile from "../../../assets/changeProfile.png"
-const UserProfileScreen = () => {
+const UserProfileScreen = ({navigation}) => {
     return (
-        <SafeAreaView>
-            <MainHeader title='Meu Perfil' icon1={ArrowLeft} onPress={() => console.log("Pressionou em voltar")} />
+        <SafeAreaView style={{backgroundColor:"#fff"}}>
+            <MainHeader title='Meu Perfil' icon1={ArrowLeft} onPress={() => navigation.navigate("Profile")} />
             <View style={styles.userImageContainer}>
                 <Image source={changeProfile} style={styles.userImage} resizeMode="contain" alt="foto de perfil" />
                 <Button variant="link" onPress={() => console.log("Clicou em trocar a foto")}>

@@ -20,7 +20,7 @@ import profileIcon from "../../../assets/ProfileIcon.png"
 
 //Inicio do Código
 
-export default function Profile() {
+export default function Profile({navigation}) {
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "50%",], [])
 
@@ -38,7 +38,7 @@ export default function Profile() {
             <View style={styles.userProfileContainer}>
                 <View style={styles.userImageContainer}>
                     <Pressable onPress={() => console.log("clicou na imagem")}>
-                        <Image source={profile} alt="imagem de perfil" resizeMode="contain" />
+                        <Image source={profile} alt="imagem de perfil" resizeMode="contain" style={{top:4,}} />
                     </Pressable>
                 </View>
                 <View style={styles.userInfoContainer}>
@@ -53,7 +53,7 @@ export default function Profile() {
             </View>
             <View style={{ borderBottomColor: 'gray', borderBottomWidth: StyleSheet.hairlineWidth, width: "100%", top: 10 }} />
             <View style={styles.menuContainer}>
-                <Pressable onPress={() => console.log("clicou em minha conta")}>
+                <Pressable onPress={() => navigation.navigate("UserProfileScreen")}>
                     <View style={styles.menuContent}>
                         <View style={styles.menuOptionContainer}>
                             <View style={styles.iconContainer}>
@@ -69,7 +69,6 @@ export default function Profile() {
                     </View>
                 </Pressable>
             </View>
-
             <View style={styles.menuContainer}>
                 <Pressable onPress={() => console.log("clicou em Mais lidos")}>
                     <View style={styles.menuContent}>
@@ -105,7 +104,7 @@ export default function Profile() {
                 </Pressable>
             </View>
             <View style={styles.menuContainer}>
-                <Pressable onPress={() => console.log("clicou em histórico")}>
+                <Pressable onPress={() => navigation.navigate("BorrowedBooks")}>
                     <View style={styles.menuContent}>
                         <View style={styles.menuOptionContainer}>
                             <View style={styles.iconContainer}>
@@ -138,6 +137,7 @@ export default function Profile() {
                     </View>
                 </Pressable>
             </View>
+            {/* Inicio do BottomSheet */}
             <BottomSheet
                 ref={bottomSheetref}
                 snapPoints={snapPoints}
@@ -185,6 +185,7 @@ export default function Profile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor:"#fff"
     },
     headerContainer: {
         width: "100%",
