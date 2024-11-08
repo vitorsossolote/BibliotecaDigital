@@ -13,6 +13,7 @@ import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
 import ModalComp from "../../../components/Modal/1Modal";
 import axios from "axios";
+import PasswordInput from "../../../components/InputTest/PasswordInput";
 
 const SignInStudent = ({ navigation }) => {
     const [nome, setNome] = useState("");
@@ -165,7 +166,7 @@ const SignInStudent = ({ navigation }) => {
                         animate={{ translateX: -0 }}
                         transition={{ duration: 6000, type: "spring" }}
                     >
-                        <InputTest
+                        <PasswordInput
                             inputText="Sua senha"
                             formTitle="Senha"
                             inputType="password"
@@ -179,7 +180,7 @@ const SignInStudent = ({ navigation }) => {
                         animate={{ translateX: -0 }}
                         transition={{ duration: 7000, type: "spring", }}
                     >
-                        <InputTest
+                        <PasswordInput
                             inputText="Confirme sua Senha"
                             formTitle="Confirmar Senha"
                             inputType="password"
@@ -194,7 +195,12 @@ const SignInStudent = ({ navigation }) => {
                     animate={{ translateY: 0 }}
                     transition={{ duration: 3000, delay: 1000 }}>
                     <View style={styles.buttonContainer}>
-                        <ModalComp onPress={() => cadastrarFireXamp()} />
+                    <Button 
+                        style={styles.buttonSolid}
+                        onPress={cadastrarFireXamp}
+                        >
+                            <ButtonText>Criar Conta</ButtonText>
+                        </Button>
                     </View>
                 </MotiView>
                 <View style={styles.EnterAccountContainer}>

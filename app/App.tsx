@@ -15,6 +15,9 @@ import RegisterBooks from './src/screens/RegisterBooks/index';
 import UserProfileScreen from './src/screens/UserProfileScreen/index';
 import LoanScreen from './src/screens/LoanScreen/index';
 import HomeNavigator from './src/Navigator/homeNavigator';
+import CreateStudentAccount from './src/screens/CreateAccount/CreateStudentAccount';
+import CreateLibrarianAccount from './src/screens/CreateAccount/createLibrarianAccount';
+import LoginLibrarian from './src/screens/Login/LoginLibrarian';
 
 export default function app() {
 
@@ -63,7 +66,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <HomeNavigator/>
+        <LoginLibrarian/>
       </>
     </GestureHandlerRootView>
   )

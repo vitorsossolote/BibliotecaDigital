@@ -6,19 +6,13 @@ import {
     ButtonText,
 } from "@gluestack-ui/themed"
 import { MotiView } from 'moti'
-import { StyleSheet, Text, View, Alert } from "react-native"
+import { StyleSheet, Text, View, Alert, Platform, KeyboardAvoidingView } from "react-native"
 import { config } from "@gluestack-ui/config"
-<<<<<<< HEAD
-import { createIcons, icons } from 'lucide';
-import BackHeader from "../../../Components/BackHeader";
-import InputTest from "../../../Components/InputTest";
-import ModalComp from "../../../Components/Modal/1Modal";
-=======
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
 import ModalComp from "../../../components/Modal/1Modal";
->>>>>>> bf1efae36cb039c664c3d317c0a02688bb1707e8
 import axios from "axios";
+import PasswordInput from "../../../components/InputTest/PasswordInput";
 
 const CreateLibrarianAccount = ({ navigation }) => {
     const [nome, setNome] = useState("");
@@ -68,111 +62,117 @@ const CreateLibrarianAccount = ({ navigation }) => {
 
     return (
         <GluestackUIProvider config={config}>
-            <SafeAreaView style={styles.container}>
-                <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
-                    title="Bem Vindo"
-                    subtitle="Crie sua Conta"
-                    margin={10} />
-                <View style={styles.inputContainer}>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: -0 }}
-                        transition={{ duration: 3000, type: "spring" }}
-                    >
-                        <InputTest
-                            inputText="Seu nome completo"
-                            formTitle="Nome"
-                            inputSize={15}
-                            valuee={nome}
-                            onChangeText={text => setNome(text)}
-                        />
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: -0 }}
-                        transition={{ duration: 4000, type: "spring" }}
-                    >
-                        <InputTest
-                            inputText="Seu email"
-                            formTitle="Email"
-                            inputSize={15}
-                            valuee={email}
-                            onChangeText={text => setEmail(text)}
-                        />
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: -0 }}
-                        transition={{ duration: 5000, type: "spring" }}
-                    >
-                        <InputTest
-                            inputText="Sua CFB"
-                            formTitle="CFB"
-                            inputSize={15}
-                            valuee={cfb}
-                            onChangeText={text => setCFB(text)}
-                        />
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: -0 }}
-                        transition={{ duration: 5000, type: "spring" }}
-                    >
-                        <InputTest
-                            inputText="Sua senha"
-                            formTitle="Senha"
-                            inputType="password"
-                            inputSize={15}
-                            valuee={senha}
-                            onChangeText={text => setSenha(text)}
-                        />
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: -0 }}
-                        transition={{ duration: 7000, type: "spring" }}
-                    >
-                        <InputTest
-                            inputText="Confirme sua Senha"
-                            formTitle="Confirmar Senha"
-                            inputType="password"
-                            inputSize={15}
-                            valuee={confirmSenha}
-                            onChangeText={text => setConfirmSenha(text)}
-                        />
-                    </MotiView>
-
-                </View>
-                <MotiView
-                    from={{ translateY: 110, }}
-                    animate={{ translateY: 0 }}
-                    transition={{ duration: 3000, delay: 1000 }}>
-                    <View style={styles.buttonContainer}>
-                        <ModalComp onPress={() => handleCadastrar()} />
-                    </View>
-                </MotiView>
-                <View style={styles.EnterAccountContainer}>
-                    <MotiView
-                        from={{ translateX: -230 }}
-                        animate={{ translateX: 0 }}
-                        transition={{ duration: 1000, delay: 1500, type: "timing" }}>
-                        <Text style={styles.textAccount}>Já tem uma conta?</Text>
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: 200 }}
-                        animate={{ translateX: 0 }}
-                        transition={{ duration: 1000, delay: 1500, type: "timing" }}>
-                        <Button
-                            onPress={() => navigation.navigate('LoginLibrarian')}
-                            size="md"
-                            variant="link"
-                            action="primary"
-                            style={styles.linkButton}
+            <SafeAreaView>
+                    <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
+                        title="Bem Vindo"
+                        subtitle="Crie sua Conta"
+                        margin={10} />
+                    <View style={styles.inputContainer}>
+                        <MotiView
+                            from={{ translateX: -50 }}
+                            animate={{ translateX: -0 }}
+                            transition={{ duration: 3000, type: "spring" }}
                         >
-                            <ButtonText style={styles.textButton}>Entre agora</ButtonText>
-                        </Button>
+                            <InputTest
+                                inputText="Seu nome completo"
+                                formTitle="Nome"
+                                inputSize={15}
+                                valuee={nome}
+                                onChangeText={text => setNome(text)}
+                            />
+                        </MotiView>
+                        <MotiView
+                            from={{ translateX: -50 }}
+                            animate={{ translateX: -0 }}
+                            transition={{ duration: 4000, type: "spring" }}
+                        >
+                            <InputTest
+                                inputText="Seu email"
+                                formTitle="Email"
+                                inputSize={15}
+                                valuee={email}
+                                onChangeText={text => setEmail(text)}
+                            />
+                        </MotiView>
+                        <MotiView
+                            from={{ translateX: -50 }}
+                            animate={{ translateX: -0 }}
+                            transition={{ duration: 5000, type: "spring" }}
+                        >
+                            <InputTest
+                                inputText="Sua CFB"
+                                formTitle="CFB"
+                                inputSize={15}
+                                valuee={cfb}
+                                onChangeText={text => setCFB(text)}
+                            />
+                        </MotiView>
+                        <MotiView
+                            from={{ translateX: -50 }}
+                            animate={{ translateX: -0 }}
+                            transition={{ duration: 5000, type: "spring" }}
+                        >
+                            <PasswordInput
+                                inputText="Sua senha"
+                                formTitle="Senha"
+                                inputType="password"
+                                inputSize={15}
+                                valuee={senha}
+                                onChangeText={text => setSenha(text)}
+                            />
+                        </MotiView>
+                        <MotiView
+                            from={{ translateX: -50 }}
+                            animate={{ translateX: -0 }}
+                            transition={{ duration: 7000, type: "spring" }}
+                        >
+                            <PasswordInput
+                                inputText="Confirme sua Senha"
+                                formTitle="Confirmar Senha"
+                                inputType="password"
+                                inputSize={15}
+                                valuee={confirmSenha}
+                                onChangeText={text => setConfirmSenha(text)}
+                            />
+                        </MotiView>
+
+                    </View>
+                    <MotiView
+                        from={{ translateY: 110, }}
+                        animate={{ translateY: 0 }}
+                        transition={{ duration: 3000, delay: 1000 }}>
+                        <View style={styles.buttonContainer}>
+                            <Button
+                                style={styles.buttonSolid}
+                                onPress={handleCadastrar}
+                            >
+                                <ButtonText>Criar Conta</ButtonText>
+                            </Button>
+                        </View>
                     </MotiView>
-                </View>
+                    <View style={styles.EnterAccountContainer}>
+                        <MotiView
+                            from={{ translateX: -230 }}
+                            animate={{ translateX: 0 }}
+                            transition={{ duration: 1000, delay: 1500, type: "timing" }}>
+                            <Text style={styles.textAccount}>Já tem uma conta?</Text>
+                        </MotiView>
+                        <MotiView
+                            from={{ translateX: 200 }}
+                            animate={{ translateX: 0 }}
+                            transition={{ duration: 1000, delay: 1500, type: "timing" }}>
+                            <Button
+                                onPress={() => navigation.navigate('LoginLibrarian')}
+                                size="md"
+                                variant="link"
+                                action="primary"
+                                style={styles.linkButton}
+                            >
+                                <ButtonText style={styles.textButton}>Entre agora</ButtonText>
+                            </Button>
+                        </MotiView>
+                    </View>
+                
             </SafeAreaView>
         </GluestackUIProvider>
     );

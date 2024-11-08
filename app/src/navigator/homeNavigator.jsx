@@ -75,7 +75,7 @@ export function HomeNavigator() {
             },
             // tabBarStyle:{display: 'none'}
           }} />
-        <Tab.Screen name="AuthorsScreen" component={AuthorsScreen} options={{ headerShown: false,  tabBarButton: (props) => null }}/>
+        <Tab.Screen name="AuthorsScreen" component={AuthorsScreen} options={{ headerShown: false,  tabBarButton: (props) => null, tabBarStyle:{display:'none'}}}/>
         <Tab.Screen name="UserProfileScreen" component={UserProfileScreen} options={{ headerShown: false,  tabBarButton: (props) => null, tabBarStyle:{display:'none'} }}/>
         <Tab.Screen name="BorrowedBooks" component={BorrowedBooks} options={{ headerShown: false,  tabBarButton: (props) => null,}}/>
       </Tab.Navigator>

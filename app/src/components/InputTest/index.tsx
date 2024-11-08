@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
@@ -11,34 +11,31 @@ import {
     FormControlLabelText,
 } from "@gluestack-ui/themed"
 import { StyleSheet, Text, View } from "react-native"
-import { config } from "@gluestack-ui/config"
-import { createIcons, icons } from 'lucide';
+import { EyeIcon,EyeOffIcon } from "lucide-react-native"
 
 interface Props {
-    formTitle : "string";
-    inputText : "string";
-    inputType : "string";
-    inputSize : int;
-    kbtype : "string";
-    onChangeText: 'string';
-    valuee: 'string';
+    formTitle : any;
+    inputText : any;
+    inputType : any;
+    inputSize : number;
+    kbtype : any;
+    onChangeText: any;
+    valuee: any;
 };
 
-const InputTest = ({inputText,formTitle,inputType, inputSize,kbtype,onChangeText,valuee}: Props) => (
-    <GluestackUIProvider config={config}>
-        <SafeAreaView style={styles.container}>
+const InputTest = (props : Props) => (
+        <SafeAreaView>
         <FormControl style = {styles.input}>
           <FormControlLabel>
-            <FormControlLabelText fontSize={inputSize} style = {styles.formText}>
-              {formTitle}
+            <FormControlLabelText fontSize={props.inputSize} style = {styles.formText}>
+              {props.formTitle}
             </FormControlLabelText>
           </FormControlLabel>
           <Input style = {styles.input}>
-            <InputField keyboardType={kbtype} type={inputType} style={styles.inputText} placeholder={inputText} onChangeText={onChangeText} value={valuee} />
+            <InputField keyboardType={props.kbtype} type={props.inputType} style={styles.inputText} placeholder={props.inputText} onChangeText={props.onChangeText} value={props.valuee} />
           </Input>
         </FormControl>
         </SafeAreaView>
-    </GluestackUIProvider>
 );
 
 const styles = StyleSheet.create({

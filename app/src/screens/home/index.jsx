@@ -64,7 +64,7 @@ export default function Home({ navigation }) {
                     <Section title="Melhores Generos" onPress={() => console.log("Clicou em ver todos")} />
                     <TrendingGenders />
                     <Section title="Autores" onPress={() => console.log("Clicou em ver todos")}/>
-                    <Authors onPress1={() => navigation.navigate("AuthorsScreen")}/>
+                    <Authors onPress1={() => navigation.navigate("AuthorsScreen")} onPress2={() => navigation.navigate("AuthorsScreen")} onPress3={() => navigation.navigate("AuthorsScreen")} onPress4={() => navigation.navigate("AuthorsScreen")}/>
                 </ScrollView>
 
                 {/* BottomSheet */}
@@ -72,8 +72,7 @@ export default function Home({ navigation }) {
                     ref={bottomSheetref}
                     snapPoints={snapPoints}
                     index={-1}
-                    enablePanDownToClose={true}
-                    style={styles.bottomContainer}>
+                    enablePanDownToClose={true}>
                     <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
                         <View style={styles.bookContainer}>
                             <Image source={book} alt="livro" style={styles.bookStyle} resizeMode="contain" />
