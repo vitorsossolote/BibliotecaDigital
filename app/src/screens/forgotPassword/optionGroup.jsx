@@ -2,14 +2,14 @@ import React, {useState} from "react"
 import { StyleSheet, View, TouchableOpacity, Text,Image } from "react-native"
 import emailBulk from "../../../assets/Email-Bulk.png"
 
-interface Props{
-    options: any,
+const Props = () => {
+    options: any;
     doSomethingAfertClick:any
 }
 
 
 //TODO Arrumar icone
-export const OptionGroup = ({ options, doSomethingAfterClick }: Props) => {
+export const OptionGroup = (props : Props) => {
 
     const [clickedId , setClickedId] = useState(0)
 
