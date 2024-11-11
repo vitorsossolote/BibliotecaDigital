@@ -7,11 +7,12 @@ import {
     ButtonText,
 } from "@gluestack-ui/themed"
 import { MotiView } from "moti"
-import { StyleSheet, Text, View, Alert } from "react-native"
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader/index";
 import InputTest from "../../../components/InputTest/index";
+import PasswordInput from "../../../components/InputTest/PasswordInput";
 
 const LoginStudent = ({ navigation }) => {
 
@@ -122,89 +123,102 @@ const LoginStudent = ({ navigation }) => {
     return (
         <GluestackUIProvider config={config}>
             <SafeAreaView style={styles.container}>
-                <BackHeader onPress={() => navigation.navigate('StudentScreen')}
-                    title="Entrar"
-                    subtitle="Entre na sua Conta" />
-                <View style={styles.inputContainer}>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: 0 }}
-                        transition={{ duration: 3000, type: "spring" }}>
-                        <InputTest
-                            inputText="Seu Email"
-                            formTitle="Email"
-                            valuee={email}
-                            onChangeText={text => setEmail(text)}
-                        />
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: -50 }}
-                        animate={{ translateX: 0 }}
-                        transition={{ duration: 4000, type: "spring" }}>
-                        <InputTest
-                            inputText="Sua senha"
-                            formTitle="Senha"
-                            valuee={senha}
-                            onChangeText={text => setSenha(text)}
-                            inputType="password" />
-                    </MotiView>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <MotiView
-                        from={{ translateX: 370, }}
-                        animate={{ translateX: 0, }}
-                        transition={{ duration: 4000, delay: 500 }}>
-                        <Button
-                            onPress={() => signIn()}
-                            size="md"
-                            variant="solid"
-                            action="primary" w
-                            style={styles.buttonSolid}
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={styles.keyboardAvoidingContainer}
+                >
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <ScrollView
+                            contentContainerStyle={styles.scrollContainer}
+                            bounces={false}
+                            showsVerticalScrollIndicator={false}
                         >
-                            <ButtonText>Entrar</ButtonText>
-                        </Button>
-                    </MotiView>
-                </View>
-                <View style={styles.createAccountContainer}>
-                    <MotiView
-                        from={{ opacity: 0, }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1000, }}>
-                        <Text style={styles.textAccount}>Não tem uma conta?</Text>
-                    </MotiView>
-                    <MotiView
-                        from={{ translateX: 300 }}
-                        animate={{ translateX: 0 }}
-                        transition={{ duration: 3000, }}
-                    >
-                        <Button
-                            onPress={() => navigation.navigate('CreateStudent')}
-                            size="md"
-                            variant="link"
-                            action="primary"
-                            style={styles.linkButton}
-                        >
-                            <ButtonText style={styles.textButton}>Crie Agora</ButtonText>
-                        </Button>
-                    </MotiView>
-                </View>
-                <View style={styles.termsContainer}>
-                    <MotiView
-                        from={{ translateY: 45, }}
-                        animate={{ translateY: 0, }}
-                        transition={{ duration: 2000, type: "timing" }}
-                    >
-                        <Text style={styles.textTerms}>Criando uma conta você aceita nossos</Text>
-                        <Button
-                            size="md"
-                            variant="link"
-                            action="primary"
-                            style={styles.linkButton}
-                        >
-                            <ButtonText style={styles.textButton}>Termos e Politicas de dados</ButtonText>
-                        </Button>
-                    </MotiView>
-                </View>
+                            <BackHeader onPress={() => navigation.navigate('StudentScreen')}
+                                title="Entrar"
+                                subtitle="Entre na sua Conta" />
+                            <View style={styles.inputContainer}>
+                                <MotiView
+                                    from={{ translateX: -50 }}
+                                    animate={{ translateX: 0 }}
+                                    transition={{ duration: 3000, type: "spring" }}>
+                                    <InputTest
+                                        inputText="Seu Email"
+                                        formTitle="Email"
+                                        valuee={email}
+                                        onChangeText={text => setEmail(text)}
+                                    />
+                                </MotiView>
+                                <MotiView
+                                    from={{ translateX: -50 }}
+                                    animate={{ translateX: 0 }}
+                                    transition={{ duration: 4000, type: "spring" }}>
+                                    <PasswordInput
+                                        inputText="Sua senha"
+                                        formTitle="Senha"
+                                        valuee={senha}
+                                        onChangeText={text => setSenha(text)}
+                                        inputType="password" />
+                                </MotiView>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <MotiView
+                                    from={{ translateX: 370, }}
+                                    animate={{ translateX: 0, }}
+                                    transition={{ duration: 4000, delay: 500 }}>
+                                    <Button
+                                        onPress={() => signIn()}
+                                        size="md"
+                                        variant="solid"
+                                        action="primary" w
+                                        style={styles.buttonSolid}
+                                    >
+                                        <ButtonText>Entrar</ButtonText>
+                                    </Button>
+                                </MotiView>
+                            </View>
+                            <View style={styles.createAccountContainer}>
+                                <MotiView
+                                    from={{ opacity: 0, }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 1000, }}>
+                                    <Text style={styles.textAccount}>Não tem uma conta?</Text>
+                                </MotiView>
+                                <MotiView
+                                    from={{ translateX: 300 }}
+                                    animate={{ translateX: 0 }}
+                                    transition={{ duration: 3000, }}
+                                >
+                                    <Button
+                                        onPress={() => navigation.navigate('CreateStudent')}
+                                        size="md"
+                                        variant="link"
+                                        action="primary"
+                                        style={styles.linkButton}
+                                    >
+                                        <ButtonText style={styles.textButton}>Crie Agora</ButtonText>
+                                    </Button>
+                                </MotiView>
+                            </View>
+                            <View style={styles.termsContainer}>
+                                <MotiView
+                                    from={{ translateY: 45, }}
+                                    animate={{ translateY: 0, }}
+                                    transition={{ duration: 2000, type: "timing" }}
+                                >
+                                    <Text style={styles.textTerms}>Criando uma conta você aceita nossos</Text>
+                                    <Button
+                                        size="md"
+                                        variant="link"
+                                        action="primary"
+                                        style={styles.linkButton}
+                                    >
+                                        <ButtonText style={styles.textButton}>Termos e Politicas de dados</ButtonText>
+                                    </Button>
+                                </MotiView>
+                            </View>
+                        </ScrollView>
+                    </TouchableWithoutFeedback>
+                </KeyboardAvoidingView>
             </SafeAreaView>
         </GluestackUIProvider>
     )
@@ -212,9 +226,14 @@ const LoginStudent = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        width: "100%",
+        flex:1,
         backgroundColor: '#fff',
+    },
+    keyboardAvoidingContainer: {
+        flex: 1,
+    },
+    scrollContainer: {
+        flexGrow: 1,
     },
     inputContainer: {
         marginTop: 40,

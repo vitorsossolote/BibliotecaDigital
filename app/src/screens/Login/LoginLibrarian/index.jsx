@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader/index";
 import InputTest from "../../../components/InputTest/index";
-
+import PasswordInput from "../../../components/InputTest/PasswordInput"
 
 
 const LoginLibrarian = ({ navigation }) => (
@@ -32,7 +32,7 @@ const LoginLibrarian = ({ navigation }) => (
                     from={{ translateX: -50 }}
                     animate={{ translateX: 0 }}
                     transition={{ duration: 4000, type: "spring" }}>
-                    <InputTest
+                    <PasswordInput
                         inputText="Sua senha"
                         formTitle="Senha"
                         inputType="password" />
