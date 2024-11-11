@@ -1,74 +1,58 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable,PressableProps,ButtonProps } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, PressableProps, ButtonProps } from 'react-native';
 import {
     Image,
 } from "@gluestack-ui/themed"
 import book1 from "../../../assets/book2.png"
 import book2 from "../../../assets/book3.png"
 import book3 from "../../../assets/book4.png"
+import { Data } from '../../data/data';
 
 type Props = ButtonProps & PressableProps & {
     onPress: any
 }
+
 const TrendingBooks = ({ onPress }: Props) => {
+    const getStatusColor = (status: string) => {
+        return status.toLowerCase() === 'disponivel' ? '#2ecc71' : '#ee2d32';
+    };
+
+    const renderItem = ({ item }) => (
+        <View style={styles.card}>
+            <Pressable onPress={onPress}>
+                <View style={styles.imageContainer}>
+                    <Image source={item.image} alt={item.name} style={styles.image} />
+                </View>
+            </Pressable>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={[styles.status, { color: getStatusColor(item.status) }]}>
+                {item.status}
+            </Text>
+        </View>
+    );
 
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.container}>
-                <View style={styles.card}>
-                    <Pressable onPress={onPress}>
-                        <View style={styles.imageContainer}>
-                            <Image source={book1} alt="livro 1" style={styles.image} />
-                        </View>
-                    </Pressable>
-                    <Text style={styles.title}>The Kite Runner</Text>
-                    <Text style={styles.status}>Reservado</Text>
-                </View>
-                <View style={styles.card}>
-                    <Pressable onPress={onPress}>
-                        <View style={styles.imageContainer}>
-                            <Image source={book2} alt="livro 1" style={styles.image} />
-                        </View>
-                    </Pressable>
-                    <Text style={styles.title}>Nome Livro</Text>
-                    <Text style={styles.status}>Reservado</Text>
-                </View>
-                <View style={styles.card}>
-                    <Pressable onPress={onPress}>
-                        <View style={styles.imageContainer}>
-                            <Image source={book3} alt="livro 1" style={styles.image} />
-                        </View>
-                    </Pressable>
-                    <Text style={styles.title}>Nome Livro</Text>
-                    <Text style={styles.status}>Reservado</Text>
-                </View>
-                <View style={styles.card}>
-                    <Pressable onPress={onPress}>
-                        <View style={styles.imageContainer}>
-                            <Image source={book1} alt="livro 1" style={styles.image} />
-                        </View>
-                    </Pressable>
-                    <Text style={styles.title}>Nome Livro</Text>
-                    <Text style={styles.status}>Reservado</Text>
-                </View>
-            </View>
-        </ScrollView>
+        <FlatList
+            data={Data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.container}
+        />
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: 'row',
-        height: 220,
         paddingHorizontal: 20,
         gap: 15,
-
+        marginBottom: 20
     },
     card: {
-        flex: 1,
         flexDirection: "column",
         gap: 5,
+        marginRight: 15,
     },
     imageContainer: {
         width: 125,
@@ -86,7 +70,6 @@ const styles = StyleSheet.create({
     },
     status: {
         fontSize: 14,
-        color: "#ee2d32",
         fontWeight: "600",
     },
 });

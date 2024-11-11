@@ -8,34 +8,55 @@ import {
 } from "@gluestack-ui/themed"
 import book from "../../../assets/book2.png"
 const { width: screenWidth } = Dimensions.get('window');
+import { Data } from '../../data/data';
+import { SafeAreaView } from 'moti';
+import { FlatList } from 'react-native-gesture-handler';
 
 type Props = ButtonProps & PressableProps & {
     onPress: any
 }
 
-const Reservar = ({ onPress }: Props) => {
+export default function Reservar({ onPress }: Props) {
+    const latestItem = useMemo(() => {
+        return Data.reduce((prev, current) => {
+            return (prev.id > current.id) ? prev : current;
+        });
+    }, [Data]);
+
+    const RenderItem = ({item}) => {
+        return (
+            <View style={styles.card}>
+                <View style={styles.textContainer}>
+                    <Text style={styles.title}>Reservar Novamente?</Text>
+                    <Button 
+                        style={styles.Button}
+                        size="md"
+                        variant="solid"
+                        action="primary"
+                        onPress={onPress}
+                    >
+                        <ButtonText>Reservar Agora</ButtonText>
+                    </Button>
+                </View>
+                <View style={styles.imageContainer}>
+                    <Pressable onPress={onPress}>
+                        <Image style={styles.Image} source={item.image} alt="Parabéns" />
+                    </Pressable>
+                </View>
+            </View>
+        );
+    };
 
     return (
-        <View style={styles.card}>
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>Reservar Novamente?</Text>
-                <Button style={styles.Button}
-                    size="md"
-                    variant="solid"
-                    action="primary"
-                    onPress={onPress}
-                >
-                    <ButtonText>Reservar Agora</ButtonText>
-                </Button>
-            </View>
-            <View style={styles.imageContainer}>
-                <Pressable onPress={onPress}>
-                    <Image style={styles.Image} source={book} alt="Parabéns" />
-                </Pressable>
-            </View>
-        </View>
+        <SafeAreaView>
+            <FlatList
+                data={[latestItem]} // Passando apenas o item com maior ID como array
+                renderItem={RenderItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
+        </SafeAreaView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     card: {
@@ -48,7 +69,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         bottom: 20,
         right: 10,
-        elevation:5,
+        elevation: 5,
     },
     textContainer: {
         width: 240,
@@ -81,5 +102,3 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 });
-
-export default Reservar;

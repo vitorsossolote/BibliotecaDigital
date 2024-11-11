@@ -6,25 +6,27 @@ import {
     ButtonText,
     Image,
 } from "@gluestack-ui/themed"
+import { Data } from '../../data/data';
+import { AirbnbRating } from 'react-native-ratings';
 
 import book from "../../../assets/book.png" 
-
 const { width: screenWidth } = Dimensions.get('window');
 
-const dummyData = [
-    { id: 1, rating: '93%' },
-    { id: 2, rating: '85%' },
-    { id: 3, rating: '89%' },
-    { id: 4, rating: '93%' },
-    { id: 5, rating: '85%' }
-];
 
 const MyCarousel = ({ data }) => {
     const renderItem = ({ item }) => (
         <View style={styles.card}>
             <View style={styles.textContainer}>
-                <Text style={styles.title}>Livro em Destaque</Text>
-                <Text style={styles.rating}>{item.rating} aprovaram</Text>
+                <Text style={styles.title}>{item.name}</Text>
+                <AirbnbRating
+                        count={5}
+                        defaultRating={item.rating}
+                        size={25}
+                        showRating={false}
+                        unSelectedColor="#000"
+                        starContainerStyle={styles.starRating}
+                        readonly={false}
+                    />
                 <Button style={styles.Button}
                     size="md"
                     variant="solid"
@@ -34,7 +36,7 @@ const MyCarousel = ({ data }) => {
                 </Button>
             </View>
             <View style={styles.imageContainer}>
-                    <Image style={styles.Image} source={book} alt="Parabéns" />
+                    <Image style={styles.Image} source={item.image} alt="Parabéns" />
                 </View>
         </View>
     );
@@ -78,7 +80,7 @@ const MyCarousel = ({ data }) => {
 
 const Carrosel = () => {
     return (
-        <MyCarousel data={dummyData} />
+        <MyCarousel data={Data} />
     );
 };
 
@@ -94,6 +96,10 @@ const styles = StyleSheet.create({
         marginTop:15,
         right:8,
         elevation:5
+    },
+    starRating: {
+        right: 27,
+        top:15
     },
     textContainer: {
         width: 240,
@@ -114,9 +120,12 @@ const styles = StyleSheet.create({
         borderRadius:25,
         marginTop:20,
         width:170,
+        top:10,
+        right:6
     },
     imageContainer:{
         height:"100%",
+        width:145,
     },
     Image:{
         width:145,
