@@ -8,25 +8,26 @@ import {
 import { MotiView } from 'moti'
 import { StyleSheet, Text, View } from "react-native"
 import { config } from "@gluestack-ui/config"
-import BackHeader from "../../../components/BackHeader/index";
-import InputTest from "../../../components/InputTest/index";
-import PasswordInput from "../../../components/InputTest/PasswordInput"
+import BackHeader from "../../components/BackHeader/index";
+import InputTest from "../../components/InputTest/index";
+import PasswordInput from "../../components/InputTest/PasswordInput"
 
 
-const LoginLibrarian = ({ navigation }) => (
+const NewPasswordScreen = ({ navigation }) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={styles.container}>
-            <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
-                title="Entrar"
-                subtitle="Entre na sua Conta" />
+            <BackHeader onPress={() => navigation.navigate('ForgotPassword')}
+                title="Nova Senha"
+                subtitle="Crie sua nova senha" />
             <View style={styles.inputContainer}>
                 <MotiView
                     from={{ translateX: -50 }}
                     animate={{ translateX: 0 }}
                     transition={{ duration: 3000, type: "spring" }}>
-                    <InputTest
-                        inputText="Seu Email"
-                        formTitle="Email" />
+                    <PasswordInput
+                        inputText="Sua senha"
+                        formTitle="Nova Senha"
+                        inputType="password" />
                 </MotiView>
                 <MotiView
                     from={{ translateX: -50 }}
@@ -34,7 +35,7 @@ const LoginLibrarian = ({ navigation }) => (
                     transition={{ duration: 4000, type: "spring" }}>
                     <PasswordInput
                         inputText="Sua senha"
-                        formTitle="Senha"
+                        formTitle="Confirmar sua senha"
                         inputType="password" />
                 </MotiView>
             </View>
@@ -44,51 +45,12 @@ const LoginLibrarian = ({ navigation }) => (
                     variant="solid"
                     action="primary"
                     style={styles.buttonSolid}
+                    onPress={() => navigation.navigate("LoginLibrarian")}
                 >
-                    <ButtonText>Entrar</ButtonText>
+                    <ButtonText>Redefinir Senha</ButtonText>
                 </Button>
             </View>
-            <View style={styles.createAccountContainer}>
-                <MotiView
-                    from={{ opacity: 0, }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1000, }}>
-                    <Text style={styles.textAccount}>Não tem uma conta?</Text>
-                </MotiView>
-                <MotiView
-                        from={{ translateX: 300 }}
-                        animate={{ translateX: 0 }}
-                        transition={{ duration: 3000, }}
-                    >
-                <Button
-                    onPress={() => navigation.navigate("LibrarianScreen")}
-                    size="md"
-                    variant="link"
-                    action="primary"
-                    style={styles.linkButton}
-                >
-                    <ButtonText style={styles.textButton}>Crie Agora</ButtonText>
-                </Button>
-                </MotiView>
-            </View>
-            <View style={styles.termsContainer}>
-            <MotiView
-                    from={{translateY:45, }}
-                    animate={{translateY:0,}}
-                    transition={{duration:2000, type:"timing"}}
-                    >
-                <Text style={styles.textTerms}>Esqueceu sua senha?</Text>
-                <Button
-                    size="md"
-                    variant="link"
-                    action="primary"
-                    style={styles.linkButton}
-                    onPress={() => navigation.navigate("ForgotPassword")}
-                >
-                    <ButtonText style={styles.textButton}>Clique aqui</ButtonText>
-                </Button>
-            </MotiView>
-            </View>
+           
         </SafeAreaView>
     </GluestackUIProvider>
 );
@@ -145,4 +107,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default LoginLibrarian;
+export default NewPasswordScreen;

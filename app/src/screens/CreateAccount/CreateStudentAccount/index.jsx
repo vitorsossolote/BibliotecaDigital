@@ -2,11 +2,23 @@ import { useState, useEffect } from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
+    Pressable,
+    Heading,
+    Input,
+    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
-import { MotiView } from 'moti'
-import { StyleSheet, Text, View, Alert, Platform, KeyboardAvoidingView, ScrollView} from "react-native"
+import { MotiView } from "moti"
+import { 
+    StyleSheet, 
+    Text, 
+    View, 
+    Alert, 
+    KeyboardAvoidingView, 
+    Platform,
+    ScrollView 
+} from "react-native"
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
@@ -14,40 +26,38 @@ import ModalComp from "../../../components/Modal/1Modal";
 import axios from "axios";
 import PasswordInput from "../../../components/InputTest/PasswordInput";
 
-const CreateLibrarianAccount = ({ navigation }) => {
+const CreateStudentAccount = ({ navigation }) => {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
-    const [cfb, setCFB] = useState("");
+    const [rm, setRM] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmSenha, setConfirmSenha] = useState("");
 
     const data = {
         nome: nome,
         email: email,
-        cfb: cfb,
+        rm: rm,
         senha: senha,
         confirmSenha: confirmSenha,
     };
 
     const handleCadastrar = async () => {
-        if (!nome || !email || !cfb || !senha || !confirmSenha) {
+        if (!nome || !email || !rm || !senha || !confirmSenha) {
             Alert.alert('Todos os campos são obrigatórios')
             return
         }
         console.log(data)
-        //envio de informações para a API cadastrar no banco de dados
         try {
-            await axios.post('http://10.0.2.2:8085/api/createBiblio', data);
+            await axios.post('http://10.0.2.2:8085/api/createStudent', data);
             Alert.alert('Cadastro realizado com sucesso');
             navigation.navigate('VerificationScreen')
         } catch (error) {
             if (error) {
                 console.log(error)
-                //Alert.alert('O email' + formData.email + 'já existe na base de dados')
             }
             else if (error.response.status === 401) {
-                console.log('O CFB' + data.cfb + 'já existe na base de dados')
-                Alert.alert('O CFB' + data.cfb + 'já existe na base de dados')
+                console.log('O RM' + data.rm + 'já existe na base de dados')
+                Alert.alert('O RM' + data.rm + 'já existe na base de dados')
             }
             else if (senha != confirmSenha) {
                 console.log(Alert.alert('As senhas não coencidem'))
@@ -62,25 +72,25 @@ const CreateLibrarianAccount = ({ navigation }) => {
 
     return (
         <GluestackUIProvider config={config}>
-            <SafeAreaView style={{backgroundColor:"#fff"}}>
-                <KeyboardAvoidingView
+            <SafeAreaView style={styles.container}>
+                <KeyboardAvoidingView 
                     behavior={Platform.OS === "android" ? "padding" : "height"}
                     style={styles.keyboardAvoidContainer}
                 >
-                    <ScrollView
+                    <ScrollView 
                         contentContainerStyle={styles.scrollContainer}
                         showsVerticalScrollIndicator={false}
                     >
-                        <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
+                        <BackHeader 
+                            onPress={() => navigation.navigate('StudentScreen')}
                             title="Bem Vindo"
-                            subtitle="Crie sua Conta"
-                            margin={10} />
+                            subtitle="Crie sua Conta" 
+                        />
                         <View style={styles.inputContainer}>
                             <MotiView
                                 from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
-                                transition={{ duration: 3000, type: "spring" }}
-                            >
+                                animate={{ translateX: 0, }}
+                                transition={{ duration: 3000, type: "spring" }}>
                                 <InputTest
                                     inputText="Seu nome completo"
                                     formTitle="Nome"
@@ -108,17 +118,18 @@ const CreateLibrarianAccount = ({ navigation }) => {
                                 transition={{ duration: 5000, type: "spring" }}
                             >
                                 <InputTest
-                                    inputText="Sua CFB"
-                                    formTitle="CFB"
+                                    inputText="Seu RM"
+                                    formTitle="RM"
                                     inputSize={15}
-                                    valuee={cfb}
-                                    onChangeText={text => setCFB(text)}
+                                    kbtype="phone-pad"
+                                    valuee={rm}
+                                    onChangeText={text => setRM(text)}
                                 />
                             </MotiView>
                             <MotiView
                                 from={{ translateX: -50 }}
                                 animate={{ translateX: -0 }}
-                                transition={{ duration: 5000, type: "spring" }}
+                                transition={{ duration: 6000, type: "spring" }}
                             >
                                 <PasswordInput
                                     inputText="Sua senha"
@@ -132,10 +143,10 @@ const CreateLibrarianAccount = ({ navigation }) => {
                             <MotiView
                                 from={{ translateX: -50 }}
                                 animate={{ translateX: -0 }}
-                                transition={{ duration: 7000, type: "spring" }}
+                                transition={{ duration: 7000, type: "spring", }}
                             >
                                 <PasswordInput
-                                    inputText="Confirme sua Senha"
+                                    inputText="Confirme sua senha"
                                     formTitle="Confirmar Senha"
                                     inputType="password"
                                     inputSize={15}
@@ -143,14 +154,13 @@ const CreateLibrarianAccount = ({ navigation }) => {
                                     onChangeText={text => setConfirmSenha(text)}
                                 />
                             </MotiView>
-
                         </View>
                         <MotiView
                             from={{ translateY: 110, }}
                             animate={{ translateY: 0 }}
                             transition={{ duration: 3000, delay: 1000 }}>
                             <View style={styles.buttonContainer}>
-                                <Button
+                                <Button 
                                     style={styles.buttonSolid}
                                     onPress={handleCadastrar}
                                 >
@@ -170,7 +180,7 @@ const CreateLibrarianAccount = ({ navigation }) => {
                                 animate={{ translateX: 0 }}
                                 transition={{ duration: 1000, delay: 1500, type: "timing" }}>
                                 <Button
-                                    onPress={() => navigation.navigate('LoginLibrarian')}
+                                    onPress={() => navigation.navigate('LoginStudent')}
                                     size="md"
                                     variant="link"
                                     action="primary"
@@ -184,14 +194,20 @@ const CreateLibrarianAccount = ({ navigation }) => {
                 </KeyboardAvoidingView>
             </SafeAreaView>
         </GluestackUIProvider>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
         height: "100%",
         width: "100%",
         backgroundColor: '#fff',
+    },
+    keyboardAvoidContainer: {
+        flex: 1,
+    },
+    scrollContainer: {
+        flexGrow: 1,
     },
     inputContainer: {
         backgroundColor: '#fff',
@@ -214,6 +230,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 7,
         alignSelf: 'center',
+        marginBottom: 20,
     },
     textAccount: {
         fontSize: 16,
@@ -239,4 +256,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateLibrarianAccount;
+export default CreateStudentAccount;

@@ -66,7 +66,7 @@ export default function app() {
     <GestureHandlerRootView>
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <Home/>
+        <Navigator/>
       </>
     </GestureHandlerRootView>
   )

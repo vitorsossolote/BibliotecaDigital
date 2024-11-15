@@ -8,8 +8,8 @@ import book2 from "../../../assets/book3.png"
 import book3 from "../../../assets/book4.png"
 import { Data } from '../../data/data';
 
-type Props = ButtonProps & PressableProps & {
-    onPress: any
+type Props = {
+    onPress: (bookData: any) => void; // Modificado para receber os dados do livro
 }
 
 const TrendingBooks = ({ onPress }: Props) => {
@@ -19,7 +19,7 @@ const TrendingBooks = ({ onPress }: Props) => {
 
     const renderItem = ({ item }) => (
         <View style={styles.card}>
-            <Pressable onPress={onPress}>
+            <Pressable onPress={() => onPress(item)}>
                 <View style={styles.imageContainer}>
                     <Image source={item.image} alt={item.name} style={styles.image} />
                 </View>

@@ -8,9 +8,10 @@ interface Props{
     ModalTitle: String;
     ModalTitle2: String;
     ModalSubtitle2: String;
-    Type:String
+    Type:String;
+    onPress: any
 };
-const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Props) => {
+const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type,onPress}:Props) => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
@@ -18,7 +19,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Pro
         <SafeAreaView>
             <View>
                 <Button onPress={() => {
-                    setShowModal(true);
+                    setShowModal2(true);
                 }}
                     size="md"
                     variant="solid"
@@ -28,7 +29,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Pro
                     <ButtonText>{ButtonTitle}</ButtonText>
                 </Button>
             </View>
-            <Modal
+            {/* <Modal
                 isOpen={showModal}
                 onClose={() => {
                     setShowModal(false);
@@ -67,7 +68,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Pro
                         </VStack>
                     </ModalFooter>
                 </ModalContent>
-            </Modal>
+            </Modal> */}
             <Modal
           isOpen={showModal2}
           onClose={() => {
@@ -93,10 +94,7 @@ const ModalComp2 = ({ButtonTitle,ModalTitle,ModalTitle2,ModalSubtitle2,Type}:Pro
             <ModalFooter borderTopWidth='$0'>
             <VStack space='lg' w='$full'>
               <Button backgroundColor='#EE2D32'
-                onPress={() => {
-                  setShowModal3(true);
-                  
-                }}
+                onPress={onPress}
               >
                 <ButtonText>Continuar</ButtonText>
               </Button>
