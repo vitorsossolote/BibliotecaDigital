@@ -5,6 +5,7 @@ import { BookImage, MoveLeft } from "lucide-react-native"
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
+
 import autor1 from "../../../assets/autor1.png"
 import book5 from "../../../assets/book5.png"
 import book6 from "../../../assets/book6.png"

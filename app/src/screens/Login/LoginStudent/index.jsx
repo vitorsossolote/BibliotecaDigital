@@ -7,7 +7,7 @@ import {
     ButtonText,
 } from "@gluestack-ui/themed"
 import { MotiView } from "moti"
-import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from "react-native"
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView,Keyboard,TouchableWithoutFeedback,ScrollView } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader/index";

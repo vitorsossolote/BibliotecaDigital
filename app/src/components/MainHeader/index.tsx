@@ -1,32 +1,31 @@
 import React from "react";
 import {
     GluestackUIProvider,
-    SafeAreaView,
     Button,
     ButtonIcon,
     Pressable,
-    Heading,
-    PressableProps
 } from "@gluestack-ui/themed"
 import { MotiView } from 'moti'
 import { config } from "@gluestack-ui/config"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View,PressableProps } from "react-native"
 import { Search, Bell } from 'lucide-react-native';
 
 type Props = PressableProps & {
     title: string;
     onPress: any;
     icon1: any,
-    icon2: any
+    icon2: any,
+    onPress2: any;
+    marginRight: any
 };
 
 const MainHeader = (props: Props) => (
     <GluestackUIProvider config={config}>
         <View style={styles.container}>
-            <View style={styles.FirstIconContainer}>
+            <View style={[styles.FirstIconContainer, {marginRight:props.marginRight}]}>
                 <Button size="lg" p="$3.5" bg="transparent" marginTop={3}>
                     <Pressable onPress={props.onPress}>
-                        <ButtonIcon as={props.icon1} color={'$black'} size={30} />
+                        <ButtonIcon as={props.icon1} color={'$black'} size={'xl'} />
                     </Pressable>
                 </Button>
             </View>
@@ -35,8 +34,8 @@ const MainHeader = (props: Props) => (
             </View>
             <View style={styles.SecondIconContainer}>
                 <Button size="lg" p="$3.5" bg="transparent" marginTop={3}>
-                    <Pressable onPress={() => console.log("teste")}>
-                        <ButtonIcon as={props.icon2} color={'$black'} size={30} />
+                    <Pressable onPress={props.onPress2}>
+                        <ButtonIcon as={props.icon2} color={'$black'} size={'xl'} />
                     </Pressable>
                 </Button>
             </View>
@@ -47,7 +46,7 @@ const MainHeader = (props: Props) => (
 const styles = StyleSheet.create({
     container: {
         height: 50,
-        width: 'full',
+        width: '100%',
         flexDirection: 'row',
         justifyContent:"space-between",
         paddingHorizontal:20
@@ -56,10 +55,9 @@ const styles = StyleSheet.create({
         alignSelf:"center",
         justifyContent: 'center',
         width:50,
-        backgroundColor:"#fafafa"
+        backgroundColor:"#fff",
     },
     textContainer: {
-        fleX:0.5,
         justifyContent: 'center',
     },
     title: {
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
     SecondIconContainer: {
         width:50,
         justifyContent: 'center',
-        backgroundColor:"#fafafa"
+        backgroundColor:"#fff"
     },
 });
 

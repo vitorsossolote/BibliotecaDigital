@@ -87,7 +87,7 @@ export default function Profile({navigation}) {
                 </Pressable>
             </View>
             <View style={styles.menuContainer}>
-                <Pressable onPress={() => console.log("clicou em seus favoritos")}>
+                <Pressable onPress={() => navigation.navigate("Favorites")}>
                     <View style={styles.menuContent}>
                         <View style={styles.menuOptionContainer}>
                             <View style={styles.iconContainer}>
@@ -104,7 +104,7 @@ export default function Profile({navigation}) {
                 </Pressable>
             </View>
             <View style={styles.menuContainer}>
-                <Pressable onPress={() => navigation.navigate("BorrowedBooks")}>
+                <Pressable onPress={() => navigation.navigate("LoanHistory")}>
                     <View style={styles.menuContent}>
                         <View style={styles.menuOptionContainer}>
                             <View style={styles.iconContainer}>
