@@ -7,7 +7,7 @@ import {
     ButtonText,
 } from "@gluestack-ui/themed"
 import { MotiView } from "moti"
-import { StyleSheet, Text, View, Alert, KeyboardAvoidingView,Keyboard,TouchableWithoutFeedback,ScrollView } from "react-native"
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, ScrollView } from "react-native"
 import axios from 'axios'; //Axios é utilizado para comunicar com a API (request)
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader/index";
@@ -26,6 +26,12 @@ const LoginStudent = ({ navigation }) => {
                 Alert.alert('Erro', 'Por favor, preencha todos os campos!');
                 return
             }
+            // Salvar dados do usuário no AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(response.data.user));
+            await AsyncStorage.setItem('token', response.data.token);
+
+            // Navegar para a Home
+            navigation.replace('Home');
 
             //Objeto para enviar para a API 
             const data = {
@@ -34,7 +40,7 @@ const LoginStudent = ({ navigation }) => {
             }
 
             //Enviar os dados para a API
-            const response = await axios.post('http://10.0.2.2:8085/api/validade', data);
+            const response = await axios.post('http://10.0.2.2:8085/api/loginStudent', data);
 
             //Verificar se o login foi efetuado com sucesso
             if (response.status === 200) {
@@ -166,7 +172,7 @@ const LoginStudent = ({ navigation }) => {
                                     animate={{ translateX: 0, }}
                                     transition={{ duration: 4000, delay: 500 }}>
                                     <Button
-                                        onPress={() => signIn()}
+                                        onPress={() => handleLogin()}
                                         size="md"
                                         variant="solid"
                                         action="primary" w
@@ -189,7 +195,7 @@ const LoginStudent = ({ navigation }) => {
                                     transition={{ duration: 3000, }}
                                 >
                                     <Button
-                                        onPress={() => navigation.navigate('CreateStudent')}
+                                        onPress={() => navigation.navigate('HomeNavigator')}
                                         size="md"
                                         variant="link"
                                         action="primary"
@@ -226,7 +232,7 @@ const LoginStudent = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         backgroundColor: '#fff',
     },
     keyboardAvoidingContainer: {

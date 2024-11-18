@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">920521724715</string>
+    <string name="google_api_key" translatable="false">AIzaSyD537nPtHhx7J6K3qk4KKbBhl4h2XxQYfE</string>
+    <string name="google_app_id" translatable="false">1:920521724715:android:8c2f635b7bf2a5f9d8ab6e</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyD537nPtHhx7J6K3qk4KKbBhl4h2XxQYfE</string>
+    <string name="google_storage_bucket" translatable="false">bibliotecadigital-24d99.appspot.com</string>
+    <string name="project_id" translatable="false">bibliotecadigital-24d99</string>
+</resources>

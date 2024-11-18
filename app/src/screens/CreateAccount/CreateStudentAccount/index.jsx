@@ -9,6 +9,7 @@ import {
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { MotiView } from "moti"
 import { 
     StyleSheet, 
@@ -46,14 +47,16 @@ const CreateStudentAccount = ({ navigation }) => {
             Alert.alert('Todos os campos são obrigatórios')
             return
         }
-        console.log(data)
+            console.log(data)
+        //envio de informações para a API cadastrar no banco de dados
         try {
             await axios.post('http://10.0.2.2:8085/api/createStudent', data);
             Alert.alert('Cadastro realizado com sucesso');
-            navigation.navigate('VerificationScreen')
+            navigation.navigate('LoginStudent')
         } catch (error) {
             if (error) {
                 console.log(error)
+                //Alert.alert('O email' + formData.email + 'já existe na base de dados')
             }
             else if (error.response.status === 401) {
                 console.log('O RM' + data.rm + 'já existe na base de dados')
@@ -68,7 +71,61 @@ const CreateStudentAccount = ({ navigation }) => {
                 Alert.alert('Ocorreu um erro ao cadastrar o usuário. Apresente um email valido.')
             }
         }
-    };
+    }
+
+    function signUp() {
+        auth()
+            .createUserWithEmailAndPassword(email, senha)
+            .then(() => {
+                Alert.alert("Usuário Criado com sucesso")
+                console.log('User account created & signed in!');
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('Esse email já foi utilizado');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('Esse email é invalido');
+                }
+
+                if (error.code === 'auth/app-deleted') {
+                    console.log('O banco de dados não foi localizado.');
+                }
+
+                if (error.code === 'auth/expired-action-code') {
+                    console.log('O código da ação o ou link expirou.');
+                }
+
+                if (error.code === 'auth/invalid-action-code') {
+                    console.log('O código da ação é inválido. Isso pode acontecer se o código estiver malformado ou já tiver sido usado.');
+                }
+
+                if (error.code === 'auth/user-disabled') {
+                    console.log('O usuário correspondente à credencial fornecida foi desativado.');
+                }
+
+                if (error.code === 'auth/user-not-found') {
+                    console.log('O usuário não correponde à nenhuma credencial.');
+                }
+
+                if (error.code === 'auth/weak-password') {
+                    console.log('A senha é muito fraca.');
+                }
+
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    console.log('E-mail já associado a outra conta.');
+                }
+                console.error(error);
+            });
+
+
+    }
+
+    const cadastrarFireXamp = () => {
+        handleCadastrar();
+        signUp();
+    }
 
     return (
         <GluestackUIProvider config={config}>
@@ -162,7 +219,7 @@ const CreateStudentAccount = ({ navigation }) => {
                             <View style={styles.buttonContainer}>
                                 <Button 
                                     style={styles.buttonSolid}
-                                    onPress={handleCadastrar}
+                                    onPress={cadastrarFireXamp}
                                 >
                                     <ButtonText>Criar Conta</ButtonText>
                                 </Button>

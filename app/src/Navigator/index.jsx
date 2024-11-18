@@ -10,6 +10,7 @@ import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAcco
 import SignInStudent from '../screens/CreateAccount/CreateStudentAccount/SignInStudent';
 import ForgotPassword from '../screens/ForgotPassword';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
+import HomeNavigator from './homeNavigator';
 const Stack = createStackNavigator();
 
 export function Navigator() {

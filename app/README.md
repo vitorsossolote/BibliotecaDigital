@@ -32,3 +32,4 @@
 ## react-native-otp-entry | npm i react-native-otp-entry
 ## file loader for typesScript | npm install --save-dev file-loader
 ## react-native-svg | npm i react-native-svg
+## react-native async storage | npm install @react-native-async-storage/async-storage
