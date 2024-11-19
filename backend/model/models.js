@@ -31,8 +31,7 @@ const useModel = {
     return result;
   },
 
-  registerStudent: async (nome, email, rm, senha) => {  // Removido o parâmetro id que não estava sendo usado
-    // Debug - verificar os dados recebidos no model
+  registerStudent: async (nome, email, rm, senha) => {  
     console.log('Dados recebidos no model:', { nome, email, rm, senha });
 
     if (!senha) {

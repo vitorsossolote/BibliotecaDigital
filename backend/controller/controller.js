@@ -1,8 +1,7 @@
 const clientController = require("../model/models");
 const jwt = require('jsonwebtoken');
 
-// Chave secreta para assinar os tokens - em produção, use variáveis de ambiente
-const JWT_SECRET = "sua_chave_secreta_aqui"; // Idealmente em process.env.JWT_SECRET
+const JWT_SECRET = "sua_chave_secreta_aqui";
 
 const useController = {
   //Route root
@@ -13,14 +12,11 @@ const useController = {
   createNewStudent: async (req, res) => {
     const { nome, email, rm, senha, confirmSenha } = req.body;
     
-    // Debug - verificar os dados recebidos
     console.log('Dados recebidos no controller:', { nome, email, rm, senha, confirmSenha });
 
     if (!senha) {
         return res.status(400).json({ msg: "Senha é obrigatória" });
     }
-
-    // ... resto das validações ...
 
     try {
         const sql = await clientController.getByEmail(email);
@@ -38,7 +34,6 @@ const useController = {
                 .json({ msg: "O RM já está cadastrado no Banco de Dados" });
         }
 
-        // Debug - verificar os dados antes de chamar registerStudent
         console.log('Dados antes de chamar registerStudent:', { nome, email, rm, senha });
         
         const result = await clientController.registerStudent(nome, email, rm, senha);
@@ -57,7 +52,6 @@ const useController = {
       const student = await clientController.validateLoginStudents(email, senha);
       
       if (student) {
-          // Criar o token JWT
           const token = jwt.sign(
               { 
                   id: student.id,
@@ -65,10 +59,9 @@ const useController = {
                   rm: student.rm 
               },
               JWT_SECRET,
-              { expiresIn: '24h' } // Token expira em 24 horas
+              { expiresIn: '24h' } 
           );
 
-          // Remover dados sensíveis antes de enviar
           const { senha: _, confirmSenha: __, ...studentData } = student;
 
           return res.json({
@@ -88,9 +81,8 @@ const useController = {
       });
   }
 },
-// Middleware para verificar token
   verifyToken: async (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // Bearer TOKEN
+  const token = req.headers['authorization']?.split(' ')[1]; 
 
   if (!token) {
       return res.status(401).json({ message: 'Token não fornecido' });

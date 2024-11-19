@@ -17,39 +17,6 @@ export default function app() {
   //Ignore all log notifications
   LogBox.ignoreAllLogs();
 
-  // Mudanças do Fausto
-
-  // const [initializing, setInitializing] = useState(true);
-  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-
-  // useEffect(() => {
-  //   const unsubscribe = auth().onAuthStateChanged(_user => {
-  //     if (initializing) {
-  //       setInitializing(false);
-  //     }
-  //     setUser(_user);
-  //   });
-
-  //   return unsubscribe;
-  // }, [initializing]);
-
-  // if (initializing) {
-  //   return (
-  //     <GestureHandlerRootView>
-  //       <>
-  //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-  //         <Home/>
-  //       </>
-  //     </GestureHandlerRootView>
-  //   );
-  // }
-
-  // return (
-  //   <GestureHandlerRootView style={{ flex: 1 }}>
-  //      {user ? <Home /> : <SignInStudent/>} 
-  //   </GestureHandlerRootView>
-  // )
-  //{/* se ele estiver logado vai pra pagina da esquerda, caso nao a da direita */
 
   return (
     <GestureHandlerRootView>
