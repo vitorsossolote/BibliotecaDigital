@@ -1,6 +1,8 @@
 const clientController = require("../model/models");
 const jwt = require('jsonwebtoken');
 
+// Chave secreta para assinar os tokens - em produção, use variáveis de ambiente
+const JWT_SECRET = "sua_chave_secreta_aqui"; // Idealmente em process.env.JWT_SECRET
 
 const useController = {
   //Route root
@@ -11,12 +13,14 @@ const useController = {
   createNewStudent: async (req, res) => {
     const { nome, email, rm, senha, confirmSenha } = req.body;
     
+    // Debug - verificar os dados recebidos
     console.log('Dados recebidos no controller:', { nome, email, rm, senha, confirmSenha });
 
     if (!senha) {
         return res.status(400).json({ msg: "Senha é obrigatória" });
     }
 
+    // ... resto das validações ...
 
     try {
         const sql = await clientController.getByEmail(email);
@@ -60,6 +64,8 @@ const useController = {
                   email: student.email,
                   rm: student.rm 
               },
+              JWT_SECRET,
+              { expiresIn: '24h' } // Token expira em 24 horas
           );
 
           // Remover dados sensíveis antes de enviar
@@ -91,7 +97,7 @@ const useController = {
   }
 
   try {
-      const decoded = jwt.verify(token);
+      const decoded = jwt.verify(token, JWT_SECRET);
       req.user = decoded;
       next();
   } catch (error) {
