@@ -1,4 +1,8 @@
 const clientController = require("../model/models");
+const jwt = require('jsonwebtoken');
+
+// Chave secreta para assinar os tokens - em produção, use variáveis de ambiente
+const JWT_SECRET = "sua_chave_secreta_aqui"; // Idealmente em process.env.JWT_SECRET
 
 const useController = {
   //Route root
@@ -51,22 +55,54 @@ const useController = {
 
     try {
       const student = await clientController.validateLoginStudents(email, senha);
+      
       if (student) {
-        return res.json({ 
-            message: "Login realizado com sucesso", 
-            student 
-        });
+          // Criar o token JWT
+          const token = jwt.sign(
+              { 
+                  id: student.id,
+                  email: student.email,
+                  rm: student.rm 
+              },
+              JWT_SECRET,
+              { expiresIn: '24h' } // Token expira em 24 horas
+          );
+
+          // Remover dados sensíveis antes de enviar
+          const { senha: _, confirmSenha: __, ...studentData } = student;
+
+          return res.json({
+              message: "Login realizado com sucesso",
+              token: token,
+              student: studentData
+          });
       } else {
-        return res.status(401).json({ 
-            message: "Email ou senha inválidos" 
-        });
+          return res.status(401).json({
+              message: "Email ou senha inválidos"
+          });
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Erro ao fazer login:", error);
-      return res.status(500).json({ 
-          message: "Erro ao fazer login" 
+      return res.status(500).json({
+          message: "Erro ao fazer login"
       });
-    }
+  }
+},
+// Middleware para verificar token
+  verifyToken: async (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Bearer TOKEN
+
+  if (!token) {
+      return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
+  try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      req.user = decoded;
+      next();
+  } catch (error) {
+      return res.status(401).json({ message: 'Token inválido' });
+  }
 },
 
   createNewBiblio: async (req, res) => {
