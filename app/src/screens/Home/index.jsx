@@ -64,6 +64,9 @@ export default function Home({navigation}) {
                     <MotiView from={{ translateX: 200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
+                                    <Button onPress={() => navigation.navigate("RegisterBooks")} style={{width:200,height:50,alignSelf:"center",backgroundColor:"#ee2d32" }}>
+                                        <ButtonText>REGISTRAR BUK</ButtonText>
+                                    </Button>
                     <MotiView from={{ translateX: -200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
                         <Reservar onPress={() => console.log("teste")} />
                     </MotiView>

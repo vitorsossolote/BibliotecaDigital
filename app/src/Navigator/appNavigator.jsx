@@ -30,6 +30,7 @@ import BorrowedBooks from '../screens/BorrowedBooks';
 import SearchGenderScreen from '../screens/SearchScreen/gender';
 import SearchScreen from '../screens/SearchScreen/search';
 import LoanHistory from '../screens/LoanHistory';
+import RegisterBooks from '../screens/RegisterBooks'
 
 
 const Stack = createNativeStackNavigator();
@@ -145,6 +146,7 @@ export default function AppNavigator() {
                         <Stack.Screen name="SearchScreen" component={SearchScreen} />
                         <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
                         <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
+                        <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
                     </>
                 )}
             </Stack.Navigator>
