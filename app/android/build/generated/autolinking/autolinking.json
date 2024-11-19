@@ -115,7 +115,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler\\RNGestureHandler.podspec",
-          "version": "2.21.1",
+          "version": "2.21.2",
           "configurations": [],
           "scriptPhases": []
         },

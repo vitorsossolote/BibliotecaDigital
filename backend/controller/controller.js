@@ -10,105 +10,16 @@ const useController = {
     res.status(200).json({ msg: "The API is running!!!" });
   },
 
+  //Criar novo estudante
   createNewStudent: async (req, res) => {
     const { nome, email, rm, senha, confirmSenha } = req.body;
-    
+
     // Debug - verificar os dados recebidos
     console.log('Dados recebidos no controller:', { nome, email, rm, senha, confirmSenha });
 
     if (!senha) {
-        return res.status(400).json({ msg: "Senha é obrigatória" });
+      return res.status(400).json({ msg: "Senha é obrigatória" });
     }
-
-    // ... resto das validações ...
-
-    try {
-        const sql = await clientController.getByEmail(email);
-        const sqlConfirmRm = await clientController.getByRm(rm);
-
-        if (sql.length > 0) {
-            return res
-                .status(401)
-                .json({ msg: "O email já está cadastrado no Banco de Dados" });
-        }
-
-        if (sqlConfirmRm.length > 0) {
-            return res
-                .status(401)
-                .json({ msg: "O RM já está cadastrado no Banco de Dados" });
-        }
-
-        // Debug - verificar os dados antes de chamar registerStudent
-        console.log('Dados antes de chamar registerStudent:', { nome, email, rm, senha });
-        
-        const result = await clientController.registerStudent(nome, email, rm, senha);
-        return res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
-
-    } catch (error) {
-        console.error('Erro ao cadastrar usuário:', error);
-        return res.status(500).json({ msg: "Erro interno do servidor" });
-    }
-},
-
-  loginStudent: async (req, res) => {
-    const { email, senha } = req.body;
-
-    try {
-      const student = await clientController.validateLoginStudents(email, senha);
-      
-      if (student) {
-          // Criar o token JWT
-          const token = jwt.sign(
-              { 
-                  id: student.id,
-                  email: student.email,
-                  rm: student.rm 
-              },
-              JWT_SECRET,
-              { expiresIn: '24h' } // Token expira em 24 horas
-          );
-
-          // Remover dados sensíveis antes de enviar
-          const { senha: _, confirmSenha: __, ...studentData } = student;
-
-          return res.json({
-              message: "Login realizado com sucesso",
-              token: token,
-              student: studentData
-          });
-      } else {
-          return res.status(401).json({
-              message: "Email ou senha inválidos"
-          });
-      }
-  } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      return res.status(500).json({
-          message: "Erro ao fazer login"
-      });
-  }
-},
-// Middleware para verificar token
-  verifyToken: async (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // Bearer TOKEN
-
-  if (!token) {
-      return res.status(401).json({ message: 'Token não fornecido' });
-  }
-
-  try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = decoded;
-      next();
-  } catch (error) {
-      return res.status(401).json({ message: 'Token inválido' });
-  }
-},
-
-  createNewBiblio: async (req, res) => {
-    const { id, nome, email, cfb, senha, confirmSenha } = req.body;
-
-    console.log(req.body);
 
     if (!email.includes("@" && ".com")) {
       return res.status(400).json({ msg: "O email Não é valido (@)" });
@@ -118,47 +29,177 @@ const useController = {
       return res.status(400).json({ msg: "As senhas não coincidem" });
     }
 
+    // ... resto das validações ...
+
     try {
       const sql = await clientController.getByEmail(email);
-      console.log(sql);
-
-      const sqlConfirmCfb = await clientController.getByCfb(cfb);
-      console.log(sqlConfirmCfb);
+      const sqlConfirmRm = await clientController.getByRm(rm);
 
       if (sql.length > 0) {
-        res
+        return res
           .status(401)
-          .json({ msg: "O email já esta cadastrado no Banco de Dados" });
-      } else if (sqlConfirmCfb.length > 0) {
-        res
-          .status(401)
-          .json({ msg: "O CFB já esta cadastrado no Banco de Dados" });
-      } else {
-        await clientController.registerBiblio(id, nome, email, cfb, senha);
-        res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
+          .json({ msg: "O email já está cadastrado no Banco de Dados" });
       }
+
+      if (sqlConfirmRm.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O RM já está cadastrado no Banco de Dados" });
+      }
+
+      // Debug - verificar os dados antes de chamar registerStudent
+      console.log('Dados antes de chamar registerStudent:', { nome, email, rm, senha });
+
+      const result = await clientController.registerStudent(nome, email, rm, senha);
+      return res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
+
     } catch (error) {
-      console.log(error);
-      return error;
+      console.error('Erro ao cadastrar usuário:', error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
     }
   },
 
-  loginBiblio: async (req, res) => {
+  loginStudent: async (req, res) => {
+    const { email, senha } = req.body;
+
+    try {
+      const student = await clientController.validateLoginStudents(email, senha);
+
+      if (student) {
+        // Criar o token JWT
+        const token = jwt.sign(
+          {
+            id: student.id,
+            email: student.email,
+            rm: student.rm
+          },
+          JWT_SECRET,
+          { expiresIn: '24h' } // Token expira em 24 horas
+        );
+
+        // Remover dados sensíveis antes de enviar
+        const { senha: _, confirmSenha: __, ...studentData } = student;
+
+        return res.json({
+          message: "Login realizado com sucesso",
+          token: token,
+          student: studentData
+        });
+      } else {
+        return res.status(401).json({
+          message: "Email ou senha inválidos"
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      return res.status(500).json({
+        message: "Erro ao fazer login"
+      });
+    }
+  },
+
+  // Middleware para verificar token
+  verifyToken: async (req, res, next) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Bearer TOKEN
+
+    if (!token) {
+      return res.status(401).json({ message: 'Token não fornecido' });
+    }
+
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      req.user = decoded;
+      next();
+    } catch (error) {
+      return res.status(401).json({ message: 'Token inválido' });
+    }
+  },
+
+  createNewLibrarian: async (req, res) => {
+    const { nome, email, cfb, senha, confirmSenha } = req.body;
+
+    //Debug - verificar os dados recebidos
+    console.log('Dados recebidos no controller', { nome, email, cfb, senha, confirmSenha });
+
+    if (!senha) {
+      return res.status(400).json({ msg: "Senha é obrigatória"})
+    }
+
+    if (!email.includes("@" && ".com")) {
+      return res.status(400).json({ msg: "O email Não é valido (@)" });
+    }
+
+    if (senha != confirmSenha) {
+      return res.status(400).json({ msg: "As senhas não coincidem" });
+    }
+
+    // ... resto das validações ...
+
+    try {
+      const sql = await clientController.getByEmail(email);
+      const sqlConfirmCfb = await clientController.getByCfb(cfb);
+
+      if (sql.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O email já esta cadastrado no Banco de Dados" });
+      } 
+      
+      if (sqlConfirmCfb.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O CFB já esta cadastrado no Banco de Dados" });
+      } 
+
+      // Debug - Verificar os dados antes de chamar registerlibrarian
+      console.log('Dados antes de chamar registerlibrarian', { nome, email, cfb, senha });
+
+      const result = await clientController.registerLibrarian(nome, email, cfb, senha);
+      return res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
+
+    } catch (error) {
+      console.log('Erro ao cadastrar usuário', error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  loginLibrarian: async (req, res) => {
     let { email, senha } = req.body;
 
     try {
-      const sql = await clientController.validateLoginBiblio(email, senha);
+      const librarian = await clientController.validateLoginLibrarian(email, senha);
 
-      if (sql != null) {
-        res.status(200).json({ msg: "Email e senha validados com sucesso!!" });
+      if(librarian) {
+        //Criar o token JWT
+        const token = jwt.sign(
+          {
+            id: librarian.id,
+            email: librarian.email,
+            cfb: librarian.cfb
+          },
+          JWT_SECRET,
+          { expiresIn: '24h' } //Token expira em 24 horas.
+        );
+
+        //Remover dados sensiveis antes de enviar
+        const { senha: _, confirmSenha: __, ...librarianData } = librarian;
+
+        return res.json({
+          message: "Login realizado com sucesso",
+          token: token,
+          librarian: librarianData
+        });
       } else {
-        res.status(401).json({ msg: "Email ou senha incorretos" });
+        return res.status(401).json({
+          message: "Email ou senha inválidos"
+        });
       }
     } catch (error) {
-      if (error) {
-        console.log(error);
-        res.status(500).json(error);
-      }
+        console.log("Erro ao fazer login:", error);
+        return res.status(500).json({
+          message: "Erro ao fazer login"
+        });
+      
     }
   },
 

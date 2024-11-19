@@ -7,7 +7,6 @@ import Navigator from './src/Navigator/StartNavigator';
 import Home from './src/screens/Home/index';
 import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import SignInStudent from './src/screens/CreateAccount/CreateStudentAccount/SignInStudent';
 import Profile from './src/screens/Profile/index';
 import VerificationScreen from './src/screens/VerificationScreen';
 import NumberScreen from './src/screens/VerificationScreen/numberScreen';

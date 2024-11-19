@@ -1,6 +1,5 @@
 const connection = require("../config/db");
 const bcrypt = require("bcrypt");
-// const salt = 10;
 
 const useModel = {
   getByID: async (id) => {
@@ -26,7 +25,7 @@ const useModel = {
 
   getByCfb: async (rm) => {
     const [result] = await connection
-      .query("SELECT * FROM bibliotecario WHERE cfb=?", [rm])
+      .query("SELECT * FROM librarian WHERE cfb=?", [rm])
       .catch((erro) => console.log(erro));
     return result;
   },
@@ -36,27 +35,27 @@ const useModel = {
     console.log('Dados recebidos no model:', { nome, email, rm, senha });
 
     if (!senha) {
-        throw new Error('Senha é obrigatória');
+      throw new Error('Senha é obrigatória');
     }
 
     try {
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(senha, salt);
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(senha, salt);
 
-        const [result] = await connection
-            .query("INSERT INTO students (nome, email, rm, senha) VALUES (?,?,?,?)", [
-                nome,
-                email,
-                rm,
-                hashPassword
-            ]);
-            
-        return result;
+      const [result] = await connection
+        .query("INSERT INTO students (nome, email, rm, senha) VALUES (?,?,?,?)", [
+          nome,
+          email,
+          rm,
+          hashPassword
+        ]);
+
+      return result;
     } catch (error) {
-        console.error('Erro ao criar hash da senha:', error);
-        throw error;
+      console.error('Erro ao criar hash da senha:', error);
+      throw error;
     }
-},
+  },
 
   validateLoginStudents: async (email, senha) => {
     try {
@@ -66,14 +65,14 @@ const useModel = {
       );
 
       if (student.length === 0) {
-        return null; 
+        return null;
       }
 
       const isValid = await bcrypt.compare(senha, student[0].senha);
       if (isValid) {
         return student[0];
       } else {
-        return null; 
+        return null;
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -81,24 +80,36 @@ const useModel = {
     }
   },
 
-  registerBiblio: async (id, nome, email, cfb, senha) => {
-    const hashPassword = await bcrypt.hash(senha, salt);
+  registerLibrarian: async ( nome, email, cfb, senha) => { //Removido o parâmetro id que não estava sendo usado
+    //Debug - verificar os dados recebidos no model
+    console.log('Dados recebidos no model:', { nome, email, cfb, senha })
 
-    const [result] = await connection
-      .query("INSERT INTO bibliotecario values(?,?,?,?,?)", [
-        id,
-        nome,
-        email,
-        cfb,
-        hashPassword,
-      ])
-      .catch((erro) => console.log(erro));
-    return result;
+    if (!senha) {
+      throw new Error('Senha é obrigatória');
+    }
+
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(senha, salt);
+
+      const [result] = await connection
+        .query("INSERT INTO librarian (nome, email, cfb, senha) VALUES (?,?,?,?)", [
+          nome,
+          email,
+          cfb,
+          hashPassword
+        ]);
+
+      return result;
+    } catch (error) {
+      console.error('Erro ao criar hash da senha:', error);
+      throw error;
+    }
   },
 
-  validateLoginBiblio: async (email, senha) => {
+  validateLoginLibrarian: async (email, senha) => {
     const [result] = await connection.query(
-      "SELECT * FROM bibliotecario WHERE email=?",
+      "SELECT * FROM librarian WHERE email=?",
       [email]
     );
 

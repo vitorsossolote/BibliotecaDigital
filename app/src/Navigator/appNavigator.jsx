@@ -14,8 +14,7 @@ import LibrarianScreen from '../screens/LibrarianScreen';
 import LoginLibrarian from '../screens/Login/LoginLibrarian';
 import LoginStudent from '../screens/Login/LoginStudent';
 import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount';
-import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount';
-import SignInStudent from '../screens/CreateAccount/CreateStudentAccount/SignInStudent';
+import CreateLibrarianAccount from '../screens/CreateAccount/CreateLibrarianAccount';
 import ForgotPassword from '../screens/ForgotPassword';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
 

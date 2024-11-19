@@ -1,4 +1,5 @@
 import { useState } from "react";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, ScrollView, Platform } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -45,8 +46,8 @@ const LoginStudent = ({ navigation }) => {
         } catch (err) {
             console.error('Erro no login:', err);
             setError(
-                err.response?.data?.message || 
-                err.message || 
+                err.response?.data?.message ||
+                err.message ||
                 'Ocorreu um erro ao fazer login'
             );
             Alert.alert('Erro', err.response?.data?.message || 'Ocorreu um erro ao fazer login');
@@ -105,7 +106,7 @@ const LoginStudent = ({ navigation }) => {
             });
     }
 
-    function  LoginFirebaseAndSql() {
+    function LoginFirebaseAndSql() {
         signInFirebase();
         handleLogin();
     }
@@ -159,7 +160,7 @@ const LoginStudent = ({ navigation }) => {
                                     animate={{ translateX: 0 }}
                                     transition={{ duration: 4000, delay: 500 }}>
                                     <Button
-                                        onPress={handleLogin}
+                                        onPress={LoginFirebaseAndSql}
                                         size="md"
                                         variant="solid"
                                         action="primary"
