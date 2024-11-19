@@ -1,4 +1,6 @@
 const clientController = require("../model/models");
+const jwt = require('jsonwebtoken');
+
 
 const useController = {
   //Route root
@@ -9,14 +11,12 @@ const useController = {
   createNewStudent: async (req, res) => {
     const { nome, email, rm, senha, confirmSenha } = req.body;
     
-    // Debug - verificar os dados recebidos
     console.log('Dados recebidos no controller:', { nome, email, rm, senha, confirmSenha });
 
     if (!senha) {
         return res.status(400).json({ msg: "Senha é obrigatória" });
     }
 
-    // ... resto das validações ...
 
     try {
         const sql = await clientController.getByEmail(email);
@@ -51,22 +51,52 @@ const useController = {
 
     try {
       const student = await clientController.validateLoginStudents(email, senha);
+      
       if (student) {
-        return res.json({ 
-            message: "Login realizado com sucesso", 
-            student 
-        });
+          // Criar o token JWT
+          const token = jwt.sign(
+              { 
+                  id: student.id,
+                  email: student.email,
+                  rm: student.rm 
+              },
+          );
+
+          // Remover dados sensíveis antes de enviar
+          const { senha: _, confirmSenha: __, ...studentData } = student;
+
+          return res.json({
+              message: "Login realizado com sucesso",
+              token: token,
+              student: studentData
+          });
       } else {
-        return res.status(401).json({ 
-            message: "Email ou senha inválidos" 
-        });
+          return res.status(401).json({
+              message: "Email ou senha inválidos"
+          });
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Erro ao fazer login:", error);
-      return res.status(500).json({ 
-          message: "Erro ao fazer login" 
+      return res.status(500).json({
+          message: "Erro ao fazer login"
       });
-    }
+  }
+},
+// Middleware para verificar token
+  verifyToken: async (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Bearer TOKEN
+
+  if (!token) {
+      return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
+  try {
+      const decoded = jwt.verify(token);
+      req.user = decoded;
+      next();
+  } catch (error) {
+      return res.status(401).json({ message: 'Token inválido' });
+  }
 },
 
   createNewBiblio: async (req, res) => {

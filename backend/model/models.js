@@ -1,6 +1,5 @@
 const connection = require("../config/db");
 const bcrypt = require("bcrypt");
-// const salt = 10;
 
 const useModel = {
   getByID: async (id) => {
@@ -31,8 +30,7 @@ const useModel = {
     return result;
   },
 
-  registerStudent: async (nome, email, rm, senha) => {  // Removido o parâmetro id que não estava sendo usado
-    // Debug - verificar os dados recebidos no model
+  registerStudent: async (nome, email, rm, senha) => {  
     console.log('Dados recebidos no model:', { nome, email, rm, senha });
 
     if (!senha) {
@@ -66,15 +64,14 @@ const useModel = {
       );
 
       if (student.length === 0) {
-        return null; // Estudante não encontrado
+        return null; 
       }
 
-      // Aqui estava o erro: mudamos 'password' para 'senha'
       const isValid = await bcrypt.compare(senha, student[0].senha);
       if (isValid) {
-        return student[0]; // Retorna os dados do estudante
+        return student[0];
       } else {
-        return null; // Senha inválida
+        return null;
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
