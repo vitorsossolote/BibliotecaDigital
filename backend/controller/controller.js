@@ -13,13 +13,96 @@ const useController = {
   //Criar novo estudante
   createNewStudent: async (req, res) => {
     const { nome, email, rm, senha, confirmSenha } = req.body;
-
-    // Debug - verificar os dados recebidos
+    
     console.log('Dados recebidos no controller:', { nome, email, rm, senha, confirmSenha });
 
     if (!senha) {
       return res.status(400).json({ msg: "Senha é obrigatória" });
     }
+
+    try {
+        const sql = await clientController.getByEmail(email);
+        const sqlConfirmRm = await clientController.getByRm(rm);
+
+        if (sql.length > 0) {
+            return res
+                .status(401)
+                .json({ msg: "O email já está cadastrado no Banco de Dados" });
+        }
+
+        if (sqlConfirmRm.length > 0) {
+            return res
+                .status(401)
+                .json({ msg: "O RM já está cadastrado no Banco de Dados" });
+        }
+
+        console.log('Dados antes de chamar registerStudent:', { nome, email, rm, senha });
+        
+        const result = await clientController.registerStudent(nome, email, rm, senha);
+        return res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
+
+    } catch (error) {
+        console.error('Erro ao cadastrar usuário:', error);
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+},
+
+  loginStudent: async (req, res) => {
+    const { email, senha } = req.body;
+
+    try {
+      const student = await clientController.validateLoginStudents(email, senha);
+      
+      if (student) {
+          const token = jwt.sign(
+              { 
+                  id: student.id,
+                  email: student.email,
+                  rm: student.rm 
+              },
+              JWT_SECRET,
+              { expiresIn: '24h' } 
+          );
+
+          const { senha: _, confirmSenha: __, ...studentData } = student;
+
+          return res.json({
+              message: "Login realizado com sucesso",
+              token: token,
+              student: studentData
+          });
+      } else {
+          return res.status(401).json({
+              message: "Email ou senha inválidos"
+          });
+      }
+  } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      return res.status(500).json({
+          message: "Erro ao fazer login"
+      });
+  }
+},
+  verifyToken: async (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; 
+
+  if (!token) {
+      return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
+  try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      req.user = decoded;
+      next();
+  } catch (error) {
+      return res.status(401).json({ message: 'Token inválido' });
+  }
+},
+
+  createNewBiblio: async (req, res) => {
+    const { id, nome, email, cfb, senha, confirmSenha } = req.body;
+
+    console.log(req.body);
 
     if (!email.includes("@" && ".com")) {
       return res.status(400).json({ msg: "O email Não é valido (@)" });

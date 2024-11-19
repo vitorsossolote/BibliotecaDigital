@@ -5,7 +5,7 @@
 ## Lucide React-Native for Icons
 
 
-## Cores:
+# Cores:
 ## Vermelho Senai = #EE2D32
 ## Verde Disponivel = #34A853
 
@@ -14,7 +14,7 @@
 ## Instalado Gesture Handler | npm install --save react-native-gesture-handler
 ## Instalado Gorhom/BottomSheet | npm install @gorhom/bottom-sheet
 
-## Instalado Gluestack-ui/Themed, Gluestack-style & react-native-svg | npm i @gluestack-ui/themed @gluestack-style/raect react-native-svg@13.4.0 @gluestack-ui/config@lastest
+## Instalado Gluestack-ui/Themed, Gluestack-style & react-native-svg | npm i @gluestack-ui/themed @gluestack-style/react react-native-svg@13.4.0 @gluestack-ui/config
 ## Instalado Lucide React-Native | npm install lucide-react-native
 ## Instalado React-native-rating | npm i react-native-ratings
 

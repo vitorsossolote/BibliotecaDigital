@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         bottom: 20,
         right: 10,
-        elevation: 5,
+        // elevation: 5,
     },
     textContainer: {
         width: 240,
