@@ -3,13 +3,15 @@ const clientController = require("../controller/controller");
 const router = express.Router();
 
 router.get("/", clientController.getRoot);
+
 router.post("/api/createStudent", clientController.createNewStudent); //Cadastrar novo usuario
-router.post("/api/createBiblio", clientController.createNewBiblio); //Cadastrar novo Bibliotecario
-router.post("/api/loginStudent", clientController.loginStudent);
-router.post("/api/validadeBiblio", clientController.loginBiblio);//Validar o login
+router.post("/api/createLibrarian", clientController.createNewLibrarian); //Cadastrar novo Bibliotecario
+
+router.post("/api/loginStudent", clientController.loginStudent);//Validar o Login do Estudante
+router.post("/api/loginLibrarian", clientController.loginLibrarian);//Validar o Login do Bibliotecario
 
 //teste
-router.post("/api/validade", clientController.loginBiblio);
+// router.post("/api/validade", clientController.loginBiblio);
 
 // router.post("/api/contato", clientController.createNewMensagem)
 

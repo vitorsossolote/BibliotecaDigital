@@ -1,4 +1,5 @@
 import { useState } from "react";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, ScrollView, Platform } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -45,8 +46,8 @@ const LoginStudent = ({ navigation }) => {
         } catch (err) {
             console.error('Erro no login:', err);
             setError(
-                err.response?.data?.message || 
-                err.message || 
+                err.response?.data?.message ||
+                err.message ||
                 'Ocorreu um erro ao fazer login'
             );
             Alert.alert('Erro', err.response?.data?.message || 'Ocorreu um erro ao fazer login');
@@ -54,6 +55,78 @@ const LoginStudent = ({ navigation }) => {
             setLoading(false);
         }
     };
+
+    // function signInFirebase() {
+    //     auth()
+    //         .signInWithEmailAndPassword(email, senha)
+    //         .then(() => {
+    //             console.log('Usuário esta Autenticado');
+    //         })
+    //         .catch(error => {
+    //             if (error.code === 'auth/invalid-credential') {
+    //                 console.log('A credencial de autenticação fornecida está incorreta, malformada ou expirou');
+    //             }
+
+    //             if (error.code === 'auth/email-already-in-use') {
+    //                 console.log('Esse email já foi utilizado');
+    //             }
+
+    //             if (error.code === 'auth/invalid-email') {
+    //                 console.log('Esse email é invalido');
+    //             }
+
+    //             if (error.code === 'auth/app-deleted') {
+    //                 console.log('O banco de dados não foi localizado.');
+    //             }
+
+    //             if (error.code === 'auth/expired-action-code') {
+    //                 console.log('O código da ação o ou link expirou.');
+    //             }
+
+    //             if (error.code === 'auth/invalid-action-code') {
+    //                 console.log('O código da ação é inválido. Isso pode acontecer se o código estiver malformado ou já tiver sido usado.');
+    //             }
+
+    //             if (error.code === 'auth/user-disabled') {
+    //                 console.log('O usuário correspondente à credencial fornecida foi desativado.');
+    //             }
+
+    //             if (error.code === 'auth/user-not-found') {
+    //                 console.log('O usuário não correponde à nenhuma credencial.');
+    //             }
+
+    //             if (error.code === 'auth/weak-password') {
+    //                 console.log('A senha é muito fraca.');
+    //             }
+
+    //             if (error.code === 'auth/account-exists-with-different-credential') {
+    //                 console.log('E-mail já associado a outra conta.');
+    //             }
+    //             console.error(error);
+    //         });
+
+    //         if (response.data?.token && response.data?.student) {
+    //             await signIn(response.data.token, response.data.student);
+    //         } else {
+    //             throw new Error('Dados de resposta inválidos');
+    //         }
+    //     } catch (err) {
+    //         console.error('Erro no login:', err);
+    //         setError(
+    //             err.response?.data?.message || 
+    //             err.message || 
+    //             'Ocorreu um erro ao fazer login'
+    //         );
+    //         Alert.alert('Erro', err.response?.data?.message || 'Ocorreu um erro ao fazer login');
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    function LoginFirebaseAndSql() {
+        signInFirebase();
+        handleLogin();
+    }
 
     return (
         <GluestackUIProvider config={config}>

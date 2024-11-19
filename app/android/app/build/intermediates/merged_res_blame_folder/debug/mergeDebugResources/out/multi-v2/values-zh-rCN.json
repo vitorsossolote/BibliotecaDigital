@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-39:/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "com.app-mergeDebugResources-47:/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Vitor\\.gradle\\caches\\8.8\\transforms\\7a10f1cf6b11de846454d60bb446ea16\\transformed\\react-android-0.75.3-debug\\res\\values-zh-rCN\\values-zh-rCN.xml",

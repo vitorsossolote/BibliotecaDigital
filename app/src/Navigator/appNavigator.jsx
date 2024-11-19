@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useEffect, useState } from 'react';
 import {useAuth} from '../contexts/AuthContext';
 
-
+// Telas de Autenticação
 import UserSelectScreen from '../screens/UserSelectScreen';
 import StudentScreen from '../screens/StudentScreen';
 import LibrarianScreen from '../screens/LibrarianScreen';
@@ -15,11 +15,10 @@ import LoginLibrarian from '../screens/Login/LoginLibrarian';
 import LoginStudent from '../screens/Login/LoginStudent';
 import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount';
 import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount';
-import SignInStudent from '../screens/CreateAccount/CreateStudentAccount/SignInStudent';
 import ForgotPassword from '../screens/ForgotPassword';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
 
-
+// Telas do App
 import SearchAuthorScreen from '../screens/SearchScreen/author';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import Home from '../screens/Home';
@@ -31,11 +30,13 @@ import BorrowedBooks from '../screens/BorrowedBooks';
 import SearchGenderScreen from '../screens/SearchScreen/gender';
 import SearchScreen from '../screens/SearchScreen/search';
 import LoanHistory from '../screens/LoanHistory';
+import RegisterBooks from '../screens/RegisterBooks'
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Tab Navigator Component
 function HomeTabNavigator() {
   return (
     <Tab.Navigator
@@ -55,7 +56,7 @@ function HomeTabNavigator() {
       }}
     >
       <Tab.Screen 
-        name="HomeScreen"
+        name="Home"
         component={Home}
         options={{
           tabBarIcon: ({ focused, size }) => (
@@ -110,18 +111,19 @@ function HomeTabNavigator() {
   );
 }
 
+// Main Navigator Component
 export default function AppNavigator() {
     const { authData, loading } = useAuth();
 
     if (loading) {
-        return null; 
+        return null; // ou um componente de loading
     }
 
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 {!authData ? (
-
+                    // Auth Stack
                     <>
                         <Stack.Screen name="UserSelectScreen" component={UserSelectScreen} />
                         <Stack.Screen name="StudentScreen" component={StudentScreen} />
@@ -134,6 +136,7 @@ export default function AppNavigator() {
                         <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
                     </>
                 ) : (
+                    // App Stack
                     <>
                         <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
                         <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
@@ -143,6 +146,7 @@ export default function AppNavigator() {
                         <Stack.Screen name="SearchScreen" component={SearchScreen} />
                         <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
                         <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
+                        <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
                     </>
                 )}
             </Stack.Navigator>

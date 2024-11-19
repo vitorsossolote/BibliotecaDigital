@@ -71,9 +71,9 @@ const CreateStudentAccount = ({ navigation }) => {
                 Alert.alert('Ocorreu um erro ao cadastrar o usuário. Apresente um email valido.')
             }
         }
-    }
+    };
 
-    function signUp() {
+    function signUpFirebase() {
         auth()
             .createUserWithEmailAndPassword(email, senha)
             .then(() => {
@@ -118,13 +118,11 @@ const CreateStudentAccount = ({ navigation }) => {
                 }
                 console.error(error);
             });
-
-
     }
 
-    const cadastrarFireXamp = () => {
+    const cadastrarFirebaseAndSql = () => {
         handleCadastrar();
-        signUp();
+        signUpFirebase();
     }
 
     return (
@@ -219,7 +217,7 @@ const CreateStudentAccount = ({ navigation }) => {
                             <View style={styles.buttonContainer}>
                                 <Button 
                                     style={styles.buttonSolid}
-                                    onPress={cadastrarFireXamp}
+                                    onPress={cadastrarFirebaseAndSql}
                                 >
                                     <ButtonText>Criar Conta</ButtonText>
                                 </Button>

@@ -1,66 +1,67 @@
-//Tela de Favoritos
-//Bibliotecas Utilizadas
-import React, { useState } from "react"
-import { Center, View, Text } from "@gluestack-ui/themed"
-import { config } from "@gluestack-ui/config"
-import { GluestackUIProvider, Image, Divider } from "@gluestack-ui/themed"
-import { StyleSheet, SafeAreaView, ScrollView, Pressable } from "react-native"
+import React from "react"
+import { View, Text, Image, Pressable } from "@gluestack-ui/themed"
+import { StyleSheet, SafeAreaView, ScrollView } from "react-native"
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { MotiView } from 'moti'
 import MainHeader from "../../components/MainHeader/index"
 import { MoveLeft } from 'lucide-react-native'
-import { MotiView } from 'moti'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-//Componentes utilizados
 
-//Imagens Utilizadas
-import book from "../../../assets/book2.png"
+// Import your context
+import { useAuth } from "../../contexts/AuthContext";
 
-//Inicio do código
-export default function FavoritesScreen(navigation) {
-    const [isFavorited, setIsFavorited] = useState(true);
+export default function FavoritesScreen({navigation}) {
+    const { user, favorites, removeFromFavorites } = useAuth();
 
-    const handlePress = () => {
-        setIsFavorited(!isFavorited);
+    const renderFavoriteBooks = () => {
+        return favorites.map((book) => (
+            <View key={book.id} style={styles.contentContainer}>
+                <View style={styles.favoriteBookContainer}>
+                    <View style={styles.imageContainer}>
+                        {/* <Image source={{ uri: book.image }} style={styles.bookImage} /> */}
+                    </View>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.bookTitle}>{book.name}</Text>
+                        <Text style={styles.bookStatus}>{book.status}</Text>
+                    </View>
+                    <View>
+                        <Pressable 
+                            size="md" 
+                            bg="transparent" 
+                            onPress={() => removeFromFavorites(book.id)} 
+                            style={styles.iconContainer}
+                        >
+                            <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
+                                <Ionicons name="heart" size={30} color={"#ee2d32"} />
+                            </MotiView>
+                        </Pressable>
+                    </View>
+                </View>
+                <View style={styles.divider} />
+            </View>
+        ));
     };
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <MainHeader 
+                    title="Seus Favoritos" 
+                    icon1={MoveLeft} 
+                    onPress={() => navigation.navigate("Home")}
+                />
+            </View>
             <ScrollView>
-                <View style={styles.header}>
-                    <MainHeader title="Seus Favoritos" icon1={MoveLeft} />
-                </View>
-                <View style={styles.contentContainer}>
-                    <View style={styles.favoriteBookContainer}>
-                        <View style={styles.imageContainer}>
-                            <Image source={book} style={styles.bookImage} />
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.bookTitle}>The Kite Runner</Text>
-                            <Text style={styles.bookStatus}>Disponivel</Text>
-                        </View>
-                        <View>
-                            <Pressable size="md" bg="transparent" onPress={handlePress} style={styles.iconContainer}>
-                                {
-                                    isFavorited ? (
-                                        <>
-                                            <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
-                                                <Ionicons name="heart" size={30} color={"#ee2d32"} />
-                                            </MotiView>
-                                        </>
-                                    ) :
-                                        <><MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
-                                            <Ionicons name="heart-outline" size={30} color={"#ee2d32"} />
-                                        </MotiView>
-                                        </>
-                                }
-                            </Pressable>
-                        </View>
+                {favorites.length === 0 ? (
+                    <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyText}>Você não tem livros favoritos</Text>
                     </View>
-                    <View style={{ width: "130%",top:10,right:40,height:0.5, backgroundColor:"#c3c3c3" }} />
-                </View>
+                ) : (
+                    renderFavoriteBooks()
+                )}
             </ScrollView>
         </SafeAreaView>
     )
-};
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -104,6 +105,14 @@ const styles = StyleSheet.create({
     iconContainer: {
         alignSelf: "center",
     },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 50,
+    },
+    emptyText: {
+        fontSize: 18,
+        color: '#888',
+    }
 });
-
-

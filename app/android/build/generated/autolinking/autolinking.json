@@ -3,31 +3,6 @@
   "reactNativePath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native",
   "reactNativeVersion": "0.75",
   "dependencies": {
-    "@react-native-async-storage/async-storage": {
-      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage",
-      "name": "@react-native-async-storage/async-storage",
-      "platforms": {
-        "ios": {
-          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\RNCAsyncStorage.podspec",
-          "version": "1.24.0",
-          "configurations": [],
-          "scriptPhases": []
-        },
-        "android": {
-          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\android",
-          "packageImportPath": "import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;",
-          "packageInstance": "new AsyncStoragePackage()",
-          "buildTypes": [],
-          "libraryName": "rnasyncstorage",
-          "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
-          "cxxModuleCMakeListsModuleName": null,
-          "cxxModuleCMakeListsPath": null,
-          "cxxModuleHeaderName": null,
-          "isPureCxxDependency": false
-        }
-      }
-    },
     "@react-native-firebase/app": {
       "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app",
       "name": "@react-native-firebase/app",
@@ -85,13 +60,63 @@
         }
       }
     },
+    "react-native-vector-icons": {
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons",
+      "name": "react-native-vector-icons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\RNVectorIcons.podspec",
+          "version": "10.2.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\android",
+          "packageImportPath": "import com.oblador.vectoricons.VectorIconsPackage;",
+          "packageInstance": "new VectorIconsPackage()",
+          "buildTypes": [],
+          "libraryName": "RNVectorIconsSpec",
+          "componentDescriptors": [],
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-async-storage/async-storage": {
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage",
+      "name": "@react-native-async-storage/async-storage",
+      "platforms": {
+        "ios": {
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\RNCAsyncStorage.podspec",
+          "version": "1.24.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\android",
+          "packageImportPath": "import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;",
+          "packageInstance": "new AsyncStoragePackage()",
+          "buildTypes": [],
+          "libraryName": "rnasyncstorage",
+          "componentDescriptors": [],
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
     "@react-native-masked-view/masked-view": {
       "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view",
       "name": "@react-native-masked-view/masked-view",
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view\\RNCMaskedView.podspec",
-          "version": "0.3.1",
+          "version": "0.3.2",
           "configurations": [],
           "scriptPhases": []
         },
@@ -115,7 +140,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler\\RNGestureHandler.podspec",
-          "version": "2.20.2",
+          "version": "2.21.2",
           "configurations": [],
           "scriptPhases": []
         },
@@ -168,7 +193,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context\\react-native-safe-area-context.podspec",
-          "version": "4.11.0",
+          "version": "4.14.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -196,7 +221,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens\\RNScreens.podspec",
-          "version": "3.34.0",
+          "version": "4.2.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -215,6 +240,8 @@
             "RNSScreenStackComponentDescriptor",
             "RNSSearchBarComponentDescriptor",
             "RNSScreenComponentDescriptor",
+            "RNSScreenFooterComponentDescriptor",
+            "RNSScreenContentWrapperComponentDescriptor",
             "RNSModalScreenComponentDescriptor"
           ],
           "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-screens/android/src/main/jni/CMakeLists.txt",
@@ -231,7 +258,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg\\RNSVG.podspec",
-          "version": "13.14.1",
+          "version": "13.4.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -242,14 +269,13 @@
           "buildTypes": [],
           "libraryName": "rnsvg",
           "componentDescriptors": [
-            "RNSVGSvgViewAndroidComponentDescriptor",
             "RNSVGCircleComponentDescriptor",
             "RNSVGClipPathComponentDescriptor",
             "RNSVGDefsComponentDescriptor",
             "RNSVGEllipseComponentDescriptor",
             "RNSVGForeignObjectComponentDescriptor",
             "RNSVGGroupComponentDescriptor",
-            "RNSVGSvgViewComponentDescriptor",
+            "RNSVGImageComponentDescriptor",
             "RNSVGLinearGradientComponentDescriptor",
             "RNSVGLineComponentDescriptor",
             "RNSVGMarkerComponentDescriptor",
@@ -258,6 +284,7 @@
             "RNSVGPatternComponentDescriptor",
             "RNSVGRadialGradientComponentDescriptor",
             "RNSVGRectComponentDescriptor",
+            "RNSVGSvgViewComponentDescriptor",
             "RNSVGSymbolComponentDescriptor",
             "RNSVGTextComponentDescriptor",
             "RNSVGTextPathComponentDescriptor",
@@ -265,31 +292,6 @@
             "RNSVGUseComponentDescriptor"
           ],
           "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-svg/android/build/generated/source/codegen/jni/CMakeLists.txt",
-          "cxxModuleCMakeListsModuleName": null,
-          "cxxModuleCMakeListsPath": null,
-          "cxxModuleHeaderName": null,
-          "isPureCxxDependency": false
-        }
-      }
-    },
-    "react-native-vector-icons": {
-      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons",
-      "name": "react-native-vector-icons",
-      "platforms": {
-        "ios": {
-          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\RNVectorIcons.podspec",
-          "version": "10.2.0",
-          "configurations": [],
-          "scriptPhases": []
-        },
-        "android": {
-          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\android",
-          "packageImportPath": "import com.oblador.vectoricons.VectorIconsPackage;",
-          "packageInstance": "new VectorIconsPackage()",
-          "buildTypes": [],
-          "libraryName": "RNVectorIconsSpec",
-          "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
