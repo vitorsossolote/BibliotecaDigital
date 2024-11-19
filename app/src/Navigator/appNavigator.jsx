@@ -56,7 +56,7 @@ function HomeTabNavigator() {
       }}
     >
       <Tab.Screen 
-        name="HomeScreen"
+        name="Home"
         component={Home}
         options={{
           tabBarIcon: ({ focused, size }) => (

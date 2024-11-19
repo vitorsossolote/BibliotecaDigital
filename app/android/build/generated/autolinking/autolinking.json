@@ -231,7 +231,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg\\RNSVG.podspec",
-          "version": "13.14.1",
+          "version": "13.4.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -242,14 +242,13 @@
           "buildTypes": [],
           "libraryName": "rnsvg",
           "componentDescriptors": [
-            "RNSVGSvgViewAndroidComponentDescriptor",
             "RNSVGCircleComponentDescriptor",
             "RNSVGClipPathComponentDescriptor",
             "RNSVGDefsComponentDescriptor",
             "RNSVGEllipseComponentDescriptor",
             "RNSVGForeignObjectComponentDescriptor",
             "RNSVGGroupComponentDescriptor",
-            "RNSVGSvgViewComponentDescriptor",
+            "RNSVGImageComponentDescriptor",
             "RNSVGLinearGradientComponentDescriptor",
             "RNSVGLineComponentDescriptor",
             "RNSVGMarkerComponentDescriptor",
@@ -258,6 +257,7 @@
             "RNSVGPatternComponentDescriptor",
             "RNSVGRadialGradientComponentDescriptor",
             "RNSVGRectComponentDescriptor",
+            "RNSVGSvgViewComponentDescriptor",
             "RNSVGSymbolComponentDescriptor",
             "RNSVGTextComponentDescriptor",
             "RNSVGTextPathComponentDescriptor",

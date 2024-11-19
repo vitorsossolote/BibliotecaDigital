@@ -6,6 +6,7 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
     const [authData, setAuthData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         loadStorageData();
@@ -15,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const storedToken = await AsyncStorage.getItem('token');
             const storedUser = await AsyncStorage.getItem('userData');
-            
+
             if (storedToken && storedUser) {
                 setAuthData({
                     token: storedToken,
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
             await AsyncStorage.setItem('token', token);
             await AsyncStorage.setItem('userData', JSON.stringify(essentialUserData));
-            
+
             setAuthData({
                 token,
                 user: essentialUserData
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
 
     const signOut = async () => {
         try {
-            await AsyncStorage.multiRemove(['token', 'userData']);
+            await AsyncStorage.multiRemove(['token', 'userData',]);
             setAuthData(null);
         } catch (error) {
             console.error('Error signing out:', error);
@@ -78,7 +79,7 @@ export const AuthProvider = ({ children }) => {
             };
 
             await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
-            
+
             setAuthData({
                 ...authData,
                 user: updatedUserData
@@ -88,6 +89,42 @@ export const AuthProvider = ({ children }) => {
             throw error;
         }
     };
+    // Add to favorites
+    const addToFavorites = async (book) => {
+        const updatedFavorites = [...favorites, book];
+        setFavorites(updatedFavorites);
+        await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    };
+
+    // Remove from favorites
+    const removeFromFavorites = async (bookId) => {
+        const updatedFavorites = favorites.filter(book => book.id !== bookId);
+        setFavorites(updatedFavorites);
+        await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    };
+
+    // Check if book is in favorites
+    const checkFavoriteStatus = (bookId) => {
+        return favorites.some(book => book.id === bookId);
+    };
+
+    // Load user and favorites on app start
+    useEffect(() => {
+        const loadStoredData = async () => {
+            const storedUser = await AsyncStorage.getItem('authData');
+            const storedFavorites = await AsyncStorage.getItem('favorites');
+
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+            }
+
+            if (storedFavorites) {
+                setFavorites(JSON.parse(storedFavorites));
+            }
+        };
+
+        loadStoredData();
+    }, []);
 
     // Função para verificar se o token ainda é válido
     const isAuthenticated = () => {
@@ -95,14 +132,18 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider 
-            value={{ 
-                authData, 
-                loading, 
-                signIn, 
-                signOut, 
+        <AuthContext.Provider
+            value={{
+                authData,
+                loading,
+                signIn,
+                signOut,
                 updateUserData,
                 isAuthenticated,
+                favorites,
+                addToFavorites,
+                removeFromFavorites,
+                checkFavoriteStatus,
                 // Helpers para acessar dados comuns
                 user: authData?.user || null,
                 token: authData?.token || null,
