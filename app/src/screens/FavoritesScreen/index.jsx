@@ -17,7 +17,7 @@ export default function FavoritesScreen({navigation}) {
             <View key={book.id} style={styles.contentContainer}>
                 <View style={styles.favoriteBookContainer}>
                     <View style={styles.imageContainer}>
-                        {/* <Image source={{ uri: book.image }} style={styles.bookImage} /> */}
+                        <Image source={book.image} style={styles.bookImage} />
                     </View>
                     <View style={styles.textContainer}>
                         <Text style={styles.bookTitle}>{book.name}</Text>

@@ -113,7 +113,8 @@ function HomeTabNavigator() {
 
 // Main Navigator Component
 export default function AppNavigator() {
-    const { authData, loading } = useAuth();
+    const { authData, loading } = useAuth(null);
+    
 
     if (loading) {
         return null; // ou um componente de loading
@@ -147,6 +148,7 @@ export default function AppNavigator() {
                         <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
                         <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
                         <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
+                        
                     </>
                 )}
             </Stack.Navigator>
