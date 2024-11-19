@@ -73,7 +73,7 @@ const CreateStudentAccount = ({ navigation }) => {
         }
     }
 
-    function signUp() {
+    function signUpFirebase() {
         auth()
             .createUserWithEmailAndPassword(email, senha)
             .then(() => {
@@ -124,7 +124,7 @@ const CreateStudentAccount = ({ navigation }) => {
 
     const cadastrarFireXamp = () => {
         handleCadastrar();
-        signUp();
+        signUpFirebase();
     }
 
     return (
@@ -219,7 +219,7 @@ const CreateStudentAccount = ({ navigation }) => {
                             <View style={styles.buttonContainer}>
                                 <Button 
                                     style={styles.buttonSolid}
-                                    onPress={cadastrarFireXamp}
+                                    onPress={handleCadastrar}
                                 >
                                     <ButtonText>Criar Conta</ButtonText>
                                 </Button>

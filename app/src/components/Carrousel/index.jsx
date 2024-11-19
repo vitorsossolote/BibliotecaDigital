@@ -26,6 +26,7 @@ const MyCarousel = ({ data }) => {
                         unSelectedColor="#000"
                         starContainerStyle={styles.starRating}
                         readonly={false}
+                        isDisabled={true}
                     />
                 <Button style={styles.Button}
                     size="md"
