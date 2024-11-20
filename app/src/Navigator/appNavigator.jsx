@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useEffect, useState } from 'react';
-import {useAuth} from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 // Telas de Autenticação
 import UserSelectScreen from '../screens/UserSelectScreen';
@@ -32,6 +32,9 @@ import SearchScreen from '../screens/SearchScreen/search';
 import LoanHistory from '../screens/LoanHistory';
 import RegisterBooks from '../screens/RegisterBooks'
 
+//Components
+import { MotiView } from 'moti';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,6 +42,7 @@ const Tab = createBottomTabNavigator();
 // Tab Navigator Component
 function HomeTabNavigator() {
   return (
+    
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
@@ -55,55 +59,63 @@ function HomeTabNavigator() {
         }
       }}
     >
-      <Tab.Screen 
+      <Tab.Screen
         name="Home"
         component={Home}
         options={{
           tabBarIcon: ({ focused, size }) => (
-            <Ionicons 
-              name={focused ? "home" : "home-outline"} 
-              size={focused ? 26 : size} 
-              color="#ee2d32" 
-            />
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "home" : "home-outline"}
+                size={focused ? 26 : size}
+                color="#ee2d32"
+              />
+            </MotiView>
           )
         }}
       />
-      <Tab.Screen 
-        name="LoanScreen" 
+      <Tab.Screen
+        name="LoanScreen"
         component={LoanScreen}
         options={{
           tabBarIcon: ({ focused, size }) => (
-            <Ionicons 
-              name={focused ? "receipt" : "receipt-outline"} 
-              size={focused ? 26 : size} 
-              color="#ee2d32" 
-            />
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "receipt" : "receipt-outline"}
+                size={focused ? 26 : size}
+                color="#ee2d32"
+              />
+            </MotiView>
           )
         }}
       />
-      <Tab.Screen 
-        name="Favorites" 
+      <Tab.Screen
+        name="Favorites"
         component={FavoritesScreen}
         options={{
           tabBarIcon: ({ focused, size }) => (
-            <Ionicons 
-              name={focused ? "heart" : "heart-outline"} 
-              size={focused ? 26 : size} 
-              color="#ee2d32" 
-            />
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "heart" : "heart-outline"}
+                size={focused ? 26 : size}
+                color="#ee2d32"
+              />
+            </MotiView>
           )
         }}
       />
-      <Tab.Screen 
-        name="Profile" 
+      <Tab.Screen
+        name="Profile"
         component={Profile}
         options={{
           tabBarIcon: ({ focused, size }) => (
-            <Ionicons 
-              name={focused ? "person" : "person-outline"} 
-              size={focused ? 26 : size} 
-              color="#ee2d32" 
-            />
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "person" : "person-outline"}
+                size={focused ? 26 : size}
+                color="#ee2d32"
+              />
+            </MotiView>
           )
         }}
       />
@@ -113,45 +125,45 @@ function HomeTabNavigator() {
 
 // Main Navigator Component
 export default function AppNavigator() {
-    const { authData, loading } = useAuth(null);
-    
+  const { authData, loading } = useAuth(null);
 
-    if (loading) {
-        return null; // ou um componente de loading
-    }
 
-    return (
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {!authData ? (
-                    // Auth Stack
-                    <>
-                        <Stack.Screen name="UserSelectScreen" component={UserSelectScreen} />
-                        <Stack.Screen name="StudentScreen" component={StudentScreen} />
-                        <Stack.Screen name="LibrarianScreen" component={LibrarianScreen} />
-                        <Stack.Screen name="LoginLibrarian" component={LoginLibrarian} />
-                        <Stack.Screen name="LoginStudent" component={LoginStudent} />
-                        <Stack.Screen name="CreateStudent" component={CreateStudentAccount} />
-                        <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} />
-                        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-                        <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
-                    </>
-                ) : (
-                    // App Stack
-                    <>
-                        <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
-                        <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
-                        <Stack.Screen name="LoanHistory" component={LoanHistory} />
-                        <Stack.Screen name="SearchAuthorScreen" component={SearchAuthorScreen} />
-                        <Stack.Screen name="SearchGenderScreen" component={SearchGenderScreen} />
-                        <Stack.Screen name="SearchScreen" component={SearchScreen} />
-                        <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
-                        <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
-                        <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
-                        
-                    </>
-                )}
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+  if (loading) {
+    return null; // ou um componente de loading
+  }
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {!authData ? (
+          // Auth Stack
+          <>
+            <Stack.Screen name="UserSelectScreen" component={UserSelectScreen} />
+            <Stack.Screen name="StudentScreen" component={StudentScreen} />
+            <Stack.Screen name="LibrarianScreen" component={LibrarianScreen} />
+            <Stack.Screen name="LoginLibrarian" component={LoginLibrarian} />
+            <Stack.Screen name="LoginStudent" component={LoginStudent} />
+            <Stack.Screen name="CreateStudent" component={CreateStudentAccount} />
+            <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
+          </>
+        ) : (
+          // App Stack
+          <>
+            <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
+            <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
+            <Stack.Screen name="LoanHistory" component={LoanHistory} />
+            <Stack.Screen name="SearchAuthorScreen" component={SearchAuthorScreen} />
+            <Stack.Screen name="SearchGenderScreen" component={SearchGenderScreen} />
+            <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
+            <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
+            <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
+
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
