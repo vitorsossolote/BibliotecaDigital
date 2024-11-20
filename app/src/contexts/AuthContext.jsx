@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }) => {
                     token: storedToken,
                     user: JSON.parse(storedUser)
                 });
-                // Carrega os favoritos após carregar os dados do usuário
                 await loadFavorites();
             }
         } catch (error) {

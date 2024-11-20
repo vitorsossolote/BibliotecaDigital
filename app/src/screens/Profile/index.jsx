@@ -75,7 +75,7 @@ export default function Profile({ navigation }) {
                     </Pressable>
                 </View>
                 <View style={styles.userInfoContainer}>
-                    <Text style={styles.userNameText}>{user.nome}</Text>
+                    <Text style={styles.userNameText}>a</Text>
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>

@@ -46,7 +46,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // Tab Navigator Component
-function HomeTabNavigator() {
+function HomeTabStudentNavigator() {
   const scrollY = useSharedValue(0);
   const [isTabBarVisible, setIsTabBarVisible] = useState(false);
 
@@ -113,7 +113,7 @@ function HomeTabNavigator() {
               <Ionicons
                 name={focused ? "home" : "home-outline"}
                 size={focused ? 26 : size}
-                color="#ee2d32"
+                color={focused ? "#ee2d32" : "#a6a6a6"}
               />
             </MotiView>
           )
@@ -128,7 +128,7 @@ function HomeTabNavigator() {
               <Ionicons
                 name={focused ? "receipt" : "receipt-outline"}
                 size={focused ? 26 : size}
-                color="#ee2d32"
+                color={focused ? "#ee2d32" : "#a6a6a6"}
               />
             </MotiView>
           )
@@ -143,7 +143,7 @@ function HomeTabNavigator() {
               <Ionicons
                 name={focused ? "heart" : "heart-outline"}
                 size={focused ? 26 : size}
-                color="#ee2d32"
+                color={focused ? "#ee2d32" : "#a6a6a6"}
               />
             </MotiView>
           )
@@ -158,7 +158,7 @@ function HomeTabNavigator() {
               <Ionicons
                 name={focused ? "person" : "person-outline"}
                 size={focused ? 26 : size}
-                color="#ee2d32"
+                color={focused ? "#ee2d32" : "#a6a6a6"}
               />
             </MotiView>
           )
@@ -168,6 +168,127 @@ function HomeTabNavigator() {
   );
 }
 
+function HomeTabLibrarianNavigator() {
+  const scrollY = useSharedValue(0);
+  const [isTabBarVisible, setIsTabBarVisible] = useState(false);
+
+  // Delay tab bar visibility
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTabBarVisible(true);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    }
+  });
+
+  const tabBarAnimatedStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      scrollY.value,
+      [0, 50], // Ajuste esses valores para sensibilidade do scroll
+      [0, 100], 
+      Extrapolation.CLAMP
+    );
+
+    return {
+      transform: [{ translateY: -translateY }],
+      opacity: interpolate(
+        scrollY.value,
+        [0, 50], 
+        [1, 0], 
+        Extrapolation.CLAMP
+      )
+    };
+  });
+  return (
+    
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            position: 'absolute',
+            backgroundColor: "#fff",
+            borderTopWidth: 0,
+            bottom: 14,
+            marginHorizontal: 20,
+            elevation: 1,
+            borderRadius: 30,
+            height: 60,
+          },
+          isTabBarVisible ? tabBarAnimatedStyle : { display: 'none' }
+        ]
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ focused, size }) => (
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "home" : "home-outline"}
+                size={focused ? 26 : size}
+                color={focused ? "#ee2d32" : "#a6a6a6"}
+              />
+            </MotiView>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="LoanScreen"
+        component={LoanScreen}
+        options={{
+          tabBarIcon: ({ focused, size }) => (
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "receipt" : "receipt-outline"}
+                size={focused ? 26 : size}
+                color={focused ? "#ee2d32" : "#a6a6a6"}
+              />
+            </MotiView>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="RegisterBooks"
+        component={RegisterBooks}
+        options={{
+          tabBarIcon: ({ focused, size }) => (
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "add-circle" : "add-circle-outline"}
+                size={focused ? 30 : size}
+                color={focused ? "#ee2d32" : "#a6a6a6"}
+              />
+            </MotiView>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ focused, size }) => (
+            <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
+              <Ionicons
+                name={focused ? "person" : "person-outline"}
+                size={focused ? 26 : size}
+                color={focused ? "#ee2d32" : "#a6a6a6"}
+              />
+            </MotiView>
+          )
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 // Main Navigator Component
 export default function AppNavigator() {
   const { authData, loading, authLibrarianData} = useAuth(null);
@@ -183,7 +304,7 @@ export default function AppNavigator() {
         {authLibrarianData ? (
           // Librarian Routes
           <>
-            <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
+            <Stack.Screen name="HomeTabLibrarian" component={HomeTabLibrarianNavigator} />
             <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
             <Stack.Screen name="LoanHistory" component={LoanHistory} />
             <Stack.Screen name="SearchAuthorScreen" component={SearchAuthorScreen} />
@@ -196,7 +317,7 @@ export default function AppNavigator() {
         ) : authData ? (
           // Student Routes
           <>
-            <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
+            <Stack.Screen name="HomeTabStudentNavigator" component={HomeTabStudentNavigator} />
             <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
             <Stack.Screen name="LoanHistory" component={LoanHistory} />
             <Stack.Screen name="SearchAuthorScreen" component={SearchAuthorScreen} />
