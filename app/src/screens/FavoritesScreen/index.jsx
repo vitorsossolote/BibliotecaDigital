@@ -21,7 +21,7 @@ export default function FavoritesScreen({navigation}) {
                     </View>
                     <View style={styles.textContainer}>
                         <Text style={styles.bookTitle}>{book.name}</Text>
-                        <Text style={styles.bookStatus}>{book.status}</Text>
+                        <Text style={[styles.bookStatus,{ color: book.status.toLowerCase() === 'disponivel' ? '#34A853' : '#ee2d32' }]}>{book.status}</Text>
                     </View>
                     <View>
                         <Pressable 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     contentContainer: {
-        margin: 20,
+        marginHorizontal: 20,
         padding: 20,
     },
     favoriteBookContainer: {
@@ -86,11 +86,10 @@ const styles = StyleSheet.create({
     },
     bookImage: {
         borderRadius: 15,
-
     },
     textContainer: {
-        right: 20,
         gap: 6,
+        width:"70%"
     },
     bookTitle: {
         color: "#000",

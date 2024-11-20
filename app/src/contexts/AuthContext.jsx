@@ -12,11 +12,27 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         Promise.all([
             loadStorageData(),
-            loadLibrarianStorageData()
+            loadLibrarianStorageData(),
+            loadFavorites()
         ]).finally(() => {
             setLoading(false);
         });
     }, []);
+
+    const loadFavorites = async () => {
+        try {
+            const userData = await AsyncStorage.getItem('userData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                const userFavorites = await AsyncStorage.getItem(`favorites_${user.id}`);
+                if (userFavorites) {
+                    setFavorites(JSON.parse(userFavorites));
+                }
+            }
+        } catch (error) {
+            console.error('Error loading favorites:', error);
+        }
+    };
 
     async function loadStorageData() {
         try {
@@ -28,6 +44,8 @@ export const AuthProvider = ({ children }) => {
                     token: storedToken,
                     user: JSON.parse(storedUser)
                 });
+                // Carrega os favoritos após carregar os dados do usuário
+                await loadFavorites();
             }
         } catch (error) {
             console.error('Error loading storage data:', error);
@@ -102,6 +120,9 @@ export const AuthProvider = ({ children }) => {
                 token,
                 user: essentialUserData
             });
+
+            // Carrega os favoritos do usuário após o login
+            await loadFavorites();
         } catch (error) {
             console.error('Error storing auth data:', error);
             throw error;
@@ -113,23 +134,53 @@ export const AuthProvider = ({ children }) => {
             await AsyncStorage.multiRemove(['token', 'userData','librarianToken', 'librarianData']);
             setAuthData(null);
             setAuthLibrarianData(null);
+            setFavorites([]);
         } catch (error) {
             console.error('Error signing out:', error);
             throw error;
         }
     };
+    
     // Add to favorites
     const addToFavorites = async (book) => {
-        const updatedFavorites = [...favorites, book];
-        setFavorites(updatedFavorites);
-        await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        try {
+            if (!authData?.user?.id) {
+                throw new Error('Usuário não está autenticado');
+            }
+
+            const updatedFavorites = [...favorites, book];
+            setFavorites(updatedFavorites);
+            
+            // Salva os favoritos com o ID do usuário
+            await AsyncStorage.setItem(
+                `favorites_${authData.user.id}`,
+                JSON.stringify(updatedFavorites)
+            );
+        } catch (error) {
+            console.error('Error adding to favorites:', error);
+            throw error;
+        }
     };
 
     // Remove from favorites
     const removeFromFavorites = async (bookId) => {
-        const updatedFavorites = favorites.filter(book => book.id !== bookId);
-        setFavorites(updatedFavorites);
-        await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        try {
+            if (!authData?.user?.id) {
+                throw new Error('Usuário não está autenticado');
+            }
+
+            const updatedFavorites = favorites.filter(book => book.id !== bookId);
+            setFavorites(updatedFavorites);
+            
+            // Atualiza os favoritos no AsyncStorage
+            await AsyncStorage.setItem(
+                `favorites_${authData.user.id}`,
+                JSON.stringify(updatedFavorites)
+            );
+        } catch (error) {
+            console.error('Error removing from favorites:', error);
+            throw error;
+        }
     };
 
     // Check if book is in favorites
