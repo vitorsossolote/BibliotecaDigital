@@ -31,7 +31,6 @@ const useModel = {
   },
 
   registerStudent: async (nome, email, rm, senha) => {  
-    console.log('Dados recebidos no model:', { nome, email, rm, senha });
 
     if (!senha) {
       throw new Error('Senha é obrigatória');
@@ -79,9 +78,7 @@ const useModel = {
     }
   },
 
-  registerLibrarian: async ( nome, email, cfb, senha) => { //Removido o parâmetro id que não estava sendo usado
-    //Debug - verificar os dados recebidos no model
-    console.log('Dados recebidos no model:', { nome, email, cfb, senha })
+  registerLibrarian: async ( nome, email, cfb, senha) => {
 
     if (!senha) {
       throw new Error('Senha é obrigatória');
@@ -114,12 +111,12 @@ const useModel = {
 
     try {
       if (result.length > 0) {
-        const cliente = result[0];
+        const librarian = result[0];
 
-        const match = await bcrypt.compare(senha, cliente.senha);
+        const match = await bcrypt.compare(senha, librarian.senha);
 
         if (match) {
-          return result;
+          return result[0]
         } else {
           return null;
         }

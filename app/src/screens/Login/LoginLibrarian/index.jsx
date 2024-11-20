@@ -18,7 +18,7 @@ import { CommonActions } from '@react-navigation/native';
 import { useAuth } from "../../../contexts/AuthContext";
 
 const LoginLibrarian = ({ navigation }) => {
-    const { signIn } = useAuth();
+    const { signInLibrarian } = useAuth();
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false);
@@ -26,33 +26,23 @@ const LoginLibrarian = ({ navigation }) => {
 
     const handleLogin = async () => {
         try {
-            setLoading(true);
-            setError('');
-
-            if (!email || !senha) {
-                throw new Error('Por favor, preencha todos os campos');
-            }
-
+            console.log('Tentando login com:', { email, senha });
             const response = await axios.post('http://10.0.2.2:8085/api/loginLibrarian', {
                 email,
                 senha,
             });
-
-            if (response.data?.token && response.data?.librarian) {
-                await signIn(response.data.token, response.data.librarian);
+    
+            console.log('Resposta do login:', response.data);
+    
+            if (response.data?.librarianToken && response.data?.librarian) {
+                await signInLibrarian(response.data.librarianToken, response.data.librarian);
             } else {
+                console.error('Dados de resposta inválidos:', response.data);
                 throw new Error('Dados de resposta inválidos');
             }
         } catch (err) {
-            console.error('Erro no login:', err);
-            setError(
-                err.response?.data?.message ||
-                err.message ||
-                'Ocorreu um erro ao fazer login'
-            );
+            console.error('Erro detalhado no login:', err.response?.data || err.message);
             Alert.alert('Erro', err.response?.data?.message || 'Ocorreu um erro ao fazer login');
-        } finally {
-            setLoading(false);
         }
     };
 

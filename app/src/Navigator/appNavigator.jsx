@@ -4,9 +4,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-
+import Animated, { 
+  useAnimatedScrollHandler, 
+  useSharedValue,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolation 
+} from 'react-native-reanimated';
 // Telas de Autenticação
 import UserSelectScreen from '../screens/UserSelectScreen';
 import StudentScreen from '../screens/StudentScreen';
@@ -41,22 +47,61 @@ const Tab = createBottomTabNavigator();
 
 // Tab Navigator Component
 function HomeTabNavigator() {
+  const scrollY = useSharedValue(0);
+  const [isTabBarVisible, setIsTabBarVisible] = useState(false);
+
+  // Delay tab bar visibility
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTabBarVisible(true);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    }
+  });
+
+  const tabBarAnimatedStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      scrollY.value,
+      [0, 50], // Ajuste esses valores para sensibilidade do scroll
+      [0, 100], 
+      Extrapolation.CLAMP
+    );
+
+    return {
+      transform: [{ translateY: -translateY }],
+      opacity: interpolate(
+        scrollY.value,
+        [0, 50], 
+        [1, 0], 
+        Extrapolation.CLAMP
+      )
+    };
+  });
   return (
     
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: {
-          position: 'absolute',
-          backgroundColor: "#fff",
-          borderTopWidth: 0,
-          bottom: 14,
-          marginHorizontal: 20,
-          elevation: 1,
-          borderRadius: 30,
-          height: 60,
-        }
+        tabBarStyle: [
+          {
+            position: 'absolute',
+            backgroundColor: "#fff",
+            borderTopWidth: 0,
+            bottom: 14,
+            marginHorizontal: 20,
+            elevation: 1,
+            borderRadius: 30,
+            height: 60,
+          },
+          isTabBarVisible ? tabBarAnimatedStyle : { display: 'none' }
+        ]
       }}
     >
       <Tab.Screen
@@ -125,8 +170,8 @@ function HomeTabNavigator() {
 
 // Main Navigator Component
 export default function AppNavigator() {
-  const { authData, loading } = useAuth(null);
-
+  const { authData, loading, authLibrarianData} = useAuth(null);
+  
 
   if (loading) {
     return null; // ou um componente de loading
@@ -135,21 +180,8 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!authData ? (
-          // Auth Stack
-          <>
-            <Stack.Screen name="UserSelectScreen" component={UserSelectScreen} />
-            <Stack.Screen name="StudentScreen" component={StudentScreen} />
-            <Stack.Screen name="LibrarianScreen" component={LibrarianScreen} />
-            <Stack.Screen name="LoginLibrarian" component={LoginLibrarian} />
-            <Stack.Screen name="LoginStudent" component={LoginStudent} />
-            <Stack.Screen name="CreateStudent" component={CreateStudentAccount} />
-            <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-            <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
-          </>
-        ) : (
-          // App Stack
+        {authLibrarianData ? (
+          // Librarian Routes
           <>
             <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
             <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
@@ -160,7 +192,32 @@ export default function AppNavigator() {
             <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
             <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
             <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
-
+          </>
+        ) : authData ? (
+          // Student Routes
+          <>
+            <Stack.Screen name="MainTabs" component={HomeTabNavigator} />
+            <Stack.Screen name="AuthorsScreen" component={AuthorsScreen} />
+            <Stack.Screen name="LoanHistory" component={LoanHistory} />
+            <Stack.Screen name="SearchAuthorScreen" component={SearchAuthorScreen} />
+            <Stack.Screen name="SearchGenderScreen" component={SearchGenderScreen} />
+            <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
+            <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
+            <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
+          </>
+        ) : (
+          // Authentication Routes
+          <>
+            <Stack.Screen name="UserSelectScreen" component={UserSelectScreen} />
+            <Stack.Screen name="StudentScreen" component={StudentScreen} />
+            <Stack.Screen name="LibrarianScreen" component={LibrarianScreen} />
+            <Stack.Screen name="LoginLibrarian" component={LoginLibrarian} />
+            <Stack.Screen name="LoginStudent" component={LoginStudent} />
+            <Stack.Screen name="CreateStudent" component={CreateStudentAccount} />
+            <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
           </>
         )}
       </Stack.Navigator>

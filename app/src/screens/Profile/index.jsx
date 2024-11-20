@@ -27,6 +27,7 @@ import profileIcon from "../../../assets/ProfileIcon.png"
 export default function Profile({ navigation }) {
 
     const { user } = useAuth();
+    const { librarian } = useAuth();
 
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["56%","90%"], [])
@@ -35,14 +36,16 @@ export default function Profile({ navigation }) {
     const handleOpenPress = () => bottomSheetref.current?.expand();
 
     const { signOut } = useAuth();
+    const { signOutLibrarian} = useAuth();
     const handleLogout = async () => {
         try {
             await signOut();
+            await signOutLibrarian();
             handleCloseAction();
 
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'StudentScreen' }],
+                routes: [{ name: 'UserSelectScreen' }],
             });
 
             Alert.alert('Sucesso', 'Você foi desconectado com sucesso!');
@@ -72,7 +75,7 @@ export default function Profile({ navigation }) {
                     </Pressable>
                 </View>
                 <View style={styles.userInfoContainer}>
-                    <Text style={styles.userNameText}>{user.nome}</Text>
+                    <Text style={styles.userNameText}>{librarian.nome}</Text>
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
