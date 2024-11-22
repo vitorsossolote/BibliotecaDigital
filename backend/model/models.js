@@ -23,6 +23,13 @@ const useModel = {
     return result;
   },
 
+  getByBookCode: async (codigo) => {
+    const [result] = await connection
+      .query("SELECT * FROM livros WHERE codigo=?", [codigo])
+      .catch((erro)=> console.log(erro))
+    return result;
+  },
+
   getByCfb: async (rm) => {
     const [result] = await connection
       .query("SELECT * FROM librarian WHERE cfb=?", [rm])
@@ -63,14 +70,14 @@ const useModel = {
       );
 
       if (student.length === 0) {
-        return null;
+        return null; 
       }
 
       const isValid = await bcrypt.compare(senha, student[0].senha);
       if (isValid) {
         return student[0];
       } else {
-        return null;
+        return null; 
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -154,6 +161,32 @@ const useModel = {
     
     // Outros métodos para manipulação de livros podem ser adicionados aqui
   
+  registerBooks: async (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) => {  
+
+    if (!codigo) {
+      throw new Error('O código é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO livros (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)", [
+          image, 
+          titulo, 
+          descricao, 
+          autor, 
+          editora, 
+          genero, 
+          quantidade, 
+          codigo, 
+          avaliacao, 
+          estado
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
 
   // registerMensagem: async (id, nome, numero, email, mensagem) =>{
   //     const [result] = await connection.query("INSERT INTO contato values(?,?,?,?,?)", [id, nome, numero, email, mensagem])

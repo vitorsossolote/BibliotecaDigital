@@ -33,9 +33,10 @@
 ## file loader for typesScript | npm install --save-dev file-loader
 ## react-native-svg | npm i react-native-svg
 ## react-native async storage | npm install @react-native-async-storage/async-storage
+## image crop picker | npm i react-native-image-crop-picker --save
 ## jwt | npm i jsonwebtoken
 
 
 
 # ALL NPM CODES : 
-# npm install react-native-reanimated react-native-gesture-handler @gorhom/bottom-sheet @gluestack-ui/themed @gluestack-style/react react-native-svg@13.4.0 @gluestack-ui/config lucide-react-native react-native-ratings npm install react-native-snap-carousel npm install axios npm install @react-navigation/native react-native-screens react-native-safe-area-context @react-navigation/stack @react-navigation/native-stack @react-native-masked-view/masked-view react-native-otp-entry --save-dev file-loader react-native-svg @react-native-async-storage/async-storage jsonwebtoken
+# npm install react-native-reanimated react-native-gesture-handler @gorhom/bottom-sheet @gluestack-ui/themed @gluestack-style/react react-native-svg@13.4.0 @gluestack-ui/config lucide-react-native react-native-ratings react-native-snap-carousel axios @react-navigation/native react-native-screens react-native-safe-area-context @react-navigation/stack @react-navigation/native-stack @react-native-masked-view/masked-view react-native-otp-entry --save-dev file-loader react-native-svg @react-native-async-storage/async-storage jsonwebtoken

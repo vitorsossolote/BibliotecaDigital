@@ -4,7 +4,7 @@ import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import AppNavigator, { HomeTabNavigator } from './src/Navigator/appNavigator';
+import AppNavigator from './src/Navigator/appNavigator';
 import { AuthProvider } from './src/contexts/AuthContext';
 
 

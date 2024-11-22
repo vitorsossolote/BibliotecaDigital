@@ -13,6 +13,7 @@ router.post("/api/loginLibrarian", clientController.loginLibrarian);//Validar o 
 router.get("/api/listBooks", clientController.listarLivros); //Listar todos os livros
 router.get("/api/listBooks/:id", clientController.ListarLivrosByID); //Listar livros por ID
 router.get('/api/searchLivros/:searchTerm', clientController.searchLivros);
+router.post("/api/registerBook", clientController.registerBook);
 
 //teste
 // router.post("/api/validade", clientController.loginBiblio);

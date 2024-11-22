@@ -2,11 +2,24 @@ import { useState, useEffect } from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
+    Pressable,
+    Heading,
+    Input,
+    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
-import { MotiView } from 'moti'
-import { StyleSheet, Text, View, Alert, Platform, KeyboardAvoidingView, ScrollView} from "react-native"
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { MotiView } from "moti"
+import { 
+    StyleSheet, 
+    Text, 
+    View, 
+    Alert, 
+    KeyboardAvoidingView, 
+    Platform,
+    ScrollView 
+} from "react-native"
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
@@ -204,7 +217,7 @@ const CreateLibrarianAccount = ({ navigation }) => {
                             <View style={styles.buttonContainer}>
                                 <Button
                                     style={styles.buttonSolid}
-                                    onPress={handleCadastrar}
+                                    onPress={cadastrarLibraryFireXamp}
                                 >
                                     <ButtonText>Criar Conta</ButtonText>
                                 </Button>

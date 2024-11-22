@@ -14,14 +14,14 @@ import Animated, {
   Extrapolation 
 } from 'react-native-reanimated';
 // Telas de Autenticação
-import UserSelectScreen from '../screens/UserSelectScreen';
-import StudentScreen from '../screens/StudentScreen';
-import LibrarianScreen from '../screens/LibrarianScreen';
-import LoginLibrarian from '../screens/Login/LoginLibrarian';
-import LoginStudent from '../screens/Login/LoginStudent';
-import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount';
-import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount';
-import ForgotPassword from '../screens/ForgotPassword';
+import UserSelectScreen from '../screens/UserSelectScreen/index';
+import StudentScreen from '../screens/StudentScreen/index';
+import LibrarianScreen from '../screens/LibrarianScreen/index';
+import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
+import LoginStudent from '../screens/Login/LoginStudent/index';
+import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/index';
+import CreateLibrarianAccount from '../screens/CreateAccount/CreateLibrarianAccount/index';
+import ForgotPassword from '../screens/ForgotPassword/index';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
 
 // Telas do App
