@@ -3,12 +3,14 @@
 //Bibliotecas Utilizadas
 import React, { useRef, useMemo } from "react"
 import { Center, View, Text, Image, Button, ButtonText } from "@gluestack-ui/themed"
-import { StyleSheet, SafeAreaView, Pressable } from "react-native"
+import { StyleSheet, SafeAreaView, Pressable, Alert } from "react-native"
 import { ChevronRight } from "lucide-react-native"
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { AirbnbRating } from "react-native-ratings";
-//Componentes Utilizados
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { AirbnbRating } from "react-native-ratings"
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
+//Componentes Utilizados
+import { useAuth } from "../../contexts/AuthContext"
 
 //Imagens Utilizadas
 import profile from "../../../assets/profile.png"
@@ -21,11 +23,32 @@ import profileIcon from "../../../assets/ProfileIcon.png"
 //Inicio do Código
 
 export default function Profile({navigation}) {
+
+    const { user } = useAuth();
+
     const bottomSheetref = useRef(null);
-    const snapPoints = useMemo(() => ["30%", "50%",], [])
+    const snapPoints = useMemo(() => ["56%",], [])
 
     const handleCloseAction = () => bottomSheetref.current?.close()
     const handleOpenPress = () => bottomSheetref.current?.expand();
+
+    const { signOut } = useAuth();
+    const handleLogout = async () => {
+        try {
+            await signOut();
+            handleCloseAction(); 
+            
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'StudentScreen' }],
+            });
+            
+            Alert.alert('Sucesso', 'Você foi desconectado com sucesso!');
+        } catch (error) {
+            console.error('Erro ao fazer logout:', error);
+            Alert.alert('Erro', 'Não foi possível fazer logout. Tente novamente.');
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -42,7 +65,7 @@ export default function Profile({navigation}) {
                     </Pressable>
                 </View>
                 <View style={styles.userInfoContainer}>
-                    <Text style={styles.userNameText}>Vitor Sossolote</Text>
+                    <Text style={styles.userNameText}>{user.nome}</Text>
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
@@ -158,7 +181,7 @@ export default function Profile({navigation}) {
                                 isDisabled={false}
                                 isFocusVisible={false}
                                 style={styles.bottomSheetLogoutButton}
-                                onPress={() => console.log("Clico em Sair")}
+                                onPress={handleLogout}
                             >
                                 <ButtonText style={styles.bottomSheetLogoutButtonTitle}>Sair</ButtonText>
                             </Button>

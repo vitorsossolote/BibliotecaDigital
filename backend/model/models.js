@@ -66,15 +66,14 @@ const useModel = {
       );
 
       if (student.length === 0) {
-        return null; // Estudante não encontrado
+        return null; 
       }
 
-      // Aqui estava o erro: mudamos 'password' para 'senha'
       const isValid = await bcrypt.compare(senha, student[0].senha);
       if (isValid) {
-        return student[0]; // Retorna os dados do estudante
+        return student[0];
       } else {
-        return null; // Senha inválida
+        return null; 
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
