@@ -129,6 +129,7 @@ export default function AuthorsScreen({ navigation }) {
                             unSelectedColor="#000"
                             starContainerStyle={bottomSheetStyles.starRating}
                             readonly={true}
+                            isDisabled={true}
                         />
                         <Text style={bottomSheetStyles.status}>Disponivel</Text>
                     </View>
