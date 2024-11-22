@@ -59,6 +59,8 @@ const useController = {
     }
   },
 
+  //Login Novo estudante
+
   loginStudent: async (req, res) => {
     const { email, senha } = req.body;
 
@@ -98,6 +100,9 @@ const useController = {
       });
     }
   },
+
+  //Verificar Token do estudante
+  
   verifyToken: async (req, res, next) => {
     const token = req.headers["authorization"]?.split(" ")[1];
 
@@ -113,6 +118,8 @@ const useController = {
       return res.status(401).json({ message: "Token inválido" });
     }
   },
+
+  //Criar novo Bibliotecário
 
   createNewLibrarian: async (req, res) => {
     const { nome, email, cfb, senha, confirmSenha } = req.body;
@@ -167,6 +174,8 @@ const useController = {
     }
   },
 
+  //Login Bibliotecário
+
   loginLibrarian: async (req, res) => {
     let { email, senha } = req.body;
     try {
@@ -200,6 +209,9 @@ const useController = {
       });
     }
   },
+
+  //Verificar Token do Bibliotecário
+
   verifyLibrarianToken: async (req, res, next) => {
     const librarianToken = req.headers["authorization"]?.split(" ")[1];
 
@@ -213,6 +225,69 @@ const useController = {
       next();
     } catch (error) {
       return res.status(401).json({ message: "Token inválido" });
+    }
+  },
+
+  //Listar todos os livros
+  listarLivros: async (req, res) => {
+    try {
+      const livros = await clientController.getAllLivros();
+      res.status(200).json(livros);
+    } catch (error) {
+      console.error("Erro ao buscar livros:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livros", 
+        error: error.message 
+      });
+    }
+  },
+
+  //Listar livros por ID
+
+  ListarLivrosByID: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const livro = await clientController.getLivroById(id);
+      
+      if (!livro) {
+        return res.status(404).json({ 
+          msg: "Livro não encontrado" 
+        });
+      }
+
+      res.status(200).json(livro);
+    } catch (error) {
+      console.error("Erro ao buscar livro:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livro", 
+        error: error.message 
+      });
+    }
+  },
+
+  //Pesquisar Livros
+  searchLivros: async (req, res) => {
+    const searchTerm = req.params.searchTerm; // Certifique-se de pegar corretamente o parâmetro
+  
+    if (!searchTerm || searchTerm.trim() === '') {
+      return res.status(400).json({ msg: "Termo de busca é obrigatório" });
+    }
+  
+    try {
+      const livros = await clientController.searchLivros(searchTerm);
+      
+      if (livros.length === 0) {
+        return res.status(404).json({ msg: "Nenhum livro encontrado" });
+      }
+  
+      res.status(200).json(livros);
+    } catch (error) {
+      console.error("Erro ao buscar livros:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livros", 
+        error: error.message 
+      });
     }
   },
 

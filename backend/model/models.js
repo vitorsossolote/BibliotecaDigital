@@ -128,6 +128,33 @@ const useModel = {
     }
   },
 
+  //Buscar livros
+    getAllLivros: async () => {
+      const [result] = await connection
+        .query("SELECT * FROM livros")
+        .catch((erro) => console.log(erro));
+      return result;
+    },
+
+    //Buscar livros por ID
+    getLivroById: async (id) => {
+      const [result] = await connection
+        .query("SELECT * FROM livros WHERE id =?", [id])
+        .catch((erro) => console.log(erro));
+      return result;
+    },
+
+    searchLivros: async (searchTerm) => {
+      const [result] = await connection
+        .query("SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ?", [`%${searchTerm}%`, `%${searchTerm}%`])
+        .catch((erro) => console.log(erro));
+      return result;
+    },
+  
+    
+    // Outros métodos para manipulação de livros podem ser adicionados aqui
+  
+
   // registerMensagem: async (id, nome, numero, email, mensagem) =>{
   //     const [result] = await connection.query("INSERT INTO contato values(?,?,?,?,?)", [id, nome, numero, email, mensagem])
   //     .catch(erro => console.log(erro));

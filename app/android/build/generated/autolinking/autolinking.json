@@ -221,7 +221,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens\\RNScreens.podspec",
-          "version": "3.35.0",
+          "version": "4.2.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -240,6 +240,8 @@
             "RNSScreenStackComponentDescriptor",
             "RNSSearchBarComponentDescriptor",
             "RNSScreenComponentDescriptor",
+            "RNSScreenFooterComponentDescriptor",
+            "RNSScreenContentWrapperComponentDescriptor",
             "RNSModalScreenComponentDescriptor"
           ],
           "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-screens/android/src/main/jni/CMakeLists.txt",
