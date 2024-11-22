@@ -4,8 +4,10 @@ import 'react-native-reanimated'
 import 'react-native-gesture-handler'
 import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import AppNavigator, { HomeTabNavigator } from './src/Navigator/appNavigator';
+import AppNavigator from './src/Navigator/appNavigator';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import LoanScreen from './src/screens/LoanScreen';
 
 
 export default function app() {
@@ -16,16 +18,23 @@ export default function app() {
 
   //Ignore all log notifications
   LogBox.ignoreAllLogs();
-  
 
+
+  // return (
+  //   <GestureHandlerRootView style={{ flex: 1 }}>
+  //     <BottomSheetModalProvider>
+  //       <>
+  //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+  //         <AuthProvider>
+  //           <AppNavigator />
+  //         </AuthProvider>
+  //       </>
+  //     </BottomSheetModalProvider>
+  //   </GestureHandlerRootView>
+  // )
   return (
-    <GestureHandlerRootView>
-      <>
-        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <AuthProvider>
-            <AppNavigator />
-        </AuthProvider>
-      </>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+    <LoanScreen/>
     </GestureHandlerRootView>
   )
 
