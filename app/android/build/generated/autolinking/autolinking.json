@@ -3,31 +3,6 @@
   "reactNativePath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native",
   "reactNativeVersion": "0.75",
   "dependencies": {
-    "@react-native-async-storage/async-storage": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage",
-      "name": "@react-native-async-storage/async-storage",
-      "platforms": {
-        "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\RNCAsyncStorage.podspec",
-          "version": "1.24.0",
-          "configurations": [],
-          "scriptPhases": []
-        },
-        "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\android",
-          "packageImportPath": "import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;",
-          "packageInstance": "new AsyncStoragePackage()",
-          "buildTypes": [],
-          "libraryName": "rnasyncstorage",
-          "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
-          "cxxModuleCMakeListsModuleName": null,
-          "cxxModuleCMakeListsPath": null,
-          "cxxModuleHeaderName": null,
-          "isPureCxxDependency": false
-        }
-      }
-    },
     "@react-native-firebase/app": {
       "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app",
       "name": "@react-native-firebase/app",
@@ -78,6 +53,56 @@
           "buildTypes": [],
           "componentDescriptors": [],
           "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/auth/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "react-native-vector-icons": {
+      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons",
+      "name": "react-native-vector-icons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\RNVectorIcons.podspec",
+          "version": "10.2.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\android",
+          "packageImportPath": "import com.oblador.vectoricons.VectorIconsPackage;",
+          "packageInstance": "new VectorIconsPackage()",
+          "buildTypes": [],
+          "libraryName": "RNVectorIconsSpec",
+          "componentDescriptors": [],
+          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-async-storage/async-storage": {
+      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage",
+      "name": "@react-native-async-storage/async-storage",
+      "platforms": {
+        "ios": {
+          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\RNCAsyncStorage.podspec",
+          "version": "1.24.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\android",
+          "packageImportPath": "import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;",
+          "packageInstance": "new AsyncStoragePackage()",
+          "buildTypes": [],
+          "libraryName": "rnasyncstorage",
+          "componentDescriptors": [],
+          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -265,31 +290,6 @@
             "RNSVGUseComponentDescriptor"
           ],
           "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-svg/android/build/generated/source/codegen/jni/CMakeLists.txt",
-          "cxxModuleCMakeListsModuleName": null,
-          "cxxModuleCMakeListsPath": null,
-          "cxxModuleHeaderName": null,
-          "isPureCxxDependency": false
-        }
-      }
-    },
-    "react-native-vector-icons": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons",
-      "name": "react-native-vector-icons",
-      "platforms": {
-        "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\RNVectorIcons.podspec",
-          "version": "10.2.0",
-          "configurations": [],
-          "scriptPhases": []
-        },
-        "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\android",
-          "packageImportPath": "import com.oblador.vectoricons.VectorIconsPackage;",
-          "packageInstance": "new VectorIconsPackage()",
-          "buildTypes": [],
-          "libraryName": "RNVectorIconsSpec",
-          "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,

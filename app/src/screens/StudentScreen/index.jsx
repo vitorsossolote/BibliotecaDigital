@@ -49,28 +49,13 @@ const StudentScreen = ({navigation}) => (
                 transition={{duration:3000, type:"spring"}}
                 >
                 <Button
-                    onPress ={()=> navigation.navigate('CreateStudent')}
+                    onPress ={()=> navigation.navigate('LoginStudent')}
                     size="md"
                     variant="solid"
                     action="primary"
                     style ={styles.buttonSolid}
                 >
-                <ButtonText>Criar Conta</ButtonText>
-                </Button>
-                </MotiView>
-                <MotiView
-                from={{translateX:100, opacity:0, translateY:-10}}
-                animate={{translateX:0, opacity:1,translateY:15}}
-                transition={{duration:3000,type:"spring"}}
-                >
-                <Button
-                    onPress ={()=> navigation.navigate('LoginStudent')}
-                    size="md"
-                    variant="outline"
-                    action="primary"
-                    style ={styles.buttonOutline}
-                >
-                <ButtonText style={styles.buttonText}>Entrar</ButtonText>
+                <ButtonText>Entrar</ButtonText>
                 </Button>
                 </MotiView>
             </View>
@@ -96,7 +81,7 @@ const styles = StyleSheet.create({
         width: 270,
         height: 270,
         alignSelf: 'center',
-        marginTop:20,
+        marginTop:60,
     },
     textContainer:{
         width:292,

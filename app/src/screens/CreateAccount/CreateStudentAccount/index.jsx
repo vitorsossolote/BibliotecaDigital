@@ -71,7 +71,7 @@ const CreateStudentAccount = ({ navigation }) => {
                 Alert.alert('Ocorreu um erro ao cadastrar o usuário. Apresente um email valido.')
             }
         }
-    }
+    };
 
     function signUpFirebase() {
         auth()
@@ -118,11 +118,9 @@ const CreateStudentAccount = ({ navigation }) => {
                 }
                 console.error(error);
             });
-
-
     }
 
-    const cadastrarFireXamp = () => {
+    const cadastrarFirebaseAndSql = () => {
         handleCadastrar();
         signUpFirebase();
     }

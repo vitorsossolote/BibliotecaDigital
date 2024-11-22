@@ -1,3 +1,4 @@
+
 // Profile
 
 //Bibliotecas Utilizadas
@@ -8,10 +9,10 @@ import { ChevronRight } from "lucide-react-native"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AirbnbRating } from "react-native-ratings"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 //Componentes Utilizados
 import { useAuth } from "../../contexts/AuthContext"
-
+import { MenuProfile } from "../../components/MenuProfile"
+import Divider from "../../components/Divider"
 //Imagens Utilizadas
 import profile from "../../../assets/profile.png"
 import document from "../../../assets/Document.png"
@@ -20,11 +21,11 @@ import heart from "../../../assets/Heart.png"
 import path from "../../../assets/path4542.png"
 import profileIcon from "../../../assets/ProfileIcon.png"
 
+
 //Inicio do Código
 
-export default function Profile({navigation}) {
-
-    const { user } = useAuth();
+export default function Profile({ navigation }) {
+    const { user, librarian } = useAuth();
 
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["56%",], [])
@@ -32,17 +33,18 @@ export default function Profile({navigation}) {
     const handleCloseAction = () => bottomSheetref.current?.close()
     const handleOpenPress = () => bottomSheetref.current?.expand();
 
-    const { signOut } = useAuth();
+    const { signOut, signOutLibrarian } = useAuth();
     const handleLogout = async () => {
         try {
             await signOut();
-            handleCloseAction(); 
-            
+            await signOutLibrarian();
+            handleCloseAction();
+
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'StudentScreen' }],
+                routes: [{ name: 'UserSelectScreen' }],
             });
-            
+
             Alert.alert('Sucesso', 'Você foi desconectado com sucesso!');
         } catch (error) {
             console.error('Erro ao fazer logout:', error);
@@ -50,22 +52,96 @@ export default function Profile({navigation}) {
         }
     };
 
+    const userName = user ? user.nome : (librarian ? librarian.nome : 'Usuário');
+    const menuItems = user 
+    ? [
+        {
+            onPress: () => navigation.navigate("UserProfileScreen"),
+            image: profileIcon,
+            alt: "Minha Conta",
+            title: "Minha Conta"
+        },
+        {
+            onPress: () => console.log("Mais Lidos"),
+            image: path,
+            alt: "Mais Lidos",
+            title: "Mais Lidos"
+        },
+        {
+            onPress: () => navigation.navigate("Favorites"),
+            image: heart,
+            alt: "Seus Favoritos",
+            title: "Seus Favoritos"
+        },
+        {
+            onPress: () => navigation.navigate("LoanHistory"),
+            image: document,
+            alt: "Histórico de Empréstimo",
+            title: "Histórico de Empréstimo"
+        },
+        {
+            onPress: () => console.log("Clicou em suporte"),
+            image: chat,
+            alt: "Suporte",
+            title: "Suporte"
+        }
+    ]
+    : librarian 
+    ? [
+        {
+            onPress: () => navigation.navigate("LibrarianProfileScreen"),
+            image: chat,
+            alt: "Perfil do Bibliotecário",
+            title: "Meu Perfil"
+        },
+        {
+            onPress: () => navigation.navigate("ManageBooks"),
+            image: chat,
+            alt: "Gerenciar Livros",
+            title: "Gerenciar Livros"
+        },
+        {
+            onPress: () => navigation.navigate("ManageLoans"),
+            image: chat,
+            alt: "Gerenciar Empréstimos",
+            title: "Gerenciar Empréstimos"
+        },
+        {
+            onPress: () => navigation.navigate("UserManagement"),
+            image: chat,
+            alt: "Gerenciar Usuários",
+            title: "Gerenciar Usuários"
+        },
+        {
+            onPress: () => console.log("Suporte Bibliotecário"),
+            image: chat,
+            alt: "Suporte",
+            title: "Suporte"
+        }
+    ]
+    : [];
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Center>
                     <Text style={styles.headerText}>Perfil</Text>
                 </Center>
-                <View style={{ borderBottomColor: 'gray', borderBottomWidth: StyleSheet.hairlineWidth, width: "100%", top: 20 }} />
+                <Divider
+                    borderBottomWidth={StyleSheet.hairlineWidth}
+                    borderbottomColor={'gray'}
+                    width={"100%"}
+                    top={10}
+                />
             </View>
             <View style={styles.userProfileContainer}>
                 <View style={styles.userImageContainer}>
                     <Pressable onPress={() => console.log("clicou na imagem")}>
-                        <Image source={profile} alt="imagem de perfil" resizeMode="contain" style={{top:4,}} />
+                        <Image source={profile} alt="imagem de perfil" resizeMode="contain" style={{ top: 4, }} />
                     </Pressable>
                 </View>
                 <View style={styles.userInfoContainer}>
-                    <Text style={styles.userNameText}>{user.nome}</Text>
+                    <Text style={styles.userNameText}>{userName}</Text>
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
@@ -74,104 +150,32 @@ export default function Profile({navigation}) {
                     </Button>
                 </View>
             </View>
-            <View style={{ borderBottomColor: 'gray', borderBottomWidth: StyleSheet.hairlineWidth, width: "100%", top: 10 }} />
-            <View style={styles.menuContainer}>
-                <Pressable onPress={() => navigation.navigate("UserProfileScreen")}>
-                    <View style={styles.menuContent}>
-                        <View style={styles.menuOptionContainer}>
-                            <View style={styles.iconContainer}>
-                                <Image source={profileIcon} alt="Suporte" style={{ width: 20, height: 20, }} resizeMode="contain" />
-                            </View>
-                            <View style={styles.menuTitleContainer}>
-                                <Text style={styles.menuText}>Minha Conta</Text>
-                            </View>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <ChevronRight color={"#a1a1a1"} />
-                        </View>
-                    </View>
-                </Pressable>
-            </View>
-            <View style={styles.menuContainer}>
-                <Pressable onPress={() => console.log("clicou em Mais lidos")}>
-                    <View style={styles.menuContent}>
-                        <View style={styles.menuOptionContainer}>
-                            <View style={styles.iconContainer}>
-                                <Image source={path} alt="Suporte" style={{ width: 20, height: 20, }} resizeMode="contain" />
-                            </View>
-                            <View style={styles.menuTitleContainer}>
-                                <Text style={styles.menuText}>Mais Lidos</Text>
-                            </View>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <ChevronRight color={"#a1a1a1"} />
-                        </View>
-                    </View>
-                </Pressable>
-            </View>
-            <View style={styles.menuContainer}>
-                <Pressable onPress={() => navigation.navigate("Favorites")}>
-                    <View style={styles.menuContent}>
-                        <View style={styles.menuOptionContainer}>
-                            <View style={styles.iconContainer}>
-                                <Image source={heart} alt="Suporte" style={{ width: 20, height: 20, }} resizeMode="contain" />
-                            </View>
-                            <View style={styles.menuTitleContainer}>
-                                <Text style={styles.menuText}>Seus Favoritos</Text>
-                            </View>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <ChevronRight color={"#a1a1a1"} />
-                        </View>
-                    </View>
-                </Pressable>
-            </View>
-            <View style={styles.menuContainer}>
-                <Pressable onPress={() => navigation.navigate("LoanHistory")}>
-                    <View style={styles.menuContent}>
-                        <View style={styles.menuOptionContainer}>
-                            <View style={styles.iconContainer}>
-                                <Image source={document} alt="Suporte" style={{ width: 20, height: 20, }} resizeMode="contain" />
-                            </View>
-                            <View style={styles.menuTitleContainer}>
-                                <Text style={styles.menuText}>Histórico de Empréstimo</Text>
-                            </View>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <ChevronRight color={"#a1a1a1"} />
-                        </View>
-                    </View>
-                </Pressable>
-            </View>
-            <View style={styles.menuContainer}>
-                <Pressable onPress={() => console.log("clicou em suporte")}>
-                    <View style={styles.menuContent}>
-                        <View style={styles.menuOptionContainer}>
-                            <View style={styles.iconContainer}>
-                                <Image source={chat} alt="Suporte" style={{ width: 20, height: 20, }} resizeMode="contain" />
-                            </View>
-                            <View style={styles.menuTitleContainer}>
-                                <Text style={styles.menuText}>Suporte</Text>
-                            </View>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <ChevronRight color={"#a1a1a1"} />
-                        </View>
-                    </View>
-                </Pressable>
-            </View>
+            <Divider
+                borderBottomWidth={StyleSheet.hairlineWidth}
+                borderbottomColor={'gray'}
+                width={"100%"}
+                top={10}
+            />
+            {menuItems.map((item, index) => (
+                <MenuProfile
+                    key={index}
+                    onPress={item.onPress}
+                    image={item.image}
+                    alt={item.alt}
+                    title={item.title}
+                />
+            ))}
             {/* Inicio do BottomSheet */}
             <BottomSheet
                 ref={bottomSheetref}
                 snapPoints={snapPoints}
                 index={-1}
-                enablePanDownToClose={true}
-                style={styles.bottomContainer}>
+                enablePanDownToClose={true}>
                 <SafeAreaView>
                     <View style={styles.bottomSheetContainer}>
                         <View style={styles.bottomSheetHeader}>
                             <Text style={styles.bottomSheetTitle}>Sair</Text>
-                            <Text style={styles.bottomSheetSubtitle}>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</Text>
+                            <Text style={styles.bottomSheetSubtitle}>Tem certeza que quer Sair? Você terá que fazer login novamente</Text>
                         </View>
                         <View style={styles.bottomSheetButtonContainer}>
                             <Button
@@ -208,7 +212,7 @@ export default function Profile({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:"#fff"
+        backgroundColor: "#fff"
     },
     headerContainer: {
         width: "100%",
@@ -311,33 +315,35 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     bottomSheetButtonContainer: {
-        marginTop:20,
-        gap:10,
+        marginTop: 20,
+        gap: 10,
     },
     bottomSheetLogoutButton: {
         backgroundColor: "#ee2d32",
         width: 360,
         height: 55,
-        borderRadius:35,
-        justifyContent:"center",
-        alignItems:"center",
+        borderRadius: 35,
+        justifyContent: "center",
+        alignItems: "center",
+        elevation:2
     },
     bottomSheetLogoutButtonTitle: {
-        color:"#fff",
-        fontSize:22,
-        fontWeight:"500",
+        color: "#fff",
+        fontSize: 22,
+        fontWeight: "500",
     },
     bottomSheetCancelButton: {
-        backgroundColor: "#FFFFEF",
+        backgroundColor: "#FFF",
         width: 360,
         height: 55,
-        borderRadius:35,
-        justifyContent:"center",
-        alignItems:"center",
+        borderRadius: 35,
+        justifyContent: "center",
+        alignItems: "center",
+        elevation:2,
     },
     bottomSheetCancelButtonTitle: {
-        color:"#ee2d32",
-        fontSize:22,
-        fontWeight:"bold",
+        color: "#ee2d32",
+        fontSize: 22,
+        fontWeight: "bold",
     },
 });

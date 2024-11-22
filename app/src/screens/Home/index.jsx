@@ -86,7 +86,7 @@ export default function Home({ navigation }) {
 
     return (
         <GluestackUIProvider config={config}>
-            <SafeAreaView style={{ backgroundColor: "#fafafa", }}>
+            <SafeAreaView style={{ backgroundColor: "#fafafa"}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <MainHeader title="Inicio" />
                     <MotiView from={{ translateX: 50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
