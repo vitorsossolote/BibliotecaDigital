@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-39:/values-v25/values-v25.xml",
+            "outputFile": "com.app-mergeDebugResources-48:/values-v25/values-v25.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\e9d9528de909ac86dfea495538bbea9c\\transformed\\appcompat-1.6.1\\res\\values-v25\\values-v25.xml",

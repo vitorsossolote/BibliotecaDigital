@@ -2,11 +2,24 @@ import { useState, useEffect } from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
+    Pressable,
+    Heading,
+    Input,
+    InputField,
     Button,
     ButtonText,
 } from "@gluestack-ui/themed"
-import { MotiView } from 'moti'
-import { StyleSheet, Text, View, Alert, Platform, KeyboardAvoidingView, ScrollView} from "react-native"
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { MotiView } from "moti"
+import { 
+    StyleSheet, 
+    Text, 
+    View, 
+    Alert, 
+    KeyboardAvoidingView, 
+    Platform,
+    ScrollView 
+} from "react-native"
 import { config } from "@gluestack-ui/config"
 import BackHeader from "../../../components/BackHeader";
 import InputTest from "../../../components/InputTest";
@@ -37,9 +50,9 @@ const CreateLibrarianAccount = ({ navigation }) => {
         console.log(data)
         //envio de informações para a API cadastrar no banco de dados
         try {
-            await axios.post('http://10.0.2.2:8085/api/createBiblio', data);
+            await axios.post('http://10.0.2.2:8085/api/createLibrarian', data);
             Alert.alert('Cadastro realizado com sucesso');
-            navigation.navigate('VerificationScreen')
+            navigation.navigate('LoginLibrarian')
         } catch (error) {
             if (error) {
                 console.log(error)
@@ -59,6 +72,58 @@ const CreateLibrarianAccount = ({ navigation }) => {
             }
         }
     };
+
+    function signUpFirebase() {
+        auth()
+            .createUserWithEmailAndPassword(email, senha)
+            .then(() => {
+                Alert.alert("Usuário Criado com sucesso")
+                console.log('User account created & signed in!');
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('Esse email já foi utilizado');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('Esse email é invalido');
+                }
+
+                if (error.code === 'auth/app-deleted') {
+                    console.log('O banco de dados não foi localizado.');
+                }
+
+                if (error.code === 'auth/expired-action-code') {
+                    console.log('O código da ação o ou link expirou.');
+                }
+
+                if (error.code === 'auth/invalid-action-code') {
+                    console.log('O código da ação é inválido. Isso pode acontecer se o código estiver malformado ou já tiver sido usado.');
+                }
+
+                if (error.code === 'auth/user-disabled') {
+                    console.log('O usuário correspondente à credencial fornecida foi desativado.');
+                }
+
+                if (error.code === 'auth/user-not-found') {
+                    console.log('O usuário não correponde à nenhuma credencial.');
+                }
+
+                if (error.code === 'auth/weak-password') {
+                    console.log('A senha é muito fraca.');
+                }
+
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    console.log('E-mail já associado a outra conta.');
+                }
+                console.error(error);
+            });
+    }
+
+    const cadastrarLibraryFireXamp = () => {
+        handleCadastrar();
+        signUpFirebase();
+    }
 
     return (
         <GluestackUIProvider config={config}>
@@ -152,7 +217,7 @@ const CreateLibrarianAccount = ({ navigation }) => {
                             <View style={styles.buttonContainer}>
                                 <Button
                                     style={styles.buttonSolid}
-                                    onPress={handleCadastrar}
+                                    onPress={cadastrarLibraryFireXamp}
                                 >
                                     <ButtonText>Criar Conta</ButtonText>
                                 </Button>

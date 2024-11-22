@@ -15,7 +15,7 @@ import {
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MotiView } from 'moti';
 import { config } from "@gluestack-ui/config";
-import { StyleSheet, Text, View, } from "react-native"
+import { StyleSheet, Text, View,ToastAndroid } from "react-native"
 import { AirbnbRating } from "react-native-ratings";
 import { Heart } from "lucide-react-native"
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -27,7 +27,7 @@ import Section from "../../components/Section/index";
 import TrendingBooks from "../../components/TrendingBooks/index";
 import TrendingGenders from "../../components/TrendingGenders/index";
 import Authors from "../../components/Authors/index";
-
+import { useAuth } from "../../contexts/AuthContext";
 //Imagens Utilizadas
 import heartImage from "../../../assets/Heart.png";
 import book from "../../../assets/book2.png"
@@ -38,36 +38,64 @@ function signOut() {
     auth().signOut()
 }
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
-    const [selectedBook, setSelectedBook] = React.useState(null); // Estado para armazenar o livro selecionado
-
-    const handleCloseAction = () => bottomSheetref.current?.close();
-    const handleOpenPress = (bookData) => {
-        setSelectedBook(bookData); // Armazena os dados do livro selecionado
-        bottomSheetref.current?.expand();
-        console.log(bookData.id)
-    };
-
+    const [selectedBook, setSelectedBook] = useState(null);
     const [isFavorited, setIsFavorited] = useState(false);
 
-    const handlePress = () => {
-        setIsFavorited(!isFavorited);
+    const handleOpenPress = (bookData) => {
+        setSelectedBook(bookData);
+
+        // Check if book is already in favorites
+        const isBookFavorited = checkFavoriteStatus(bookData.id);
+        setIsFavorited(isBookFavorited);
+
+        bottomSheetref.current?.expand();
     };
+
+    const handleFavoritePress = () => {
+        if (!user) {
+            ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
+            return;
+        }
+
+        try {
+            if (isFavorited) {
+                removeFromFavorites(selectedBook.id);
+                ToastAndroid.show("Removido dos favoritos", ToastAndroid.SHORT);
+            } else {
+                addToFavorites({
+                    id: selectedBook.id,
+                    name: selectedBook.name,
+                    image: selectedBook.image,
+                    description: selectedBook.description,
+                    status: selectedBook.status
+                });
+                ToastAndroid.show("Adicionado aos favoritos", ToastAndroid.SHORT);
+            }
+
+            setIsFavorited(!isFavorited);
+        } catch (error) {
+            console.error("Erro ao gerenciar favoritos:", error);
+            ToastAndroid.show("Erro ao gerenciar favoritos", ToastAndroid.SHORT);
+        }
+    };
+
 
     return (
         <GluestackUIProvider config={config}>
-            <SafeAreaView style={{ backgroundColor: "#fafafa" }}>
+            <SafeAreaView style={{ backgroundColor: "#fafafa"}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <MainHeader title="Inicio" />
-                    <MotiView from={{ translateX: 200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
+                    <MotiView from={{ translateX: 50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
-                    <MotiView from={{ translateX: -200 }} animate={{ translateX: 0 }} transition={{ duration: 3000, type: "spring" }}>
+                    <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
                         <Reservar onPress={() => console.log("teste")} />
                     </MotiView>
-                    <MotiView from={{ translateY: 200 }} animate={{ translateY: 0 }} trainsition={{ duration: 3000, type: "timing" }}>
+                    <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
                         <Section title="Melhores da Semana" onPress={() => navigation.navigate("SearchScreen")} />
                         <TrendingBooks onPress={handleOpenPress} />
                     </MotiView>
@@ -91,21 +119,21 @@ export default function Home({navigation}) {
                                 <View style={styles.detailContainer}>
                                     <View style={styles.headerContainer}>
                                         <Text style={styles.title}>{selectedBook.name}</Text>
-                                        <Pressable size="md" bg="transparent" style={{ top: 7 }} onPress={handlePress}>
-                                            {
-                                                isFavorited ? (
-                                                    <>
-                                                        <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
-                                                            <Ionicons name="heart" size={26} color={"#ee2d32"} />
-                                                        </MotiView>
-                                                    </>
-                                                ) :
-                                                    <><MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
-                                                        <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
-                                                    </MotiView>
-                                                    </>
-                                            }
-
+                                        <Pressable
+                                            size="md"
+                                            bg="transparent"
+                                            style={{ top: 7 }}
+                                            onPress={handleFavoritePress}
+                                        >
+                                            {isFavorited ? (
+                                                <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
+                                                    <Ionicons name="heart" size={26} color={"#ee2d32"} />
+                                                </MotiView>
+                                            ) : (
+                                                <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
+                                                    <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
+                                                </MotiView>
+                                            )}
                                         </Pressable>
                                     </View>
                                     <View style={styles.genderContainer}>
