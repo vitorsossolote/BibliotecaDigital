@@ -17,7 +17,6 @@ export default function app() {
   //Ignore all log notifications
   LogBox.ignoreAllLogs();
 
-
   return (
     <GestureHandlerRootView>
       <>
