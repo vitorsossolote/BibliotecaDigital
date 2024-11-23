@@ -6,34 +6,37 @@ import {
 import book1 from "../../../assets/book2.png"
 import book2 from "../../../assets/book3.png"
 import book3 from "../../../assets/book4.png"
-import { Data } from '../../data/data';
+import { useAuth } from "../../contexts/AuthContext";
+
 
 type Props = {
-    onPress: (bookData: any) => void; // Modificado para receber os dados do livro
+    onPress: (livro: any) => void; // Modificado para receber os dados do livro
 }
 
-const TrendingBooks = ({ onPress }: Props) => {
-    const getStatusColor = (status: string) => {
-        return status.toLowerCase() === 'disponivel' ? '#2ecc71' : '#ee2d32';
+
+export default function TrendingBooks ({ onPress }: Props) {
+    const getStatusColor = (estado: "string") => {
+        return estado.toLowerCase() === 'd' ? '#2ecc71' : '#ee2d32';
     };
+    const {livros} = useAuth()
 
     const renderItem = ({ item }) => (
         <View style={styles.card}>
             <Pressable onPress={() => onPress(item)}>
                 <View style={styles.imageContainer}>
-                    <Image source={item.image} alt={item.name} style={styles.image} />
+                    <Image source={item.image} alt={item.titulo} style={styles.image} />
                 </View>
             </Pressable>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={[styles.status, { color: getStatusColor(item.status) }]}>
-                {item.status}
+            <Text style={styles.title}>{item.titulo}</Text>
+            <Text style={[styles.status, { color: getStatusColor(item.estado) }]}>
+                {item.estado}
             </Text>
         </View>
     );
 
     return (
         <FlatList
-            data={Data}
+            data={livros}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             horizontal
@@ -73,5 +76,3 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 });
-
-export default TrendingBooks;

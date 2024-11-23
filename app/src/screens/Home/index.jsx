@@ -1,30 +1,57 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, ToastAndroid } from 'react-native';
-import { useAuth } from '../../contexts/AuthContext';
-import { AirbnbRating } from "react-native-ratings";
-import { Input, InputSlot, InputField, InputIcon, ScrollView, Button, ButtonText, Pressable } from '@gluestack-ui/themed';
-import { Search, MoveLeft } from 'lucide-react-native';
+//Tela Home 
+
+//Bibliotecas Utilizadas
+import React, { useRef, useMemo, useState } from "react";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {
+    GluestackUIProvider,
+    SafeAreaView,
+    ScrollView,
+    Image,
+    Button,
+    ButtonText,
+    Pressable
+} from "@gluestack-ui/themed";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MotiView } from 'moti';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MainHeader from '../../components/MainHeader';
-import book from "../../../assets/book7.png";
+import { config } from "@gluestack-ui/config";
+import { StyleSheet, Text, View,ToastAndroid } from "react-native"
+import { AirbnbRating } from "react-native-ratings";
+import { Heart } from "lucide-react-native"
+import Ionicons from 'react-native-vector-icons/Ionicons'
+//Componentes Utilizados
+import MainHeader from "../../components/MainHeader/index";
+import Carrosel from "../../components/Carrousel/index";
+import Reservar from "../../components/ReservarNovamente/index";
+import Section from "../../components/Section/index";
+import TrendingBooks from "../../components/TrendingBooks/index";
+import TrendingGenders from "../../components/TrendingGenders/index";
+import Authors from "../../components/Authors/index";
+import { useAuth } from "../../contexts/AuthContext";
+//Imagens Utilizadas
+import heartImage from "../../../assets/Heart.png";
+import book from "../../../assets/book2.png"
+import marca from "../../../assets/genero3.png"
 
-const SearchScreen = ({ navigation }) => {
-    const [searchText, setSearchText] = useState('');
-    const { user, livros, loading, error, addToFavorites, removeFromFavorites, checkFavoriteStatus } = useAuth();
-    const [list, setList] = useState(livros);
-    const [selectedBook, setSelectedBook] = useState(null);
-    const [isFavorited, setIsFavorited] = useState(false);
-    
-    // Bottom Sheet Configuration
+//Inicio Do Codigo
+function signOut() {
+    auth().signOut()
+}
+
+export default function Home({ navigation }) {
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, livros } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [isFavorited, setIsFavorited] = useState(false);
 
-    const handleOpenPress = (bookData) => {
-        setSelectedBook(bookData);
-        const isBookFavorited = checkFavoriteStatus(bookData.id);
+    const handleOpenPress = (livros) => {
+        setSelectedBook(livros);
+
+        // Check if book is already in favorites
+        const isBookFavorited = checkFavoriteStatus(livros.id);
         setIsFavorited(isBookFavorited);
+
         bottomSheetref.current?.expand();
     };
 
@@ -41,10 +68,10 @@ const SearchScreen = ({ navigation }) => {
             } else {
                 addToFavorites({
                     id: selectedBook.id,
-                    name: selectedBook.titulo,
+                    titulo: selectedBook.titulo,
                     image: selectedBook.image,
-                    description: selectedBook.description,
-                    status: selectedBook.status
+                    descricao: selectedBook.descricao,
+                    estado: selectedBook.estado
                 });
                 ToastAndroid.show("Adicionado aos favoritos", ToastAndroid.SHORT);
             }
@@ -56,301 +83,164 @@ const SearchScreen = ({ navigation }) => {
         }
     };
 
-    const truncateTitle = (title) => {
-        if (title.length > 17) {
-            return title.substring(0, 17) + '...';
-        }
-        return title;
-    };
-
-    useEffect(() => {
-        if (searchText === '') {
-            setList(livros);
-        } else {
-            setList(
-                livros.filter(
-                    (item) =>
-                        item.titulo.toLowerCase().indexOf(searchText.toLowerCase()) > -1 ||
-                        item.genero.toLowerCase().indexOf(searchText.toLowerCase()) > -1 ||
-                        item.autor.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-                )
-            );
-        }
-    }, [searchText]);
-
-    const RenderBookItem = ({ data }) => (
-        <TouchableOpacity onPress={() => handleOpenPress(data)}>
-            <View key={data.id} style={styles.bookContainer}>
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={data.image ? { uri: data.image } : book}
-                        alt="Book"
-                        style={styles.image}
-                    />
-                </View>
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>
-                        {truncateTitle(data.titulo || "Sem título")}
-                    </Text>
-                    <Text style={styles.gender}>{data.genero || "Gênero não especificado"}</Text>
-                    <AirbnbRating
-                        count={5}
-                        defaultRating={data.rating || 4}
-                        size={20}
-                        showRating={false}
-                        unSelectedColor="#000"
-                        starContainerStyle={styles.starRating}
-                        readonly={true}
-                        isDisabled={true}
-                    />
-                    <Text style={styles.author}>{truncateTitle(data.autor || "Sem Autor")}</Text>
-                    <Text style={styles.status}>{data.status || "Disponível"}</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
 
     return (
-        <SafeAreaView style={styles.mainContainer}>
-            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-                <View style={styles.headerContainer}>
-                    <MainHeader
-                        title="Pesquisar"
-                        icon1={MoveLeft}
-                        onPress={() => {
-                            navigation.navigate("Home");
-                        }}
-                    />
-                </View>
-                <View>
-                    <Input style={styles.searchbarContainer}>
-                        <InputSlot style={styles.inputSlot}>
-                            <InputIcon as={Search} size={'xl'} />
-                        </InputSlot>
-                        <InputField
-                            placeholder="Pesquisar..."
-                            style={styles.searchText}
-                            value={searchText}
-                            onChangeText={(t) => setSearchText(t)}
-                        />
-                    </Input>
-                </View>
+        <GluestackUIProvider config={config}>
+            <SafeAreaView style={{ backgroundColor: "#fafafa"}}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <MainHeader title="Inicio" />
+                    <MotiView from={{ translateX: 50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
+                        <Carrosel onPress={handleOpenPress} />
+                    </MotiView>
+                    <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
+                        <Reservar onPress={() => console.log("teste")} />
+                    </MotiView>
+                    <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
+                        <Section title="Melhores da Semana" onPress={() => navigation.navigate("SearchScreen")} />
+                        <TrendingBooks onPress={handleOpenPress} />
+                    </MotiView>
+                    <Section title="Generos" onPress={() => navigation.navigate("SearchGenderScreen")} />
+                    <TrendingGenders />
+                    <Section title="Autores" onPress={() => navigation.navigate("SearchAuthorScreen")} />
+                    <Authors onPress1={() => navigation.navigate("AuthorsScreen")} onPress2={() => navigation.navigate("AuthorsScreen")} onPress3={() => navigation.navigate("AuthorsScreen")} onPress4={() => navigation.navigate("AuthorsScreen")} />
+                </ScrollView>
 
-                {loading && <Text>Carregando...</Text>}
-                {error && <Text style={styles.errorText}>{error}</Text>}
-
-                <FlatList
-                    data={list}
-                    renderItem={({ item }) => <RenderBookItem data={item} />}
-                    keyExtractor={(item) => item.id}
-                />
-            </ScrollView>
-
-            <BottomSheet
-                ref={bottomSheetref}
-                snapPoints={snapPoints}
-                index={-1}
-                enablePanDownToClose={true}>
-                <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-                    {selectedBook && (
-                        <>
-                            <View style={styles.bottomSheetBookContainer}>
-                                <Image 
-                                    source={selectedBook.image ? { uri: selectedBook.image } : book} 
-                                    style={styles.bottomSheetBookStyle} 
-                                    resizeMode="contain" 
-                                />
-                            </View>
-                            <View style={styles.bottomSheetDetailContainer}>
-                                <View style={styles.bottomSheetHeaderContainer}>
-                                    <Text style={styles.bottomSheetTitle}>{selectedBook.titulo}</Text>
-                                    <Pressable
+                <BottomSheet
+                    ref={bottomSheetref}
+                    snapPoints={snapPoints}
+                    index={-1}
+                    enablePanDownToClose={true}>
+                    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
+                        {selectedBook && ( // Só renderiza se houver um livro selecionado
+                            <>
+                                <View style={styles.bookContainer}>
+                                    <Image source={selectedBook.image} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                                </View>
+                                <View style={styles.detailContainer}>
+                                    <View style={styles.headerContainer}>
+                                        <Text style={styles.title}>{selectedBook.titulo}</Text>
+                                        <Pressable
+                                            size="md"
+                                            bg="transparent"
+                                            style={{ top: 7 }}
+                                            onPress={handleFavoritePress}
+                                        >
+                                            {isFavorited ? (
+                                                <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
+                                                    <Ionicons name="heart" size={26} color={"#ee2d32"} />
+                                                </MotiView>
+                                            ) : (
+                                                <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
+                                                    <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
+                                                </MotiView>
+                                            )}
+                                        </Pressable>
+                                    </View>
+                                    <View style={styles.genderContainer}>
+                                        <Text style={styles.genderText}>Suspense</Text>
+                                    </View>
+                                    <Text style={styles.description}>{selectedBook.descricao}</Text>
+                                </View>
+                                <View style={styles.ratingContainer}>
+                                    <Text style={styles.ratingTitle}>Avaliação</Text>
+                                    <AirbnbRating
+                                        count={5}
+                                        defaultRating={selectedBook.rating || 1}
+                                        size={20}
+                                        showRating={false}
+                                        unSelectedColor="#000"
+                                        starContainerStyle={styles.starRating}
+                                        isDisabled={true}
+                                    />
+                                    <Text style={[styles.status,
+                                    { color: selectedBook.estado.toLowerCase() === 'disponivel' ? '#34A853' : '#ee2d32' }]}>
+                                        {selectedBook.estado}
+                                    </Text>
+                                </View>
+                                <View style={styles.buttonContainer}>
+                                    <Button
                                         size="md"
-                                        bg="transparent"
-                                        style={{ top: 7 }}
-                                        onPress={handleFavoritePress}
+                                        variant="solid"
+                                        action="primary"
+                                        isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
+                                        isFocusVisible={false}
+                                        style={styles.buttonPrincipal}
                                     >
-                                        {isFavorited ? (
-                                            <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
-                                                <Ionicons name="heart" size={26} color={"#ee2d32"} />
-                                            </MotiView>
-                                        ) : (
-                                            <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
-                                                <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
-                                            </MotiView>
-                                        )}
-                                    </Pressable>
+                                        <ButtonText style={styles.buttonPrincipalText}>
+                                            Continuar com Empréstimo
+                                        </ButtonText>
+                                    </Button>
+                                    <Button
+                                        size="md"
+                                        variant="solid"
+                                        action="primary"
+                                        isDisabled={false}
+                                        isFocusVisible={false}
+                                        style={styles.buttonSecondary}
+                                    >
+                                        <ButtonText style={styles.buttonSecondaryText}>
+                                            Ver Livros
+                                        </ButtonText>
+                                    </Button>
                                 </View>
-                                <View style={styles.bottomSheetGenderContainer}>
-                                    <Text style={styles.bottomSheetGenderText}>{selectedBook.genero}</Text>
-                                </View>
-                                <Text style={styles.bottomSheetDescription}>{selectedBook.description || "Sem descrição disponível"}</Text>
-                            </View>
-                            <View style={styles.bottomSheetRatingContainer}>
-                                <Text style={styles.bottomSheetRatingTitle}>Avaliação</Text>
-                                <AirbnbRating
-                                    count={5}
-                                    defaultRating={selectedBook.rating || 1}
-                                    size={20}
-                                    showRating={false}
-                                    unSelectedColor="#000"
-                                    starContainerStyle={styles.bottomSheetStarRating}
-                                    isDisabled={true}
-                                />
-                                <Text style={[
-                                    styles.bottomSheetStatus,
-                                    { color: selectedBook.status?.toLowerCase() === 'disponível' ? '#34A853' : '#ee2d32' }
-                                ]}>
-                                    {selectedBook.status}
-                                </Text>
-                            </View>
-                            <View style={styles.bottomSheetButtonContainer}>
-                                <Button
-                                    size="md"
-                                    variant="solid"
-                                    action="primary"
-                                    isDisabled={selectedBook.status?.toLowerCase() !== 'disponível'}
-                                    isFocusVisible={false}
-                                    style={styles.bottomSheetButtonPrincipal}
-                                >
-                                    <ButtonText style={styles.bottomSheetButtonPrincipalText}>
-                                        Continuar com Empréstimo
-                                    </ButtonText>
-                                </Button>
-                                <Button
-                                    size="md"
-                                    variant="solid"
-                                    action="primary"
-                                    isDisabled={false}
-                                    isFocusVisible={false}
-                                    style={styles.bottomSheetButtonSecondary}
-                                >
-                                    <ButtonText style={styles.bottomSheetButtonSecondaryText}>
-                                        Ver Livros
-                                    </ButtonText>
-                                </Button>
-                            </View>
-                        </>
-                    )}
-                </BottomSheetScrollView>
-            </BottomSheet>
-        </SafeAreaView>
+                            </>
+                        )}
+                    </BottomSheetScrollView>
+                </BottomSheet>
+            </SafeAreaView>
+        </GluestackUIProvider>
     );
-};
-
+}
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
     container: {
         height: "100%",
         width: "100%",
-        backgroundColor: '#fff',
+        backgroundColor: '#f6f6',
+        alignItems: "center"
     },
-    searchbarContainer: {
-        borderRadius: 10,
-        width: 320,
-        height: 50,
-        alignSelf: "center",
-        backgroundColor: "#f5f5f5",
-        flexDirection: "row",
-        paddingLeft: 10,
-        alignItems: "center",
-        marginTop: 20,
-    },
-    inputSlot: {
-        marginRight: 20
-    },
-    searchText: {
-        fontSize: 18,
-        top: 1
-    },
+    //BottomSheetStyles
     bookContainer: {
-        height: 165,
-        width: "100%",
-        flexDirection: "row",
-        marginBottom: 20,
-        marginHorizontal: 20,
-        marginTop: 10
-    },
-    imageContainer: {
-        padding: 10,
-        right: 20
-    },
-    image: {
-        width: 120,
-        height: 170,
-        borderRadius: 10,
-    },
-    detailsContainer: {
-        marginTop: 10,
-        flexDirection: "column",
-        left: 15,
-        gap: 5,
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: "bold",
-        color: "#000",
-    },
-    gender: {
-        fontSize: 18,
-        fontWeight: 'semibold',
-        color: "#000",
-    },
-    starRating: {
-        alignSelf: "flex-start",
-        right: 5,
-    },
-    author: {
-        fontSize: 18,
-        fontWeight: 'semibold',
-        color: "#000",
-    },
-    status: {
-        fontSize: 18,
-        fontWeight: 'semibold',
-        color: "#ee2d32",
-    },
-    // Bottom Sheet Styles
-    bottomSheetBookContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         padding: 10,
     },
-    bottomSheetBookStyle: {
+    bookStyle: {
         width: 237,
         height: 310,
     },
-    bottomSheetDetailContainer: {
+    detailContainer: {
         flex: 1,
         flexDirection: "column",
         padding: 10,
         paddingHorizontal: 25,
         gap: 15,
     },
-    bottomSheetHeaderContainer: {
+    headerContainer: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         height: 30,
     },
-    bottomSheetTitle: {
+    title: {
         color: "black",
         fontSize: 24,
         fontWeight: "bold",
     },
-    bottomSheetDescription: {
+    icon: {
+        height: 24,
+        width: 24,
+        marginTop: 7,
+    },
+    description: {
         fontSize: 16,
     },
-    bottomSheetGenderContainer: {
+    genderContainer: {
         height: 50,
         width: 130,
         justifyContent: 'center',
     },
-    bottomSheetGenderText: {
+    genderText: {
         fontSize: 22,
         fontWeight: 'bold',
         marginVertical: 5,
@@ -360,7 +250,11 @@ const styles = StyleSheet.create({
         letterSpacing: 3,
         textShadowColor: 'rgba(44, 62, 80, 0.5)',
     },
-    bottomSheetRatingContainer: {
+    image: {
+        width: 100,
+        height: 24,
+    },
+    ratingContainer: {
         flex: 1,
         flexDirection: "column",
         padding: 10,
@@ -368,48 +262,47 @@ const styles = StyleSheet.create({
         gap: 10,
         width: 160,
     },
-    bottomSheetRatingTitle: {
+    ratingTitle: {
         color: "black",
         fontSize: 24,
         fontWeight: "bold",
     },
-    bottomSheetStarRating: {
+    starRating: {
         flex: 1,
         justifyContent: "flex-start",
         marginLeft: 28,
         gap: 4,
     },
-    bottomSheetStatus: {
+    status: {
         fontSize: 18,
+        color: "#34A853",
         fontWeight: "bold",
     },
-    bottomSheetButtonContainer: {
+    buttonContainer: {
         flex: 1,
         flexDirection: "row",
         padding: 10,
         marginTop: 10,
         gap: 15,
     },
-    bottomSheetButtonPrincipal: {
+    buttonPrincipal: {
         backgroundColor: "#ee2d32",
         width: 250,
         height: 50,
         borderRadius: 25,
     },
-    bottomSheetButtonSecondary: {
+    buttonSecondary: {
         backgroundColor: "#EBF2EF",
         width: 115,
         height: 50,
         borderRadius: 25,
         paddingLeft: 15,
     },
-    bottomSheetButtonPrincipalText: {
+    buttonPrincipalText: {
         fontWeight: "bold",
     },
-    bottomSheetButtonSecondaryText: {
+    buttonSecondaryText: {
         color: "#54408C",
         fontWeight: 'bold',
     },
 });
-
-export default SearchScreen;

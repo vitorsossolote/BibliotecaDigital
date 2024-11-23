@@ -8,20 +8,21 @@ import {
 } from "@gluestack-ui/themed"
 import book from "../../../assets/book2.png"
 const { width: screenWidth } = Dimensions.get('window');
-import { Data } from '../../data/data';
 import { SafeAreaView } from 'moti';
 import { FlatList } from 'react-native-gesture-handler';
+import { useAuth } from "../../contexts/AuthContext";
 
 type Props = ButtonProps & PressableProps & {
     onPress: any
 }
 
 export default function Reservar({ onPress }: Props) {
+    const {livros } = useAuth();
     const latestItem = useMemo(() => {
-        return Data.reduce((prev, current) => {
+        return livros.reduce((prev, current) => {
             return (prev.id > current.id) ? prev : current;
         });
-    }, [Data]);
+    }, [livros]);
 
     const RenderItem = ({item}) => {
         return (
@@ -50,7 +51,7 @@ export default function Reservar({ onPress }: Props) {
     return (
         <SafeAreaView>
             <FlatList
-                data={[latestItem]} // Passando apenas o item com maior ID como array
+                data={[latestItem]} 
                 renderItem={RenderItem}
                 keyExtractor={(item) => item.id.toString()}
             />

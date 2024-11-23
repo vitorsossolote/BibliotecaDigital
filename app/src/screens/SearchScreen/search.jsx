@@ -1,29 +1,66 @@
-
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { View, TextInput, FlatList, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, ToastAndroid } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import { AirbnbRating } from "react-native-ratings";
-import { Input, InputSlot, InputField, InputIcon, ScrollView } from '@gluestack-ui/themed';
+import { Input, InputSlot, InputField, InputIcon, ScrollView, Button, ButtonText, Pressable } from '@gluestack-ui/themed';
 import { Search, MoveLeft } from 'lucide-react-native';
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { MotiView } from 'moti';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainHeader from '../../components/MainHeader';
 import book from "../../../assets/book7.png";
 
 const SearchScreen = ({ navigation }) => {
     const [searchText, setSearchText] = useState('');
-    const { livros, loading, error } = useAuth();
+    const { user, livros, loading, error, addToFavorites, removeFromFavorites, checkFavoriteStatus } = useAuth();
     const [list, setList] = useState(livros);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [isFavorited, setIsFavorited] = useState(false);
+
+    // Bottom Sheet Configuration
+    const bottomSheetref = useRef(null);
+    const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
+
+    const handleOpenPress = (bookData) => {
+        setSelectedBook(bookData);
+        const isBookFavorited = checkFavoriteStatus(bookData.id);
+        setIsFavorited(isBookFavorited);
+        bottomSheetref.current?.expand();
+    };
+
+    const handleFavoritePress = () => {
+        if (!user) {
+            ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
+            return;
+        }
+
+        try {
+            if (isFavorited) {
+                removeFromFavorites(selectedBook.id);
+                ToastAndroid.show("Removido dos favoritos", ToastAndroid.SHORT);
+            } else {
+                addToFavorites({
+                    id: selectedBook.id,
+                    name: selectedBook.titulo,
+                    image: selectedBook.image,
+                    description: selectedBook.description,
+                    status: selectedBook.status
+                });
+                ToastAndroid.show("Adicionado aos favoritos", ToastAndroid.SHORT);
+            }
+
+            setIsFavorited(!isFavorited);
+        } catch (error) {
+            console.error("Erro ao gerenciar favoritos:", error);
+            ToastAndroid.show("Erro ao gerenciar favoritos", ToastAndroid.SHORT);
+        }
+    };
 
     const truncateTitle = (title) => {
         if (title.length > 17) {
             return title.substring(0, 17) + '...';
         }
         return title;
-    };
-    const truncateAutor = (autor) => {
-        if (autor.length > 17) {
-            return autor.substring(0, 17) + '...';
-        }
-        return autor;
     };
 
     useEffect(() => {
@@ -41,22 +78,8 @@ const SearchScreen = ({ navigation }) => {
         }
     }, [searchText]);
 
-    const handleOrderClick = () => {
-        let newList = [...livros];
-
-        newList.sort((a, b) => (a.titulo > b.titulo ? 1 : b.titulo > a.titulo ? -1 : 0)) ||
-            newList.sort((a, b) => (a.genero > b.genero ? 1 : b.genero > a.genero ? -1 : 0));
-
-        setList(newList);
-    };
-
     const RenderBookItem = ({ data }) => (
-        <TouchableOpacity
-            onPress={() => {
-                // Navigate to book details or perform other actions
-                // navigation.navigate('BookDetail', { bookId: item.id })
-            }}
-        >
+        <TouchableOpacity onPress={() => handleOpenPress(data)}>
             <View key={data.id} style={styles.bookContainer}>
                 <View style={styles.imageContainer}>
                     <Image
@@ -81,21 +104,20 @@ const SearchScreen = ({ navigation }) => {
                         isDisabled={true}
                     />
                     <Text style={styles.author}>{truncateTitle(data.autor || "Sem Autor")}</Text>
-                    <Text style={styles.status}>{data.status || "Disponível"}</Text>
+                    <Text style={styles.status}>{data.estado || "Sem informação"}</Text>
                 </View>
             </View>
         </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.mainContainer}>
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={styles.headerContainer}>
                     <MainHeader
                         title="Pesquisar"
                         icon1={MoveLeft}
                         onPress={() => {
-                            console.log('Voltando para Home');
                             navigation.navigate("Home");
                         }}
                     />
@@ -123,49 +145,107 @@ const SearchScreen = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
                 />
             </ScrollView>
-        </SafeAreaView>
 
+            <BottomSheet
+                ref={bottomSheetref}
+                snapPoints={snapPoints}
+                index={-1}
+                enablePanDownToClose={true}>
+                <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
+                    {selectedBook && (
+                        <>
+                            <View style={styles.bottomSheetBookContainer}>
+                                <Image
+                                    source={selectedBook.image ? { uri: selectedBook.image } : book}
+                                    style={styles.bottomSheetBookStyle}
+                                    resizeMode="contain"
+                                />
+                            </View>
+                            <View style={styles.bottomSheetDetailContainer}>
+                                <View style={{flexDirection:"row"}}>
+                                    <View style={styles.bottomSheetHeaderContainer}>
+                                        <Text style={styles.bottomSheetTitle}>{selectedBook.titulo}</Text>
+                                    </View>
+                                    <View>
+                                        <Pressable
+                                            size="md"
+                                            bg="transparent"
+                                            style={{ top: 7 }}
+                                            onPress={handleFavoritePress}
+                                        >
+                                            {isFavorited ? (
+                                                <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
+                                                    <Ionicons name="heart" size={26} color={"#ee2d32"} />
+                                                </MotiView>
+                                            ) : (
+                                                <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
+                                                    <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
+                                                </MotiView>
+                                            )}
+                                        </Pressable>
+                                    </View>
+                                </View>
+                                <View style={styles.bottomSheetGenderContainer}>
+                                    <Text style={styles.bottomSheetGenderText}>{selectedBook.genero}</Text>
+                                </View>
+                                <Text style={styles.bottomSheetDescription}>{selectedBook.description || "Sem descrição disponível"}</Text>
+                            </View>
+                            <View style={styles.bottomSheetRatingContainer}>
+                                <Text style={styles.bottomSheetRatingTitle}>Avaliação</Text>
+                                <AirbnbRating
+                                    count={5}
+                                    defaultRating={selectedBook.rating || 1}
+                                    size={20}
+                                    showRating={false}
+                                    unSelectedColor="#000"
+                                    starContainerStyle={styles.bottomSheetStarRating}
+                                    isDisabled={true}
+                                />
+                                <Text style={[
+                                    styles.bottomSheetStatus,
+                                    { color: selectedBook.estado?.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
+                                ]}>
+                                    {selectedBook.estado}
+                                </Text>
+                            </View>
+                            <View style={styles.bottomSheetButtonContainer}>
+                                <Button
+                                    size="md"
+                                    variant="solid"
+                                    action="primary"
+                                    isDisabled={selectedBook.estado?.toLowerCase() !== 'd'}
+                                    isFocusVisible={false}
+                                    style={styles.bottomSheetButtonPrincipal}
+                                >
+                                    <ButtonText style={styles.bottomSheetButtonPrincipalText}>
+                                        Continuar com Empréstimo
+                                    </ButtonText>
+                                </Button>
+                                <Button
+                                    size="md"
+                                    variant="solid"
+                                    action="primary"
+                                    isDisabled={false}
+                                    isFocusVisible={false}
+                                    style={styles.bottomSheetButtonSecondary}
+                                >
+                                    <ButtonText style={styles.bottomSheetButtonSecondaryText}>
+                                        Ver Livros
+                                    </ButtonText>
+                                </Button>
+                            </View>
+                        </>
+                    )}
+                </BottomSheetScrollView>
+            </BottomSheet>
+        </SafeAreaView>
     );
 };
 
-const styles = {
-    searchContainer: {
-        flexDirection: 'row',
-        marginBottom: 10,
-    },
-    searchInput: {
+const styles = StyleSheet.create({
+    mainContainer: {
         flex: 1,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        borderRadius: 5,
-    },
-    searchButton: {
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    bookItem: {
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-    },
-    bookTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    bookAuthor: {
-        color: '#666',
-    },
-    errorText: {
-        color: 'red',
-        textAlign: 'center',
-    },
-    emptyText: {
-        textAlign: 'center',
-        marginTop: 20,
-        color: '#666',
+        backgroundColor: '#fff',
     },
     container: {
         height: "100%",
@@ -189,11 +269,6 @@ const styles = {
     searchText: {
         fontSize: 18,
         top: 1
-    },
-    bookSearch: {
-        marginHorizontal: 30,
-        marginTop: 30,
-        height: "100%"
     },
     bookContainer: {
         height: 165,
@@ -242,13 +317,104 @@ const styles = {
         fontWeight: 'semibold',
         color: "#ee2d32",
     },
-    statusText: {
-        textAlign: 'center',
-        marginTop: 20,
+    // Bottom Sheet Styles
+    bottomSheetBookContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 10,
+    },
+    bottomSheetBookStyle: {
+        width: 237,
+        height: 310,
+        borderRadius:10,
+    },
+    bottomSheetDetailContainer: {
+        flex: 1,
+        flexDirection: "column",
+        padding: 10,
+        paddingHorizontal: 25,
+        gap: 15,
+    },
+    bottomSheetHeaderContainer: {
+        width: "90%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flex: 1,
+    },
+    bottomSheetTitle: {
+        color: "black",
+        fontSize: 24,
+        fontWeight: "bold",
+    },
+    bottomSheetDescription: {
         fontSize: 16,
-        color: '#666',
-        marginBottom: 20,
-    }
-};
+    },
+    bottomSheetGenderContainer: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'center',
+    },
+    bottomSheetGenderText: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginVertical: 5,
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
+        color: '#2c3e50',
+        letterSpacing: 3,
+        textShadowColor: 'rgba(44, 62, 80, 0.5)',
+    },
+    bottomSheetRatingContainer: {
+        flex: 1,
+        flexDirection: "column",
+        padding: 10,
+        paddingHorizontal: 22,
+        gap: 10,
+        width: 160,
+    },
+    bottomSheetRatingTitle: {
+        color: "black",
+        fontSize: 24,
+        fontWeight: "bold",
+    },
+    bottomSheetStarRating: {
+        flex: 1,
+        justifyContent: "flex-start",
+        marginLeft: 28,
+        gap: 4,
+    },
+    bottomSheetStatus: {
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    bottomSheetButtonContainer: {
+        flex: 1,
+        flexDirection: "row",
+        padding: 10,
+        marginTop: 10,
+        gap: 15,
+    },
+    bottomSheetButtonPrincipal: {
+        backgroundColor: "#ee2d32",
+        width: 250,
+        height: 50,
+        borderRadius: 25,
+    },
+    bottomSheetButtonSecondary: {
+        backgroundColor: "#EBF2EF",
+        width: 115,
+        height: 50,
+        borderRadius: 25,
+        paddingLeft: 15,
+    },
+    bottomSheetButtonPrincipalText: {
+        fontWeight: "bold",
+    },
+    bottomSheetButtonSecondaryText: {
+        color: "#54408C",
+        fontWeight: 'bold',
+    },
+});
 
 export default SearchScreen;

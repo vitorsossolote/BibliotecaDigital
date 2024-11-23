@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState } from "react"
-import { View, Text, Image, Pressable, Button, ButtonText } from "@gluestack-ui/themed"
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native"
+import { View, Text, Pressable, Button, ButtonText } from "@gluestack-ui/themed"
+import { StyleSheet, SafeAreaView, Image, ScrollView } from "react-native"
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { MotiView } from 'moti'
 import MainHeader from "../../components/MainHeader/index"
@@ -9,20 +9,21 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { AirbnbRating } from "react-native-ratings";
 // Import your context
 import { useAuth } from "../../contexts/AuthContext";
+import book from "../../../assets/book7.png";
 
 export default function FavoritesScreen({ navigation }) {
-    const { user, favorites, removeFromFavorites } = useAuth();
+    const { user, favorites, removeFromFavorites, livros } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
     const [book, setbook] = useState(null);
     const [isFavorited, setIsFavorited] = useState(false);
 
     
-    const handleOpenPress = (book) => {
-        setbook(book);
+    const handleOpenPress = (livros) => {
+        setbook(livros);
 
         // Check if book is already in favorites
-        const isBookFavorited = checkFavoriteStatus(book.id);
+        const isBookFavorited = checkFavoriteStatus(livros.id);
         setIsFavorited(isBookFavorited);
 
         bottomSheetref.current?.expand();
@@ -36,15 +37,15 @@ export default function FavoritesScreen({ navigation }) {
 
         try {
             if (isFavorited) {
-                removeFromFavorites(book.id);
+                removeFromFavorites(livros.id);
                 ToastAndroid.show("Removido dos favoritos", ToastAndroid.SHORT);
             } else {
                 addToFavorites({
-                    id: book.id,
-                    name: book.name,
-                    image: book.image,
-                    description: book.description,
-                    status: book.status
+                    id: livros.id,
+                    titulo: livros.titulo,
+                    image: livros.image,
+                    descricao: livros.descricao,
+                    estado: livros.estado
                 });
                 ToastAndroid.show("Adicionado aos favoritos", ToastAndroid.SHORT);
             }
@@ -56,25 +57,25 @@ export default function FavoritesScreen({ navigation }) {
         }
     };
     const renderFavoriteBooks = () => {
-        return favorites.map((book) => (
-            <View key={book.id} style={styles.contentContainer}>
+        return favorites.map((livros) => (
+            <View key={livros.id} style={styles.contentContainer}>
                 <View style={styles.favoriteBookContainer}>
                     <Pressable onPress={handleOpenPress}>
                         <View style={styles.imageContainer}>
-                            <Image source={book.image} style={styles.bookImage} />
+                            <Image source={book} style={styles.bookImage} />
                         </View>
                     </Pressable>
                     <View style={styles.textContainer}>
-                        <Text style={styles.bookTitle}>{book.name}</Text>
+                        <Text style={styles.bookTitle}>{livros.titulo}</Text>
                         <Text style={[styles.bookStatus, 
-                            { color: book.status.toLowerCase() === 'disponivel' ? '#34A853' : '#ee2d32' }
-                            ]}>{book.status}</Text>
+                            { color: livros.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
+                            ]}>{livros.estado}</Text>
                     </View>
                     <View>
                         <Pressable
                             size="md"
                             bg="transparent"
-                            onPress={() => removeFromFavorites(book.id)}
+                            onPress={() => removeFromFavorites(livros.id)}
                             style={styles.iconContainer}
                         >
                             <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
@@ -112,14 +113,14 @@ export default function FavoritesScreen({ navigation }) {
                 index={-1}
                 enablePanDownToClose={true}>
                 <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-                    {book && ( // Só renderiza se houver um livro selecionado
+                    {livros && ( // Só renderiza se houver um livro selecionado
                         <>
                             <View style={styles.bookContainer}>
-                                <Image source={book.image} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                                <Image source={livros.image ? { uri: livros.image } : book} alt="livro" style={styles.bookStyle} resizeMode="contain" />
                             </View>
                             <View style={styles.detailContainer}>
                                 <View style={styles.headerContainer}>
-                                    <Text style={styles.title}>{book.name}</Text>
+                                    <Text style={styles.title}>{livros.titulo}</Text>
                                     <Pressable
                                         size="md"
                                         bg="transparent"
@@ -140,13 +141,13 @@ export default function FavoritesScreen({ navigation }) {
                                 <View style={styles.genderContainer}>
                                     <Text style={styles.genderText}>Suspense</Text>
                                 </View>
-                                <Text style={styles.description}>{book.description}</Text>
+                                <Text style={styles.description}>{livros.descricao}</Text>
                             </View>
                             <View style={styles.ratingContainer}>
                                 <Text style={styles.ratingTitle}>Avaliação</Text>
                                 <AirbnbRating
                                     count={5}
-                                    defaultRating={book.rating || 0}
+                                    defaultRating={livros.rating || 0}
                                     size={20}
                                     showRating={false}
                                     unSelectedColor="#000"
@@ -156,7 +157,7 @@ export default function FavoritesScreen({ navigation }) {
                                 <Text style={[styles.status,
                                 // { color: book.status.toLowerCase() === 'disponivel' ? '#34A853' : '#ee2d32' }
                                 ]}>
-                                    {book.status}
+                                    {livros.estado}
                                 </Text>
                             </View>
                             <View style={styles.buttonContainer}>

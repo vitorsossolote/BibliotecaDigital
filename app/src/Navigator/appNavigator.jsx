@@ -296,7 +296,7 @@ export default function AppNavigator() {
   
 
   if (loading) {
-    return null; // ou um componente de loading
+    return null; 
   }
 
   return (
@@ -323,7 +323,7 @@ export default function AppNavigator() {
             <Stack.Screen name="LoanHistory" component={LoanHistory} />
             <Stack.Screen name="SearchAuthorScreen" component={SearchAuthorScreen} />
             <Stack.Screen name="SearchGenderScreen" component={SearchGenderScreen} />
-            <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen name="SearchScreen" component={SearchScreen}/>
             <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
             <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
             <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
