@@ -314,6 +314,7 @@ export default function AppNavigator() {
             <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
             <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
             <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
+            <Stack.Screen name="EditBooks" component={EditBooks} />
           </>
         ) : authData ? (
           // Student Routes

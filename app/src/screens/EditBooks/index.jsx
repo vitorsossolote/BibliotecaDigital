@@ -16,7 +16,7 @@ import ModalComp from "../../components/Modal/1Modal";
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from "axios";
 
-const RegisterBooks = ({navigation}) => {
+const EditBooks = ({navigation}) => {
     const [image, setImage] = useState('')
     const [titulo, setTitulo] = useState('')
     const [autor, setAutor] = useState('')
@@ -305,4 +305,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegisterBooks;
+export default EditBooks;

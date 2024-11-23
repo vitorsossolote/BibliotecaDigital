@@ -183,6 +183,16 @@ const SearchScreen = ({ navigation }) => {
                                                 </MotiView>
                                             )}
                                         </Pressable>
+                                        <Pressable style={{backgroundColor:"#ee2d32", width:50,height:30, justifyContent:"center",alignItems:"center", borderRadius:10,borderWidth:1, borderColor:"#ee2d32", marginTop:10,}}
+                                            onPress={() => console.log("Excluiu")}
+                                        >
+                                            <Text style={{color:"#fff", fontWeight:"bold"}}>Excluir</Text>
+                                        </Pressable>
+                                        <Pressable style={{backgroundColor:"#fff", width:50,height:30, justifyContent:"center",alignItems:"center", borderRadius:10,borderWidth:1, borderColor:"#ee2d32", marginTop:10,}}
+                                            onPress={() => navigation.navigate("EditBooks")}
+                                        >
+                                            <Text style={{color:"#000", fontWeight:"bold"}}>Editar</Text>
+                                        </Pressable>
                                     </View>
                                 </View>
                                 <View style={styles.bottomSheetGenderContainer}>
