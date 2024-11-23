@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-47:/values-fr/values-fr.xml",
+            "outputFile": "com.app-mergeDebugResources-48:/values-fr/values-fr.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Vitor\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-fr\\values.xml",
@@ -122,6 +122,23 @@
                         "startOffsets": "3814,3920,4100,4230,4339,4510,4643,4764,5042,5220,5332,5517,5653,5813,5992,6065,6132",
                         "endColumns": "105,179,129,108,170,132,120,112,177,111,184,135,159,178,72,66,83",
                         "endOffsets": "3915,4095,4225,4334,4505,4638,4759,4872,5215,5327,5512,5648,5808,5987,6060,6127,6211"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vitor\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,124,182",
+                        "endColumns": "68,57,52",
+                        "endOffsets": "119,177,230"
+                    },
+                    "to": {
+                        "startLines": "136,137,138",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "12564,12633,12691",
+                        "endColumns": "68,57,52",
+                        "endOffsets": "12628,12686,12739"
                     }
                 },
                 {

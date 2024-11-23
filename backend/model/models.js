@@ -23,6 +23,13 @@ const useModel = {
     return result;
   },
 
+  getByBookCode: async (codigo) => {
+    const [result] = await connection
+      .query("SELECT * FROM livros WHERE codigo=?", [codigo])
+      .catch((erro)=> console.log(erro))
+    return result;
+  },
+
   getByCfb: async (rm) => {
     const [result] = await connection
       .query("SELECT * FROM librarian WHERE cfb=?", [rm])
@@ -63,14 +70,14 @@ const useModel = {
       );
 
       if (student.length === 0) {
-        return null;
+        return null; 
       }
 
       const isValid = await bcrypt.compare(senha, student[0].senha);
       if (isValid) {
         return student[0];
       } else {
-        return null;
+        return null; 
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -125,6 +132,59 @@ const useModel = {
       }
     } catch (erro) {
       console.log(erro);
+    }
+  },
+
+  //Buscar livros
+    getAllLivros: async () => {
+      const [result] = await connection
+        .query("SELECT * FROM livros")
+        .catch((erro) => console.log(erro));
+      return result;
+    },
+
+    //Buscar livros por ID
+    getLivroById: async (id) => {
+      const [result] = await connection
+        .query("SELECT * FROM livros WHERE id =?", [id])
+        .catch((erro) => console.log(erro));
+      return result;
+    },
+
+    searchLivros: async (searchTerm) => {
+      const [result] = await connection
+        .query("SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ?", [`%${searchTerm}%`, `%${searchTerm}%`])
+        .catch((erro) => console.log(erro));
+      return result;
+    },
+  
+    
+    // Outros métodos para manipulação de livros podem ser adicionados aqui
+  
+  registerBooks: async (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) => {  
+
+    if (!codigo) {
+      throw new Error('O código é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO livros (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)", [
+          image, 
+          titulo, 
+          descricao, 
+          autor, 
+          editora, 
+          genero, 
+          quantidade, 
+          codigo, 
+          avaliacao, 
+          estado
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
     }
   },
 

@@ -1,4 +1,3 @@
-
 // Profile
 
 //Bibliotecas Utilizadas
@@ -25,18 +24,15 @@ import profileIcon from "../../../assets/ProfileIcon.png"
 //Inicio do Código
 
 export default function Profile({ navigation }) {
-
-    const { user } = useAuth();
-    const { librarian } = useAuth();
+    const { user, librarian } = useAuth();
 
     const bottomSheetref = useRef(null);
-    const snapPoints = useMemo(() => ["56%","90%"], [])
+    const snapPoints = useMemo(() => ["56%",], [])
 
     const handleCloseAction = () => bottomSheetref.current?.close()
     const handleOpenPress = () => bottomSheetref.current?.expand();
 
-    const { signOut } = useAuth();
-    const { signOutLibrarian} = useAuth();
+    const { signOut, signOutLibrarian } = useAuth();
     const handleLogout = async () => {
         try {
             await signOut();
@@ -54,6 +50,75 @@ export default function Profile({ navigation }) {
             Alert.alert('Erro', 'Não foi possível fazer logout. Tente novamente.');
         }
     };
+
+    const userName = user ? user.nome : (librarian ? librarian.nome : 'Usuário');
+    const menuItems = user 
+    ? [
+        {
+            onPress: () => navigation.navigate("UserProfileScreen"),
+            image: profileIcon,
+            alt: "Minha Conta",
+            title: "Minha Conta"
+        },
+        {
+            onPress: () => console.log("Mais Lidos"),
+            image: path,
+            alt: "Mais Lidos",
+            title: "Mais Lidos"
+        },
+        {
+            onPress: () => navigation.navigate("Favorites"),
+            image: heart,
+            alt: "Seus Favoritos",
+            title: "Seus Favoritos"
+        },
+        {
+            onPress: () => navigation.navigate("LoanHistory"),
+            image: document,
+            alt: "Histórico de Empréstimo",
+            title: "Histórico de Empréstimo"
+        },
+        {
+            onPress: () => console.log("Clicou em suporte"),
+            image: chat,
+            alt: "Suporte",
+            title: "Suporte"
+        }
+    ]
+    : librarian 
+    ? [
+        {
+            onPress: () => navigation.navigate("LibrarianProfileScreen"),
+            image: chat,
+            alt: "Perfil do Bibliotecário",
+            title: "Meu Perfil"
+        },
+        {
+            onPress: () => navigation.navigate("ManageBooks"),
+            image: chat,
+            alt: "Gerenciar Livros",
+            title: "Gerenciar Livros"
+        },
+        {
+            onPress: () => navigation.navigate("ManageLoans"),
+            image: chat,
+            alt: "Gerenciar Empréstimos",
+            title: "Gerenciar Empréstimos"
+        },
+        {
+            onPress: () => navigation.navigate("UserManagement"),
+            image: chat,
+            alt: "Gerenciar Usuários",
+            title: "Gerenciar Usuários"
+        },
+        {
+            onPress: () => console.log("Suporte Bibliotecário"),
+            image: chat,
+            alt: "Suporte",
+            title: "Suporte"
+        }
+    ]
+    : [];
 
     return (
         <SafeAreaView style={styles.container}>
@@ -75,11 +140,11 @@ export default function Profile({ navigation }) {
                     </Pressable>
                 </View>
                 <View style={styles.userInfoContainer}>
-                    <Text style={styles.userNameText}>a</Text>
+                    <Text style={styles.userNameText}>{userName}</Text>
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
-                    <Button onPress={handleLogout} variant="link">
+                    <Button onPress={handleOpenPress} variant="link">
                         <ButtonText style={styles.buttonText}>Logout</ButtonText>
                     </Button>
                 </View>
@@ -90,36 +155,15 @@ export default function Profile({ navigation }) {
                 width={"100%"}
                 top={10}
             />
-            <MenuProfile
-                onPress={() => navigation.navigate("UserProfileScreen")}
-                image={profileIcon}
-                alt={"Minha Conta"}
-                title={"Minha Conta"}
-            />
-            <MenuProfile
-                onPress={() => console.log("Mais Lidos")}
-                image={path}
-                alt={"Mais Lidos"}
-                title={"Mais Lidos"}
-            />
-            <MenuProfile
-                onPress={() => navigation.navigate("Favorites")}
-                image={heart}
-                alt={"Seus Favoritos"}
-                title={"Seus Favoritos"}
-            />
-            <MenuProfile
-                onPress={() => navigation.navigate("LoanHistory")}
-                image={document}
-                alt={"Histórico de Empréstimo"}
-                title={"Histórico de Empréstimo"}
-            />
-            <MenuProfile
-                onPress={() => console.log("Clicou em suporte")}
-                image={chat}
-                alt={"Suporte"}
-                title={"Suporte"}
-            />
+            {menuItems.map((item, index) => (
+                <MenuProfile
+                    key={index}
+                    onPress={item.onPress}
+                    image={item.image}
+                    alt={item.alt}
+                    title={item.title}
+                />
+            ))}
             {/* Inicio do BottomSheet */}
             <BottomSheet
                 ref={bottomSheetref}
@@ -130,7 +174,7 @@ export default function Profile({ navigation }) {
                     <View style={styles.bottomSheetContainer}>
                         <View style={styles.bottomSheetHeader}>
                             <Text style={styles.bottomSheetTitle}>Sair</Text>
-                            <Text style={styles.bottomSheetSubtitle}>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</Text>
+                            <Text style={styles.bottomSheetSubtitle}>Tem certeza que quer Sair? Você terá que fazer login novamente</Text>
                         </View>
                         <View style={styles.bottomSheetButtonContainer}>
                             <Button
@@ -280,6 +324,7 @@ const styles = StyleSheet.create({
         borderRadius: 35,
         justifyContent: "center",
         alignItems: "center",
+        elevation:2
     },
     bottomSheetLogoutButtonTitle: {
         color: "#fff",
@@ -287,12 +332,13 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     bottomSheetCancelButton: {
-        backgroundColor: "#FFFFEF",
+        backgroundColor: "#FFF",
         width: 360,
         height: 55,
         borderRadius: 35,
         justifyContent: "center",
         alignItems: "center",
+        elevation:2,
     },
     bottomSheetCancelButtonTitle: {
         color: "#ee2d32",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-47:/values-fi/values-fi.xml",
+            "outputFile": "com.app-mergeDebugResources-48:/values-fi/values-fi.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Vitor\\.gradle\\caches\\8.8\\transforms\\e9d9528de909ac86dfea495538bbea9c\\transformed\\appcompat-1.6.1\\res\\values-fi\\values-fi.xml",
@@ -105,6 +105,23 @@
                         "startOffsets": "3014,3126",
                         "endColumns": "111,116",
                         "endOffsets": "3121,3238"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vitor\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-fi\\values-fi.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,178,243,293",
+                        "endColumns": "122,64,49,48",
+                        "endOffsets": "173,238,288,337"
+                    },
+                    "to": {
+                        "startLines": "138,139,140,141",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "12205,12328,12393,12443",
+                        "endColumns": "122,64,49,48",
+                        "endOffsets": "12323,12388,12438,12487"
                     }
                 },
                 {

@@ -1,23 +1,95 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const AuthContext = createContext({});
+import axios from 'axios';
+const api = axios.create({
+    baseURL: 'http://10.0.2.2:8085/api',
+    timeout: 10000,
+});
+
 
 export const AuthProvider = ({ children }) => {
     const [authData, setAuthData] = useState(null);
     const [authLibrarianData, setAuthLibrarianData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [favorites, setFavorites] = useState([]);
+    const [livros, setLivros] = useState([]);
+    const [livroSelecionado, setLivroSelecionado] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         Promise.all([
             loadStorageData(),
             loadLibrarianStorageData(),
-            loadFavorites()
+            loadFavorites(),
+            buscarLivros(),
         ]).finally(() => {
             setLoading(false);
         });
     }, []);
+
+    const buscarLivros = async () => {
+        setLoading(true);
+        try {
+            const response = await api.get('/listBooks');
+            console.log('Resposta da API:', response.data); // Debug
+            setLivros(response.data);
+            setError(null);
+        } catch (err) {
+            console.error('Erro completo:', err); // Debug
+            setError(
+                err.response?.data?.msg || 
+                err.message || 
+                'Erro ao buscar livros'
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+    const buscarLivroPorId = async (id) => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`http://localhost:8085/api/listBooks/${id}`);
+            setLivroSelecionado(response.data);
+            setError(null);
+        } catch (err) {
+            setError(err.response?.data?.msg || 'Erro ao buscar livro');
+        } finally {
+            setLoading(false);
+        }
+    };
+    const searchLivros = async (searchTerm) => {
+        setLoading(true);
+        try {
+            if (!searchTerm.trim()) {
+                await buscarLivros();
+                return;
+            }
+    
+            const response = await api.get(`/searchLivros/${searchTerm}`);
+            console.log('Resultado da busca:', response.data);
+            
+            if (response.data && Array.isArray(response.data)) {
+                setLivros(response.data);
+                setError(null);
+            } else {
+                setLivros([]);
+                setError('Formato de resposta inválido');
+            }
+        } catch (err) {
+            console.error('Erro na busca:', err);
+            setError(
+                err.response?.data?.msg || 
+                err.message || 
+                'Erro ao buscar livros'
+            );
+            setLivros([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
 
     const loadFavorites = async () => {
         try {
@@ -130,7 +202,7 @@ export const AuthProvider = ({ children }) => {
 
     const signOut = async () => {
         try {
-            await AsyncStorage.multiRemove(['token', 'userData','librarianToken', 'librarianData']);
+            await AsyncStorage.multiRemove(['token', 'userData', 'librarianToken', 'librarianData']);
             setAuthData(null);
             setAuthLibrarianData(null);
             setFavorites([]);
@@ -139,8 +211,8 @@ export const AuthProvider = ({ children }) => {
             throw error;
         }
     };
-    
-    // Add to favorites
+
+    // Adicionar aos favoritos
     const addToFavorites = async (book) => {
         try {
             if (!authData?.user?.id) {
@@ -149,7 +221,7 @@ export const AuthProvider = ({ children }) => {
 
             const updatedFavorites = [...favorites, book];
             setFavorites(updatedFavorites);
-            
+
             // Salva os favoritos com o ID do usuário
             await AsyncStorage.setItem(
                 `favorites_${authData.user.id}`,
@@ -161,7 +233,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Remove from favorites
+    // Remover dos favoritos
     const removeFromFavorites = async (bookId) => {
         try {
             if (!authData?.user?.id) {
@@ -170,7 +242,7 @@ export const AuthProvider = ({ children }) => {
 
             const updatedFavorites = favorites.filter(book => book.id !== bookId);
             setFavorites(updatedFavorites);
-            
+
             // Atualiza os favoritos no AsyncStorage
             await AsyncStorage.setItem(
                 `favorites_${authData.user.id}`,
@@ -182,7 +254,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Check if book is in favorites
+    // Checar se o livros está nos favoritos
     const checkFavoriteStatus = (bookId) => {
         return favorites.some(book => book.id === bookId);
     };
@@ -212,6 +284,13 @@ export const AuthProvider = ({ children }) => {
                 addToFavorites,
                 removeFromFavorites,
                 checkFavoriteStatus,
+                livros,
+                livroSelecionado,
+                // loading,
+                error,
+                searchLivros,
+                buscarLivros,
+                buscarLivroPorId,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,

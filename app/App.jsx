@@ -20,21 +20,16 @@ export default function app() {
   LogBox.ignoreAllLogs();
 
 
-  // return (
-  //   <GestureHandlerRootView style={{ flex: 1 }}>
-  //     <BottomSheetModalProvider>
-  //       <>
-  //         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-  //         <AuthProvider>
-  //           <AppNavigator />
-  //         </AuthProvider>
-  //       </>
-  //     </BottomSheetModalProvider>
-  //   </GestureHandlerRootView>
-  // )
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-    <LoanScreen/>
+      <BottomSheetModalProvider>
+        <>
+          <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+          <AuthProvider>
+            <AppNavigator />
+          </AuthProvider>
+        </>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   )
 

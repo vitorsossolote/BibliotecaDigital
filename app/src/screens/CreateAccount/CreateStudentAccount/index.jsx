@@ -217,7 +217,7 @@ const CreateStudentAccount = ({ navigation }) => {
                             <View style={styles.buttonContainer}>
                                 <Button 
                                     style={styles.buttonSolid}
-                                    onPress={cadastrarFirebaseAndSql}
+                                    onPress={handleCadastrar}
                                 >
                                     <ButtonText>Criar Conta</ButtonText>
                                 </Button>

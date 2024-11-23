@@ -29,9 +29,9 @@ const MainHeader = (props: Props) => (
                     </Pressable>
                 </Button>
             </View>
-            <View style={styles.textContainer}>
+            <MotiView style={styles.textContainer} from={{translateY:-50, opacity:0}} animate={{translateY:0, opacity:1}} transition={{duration:2000, type:"timing"}}>
                 <Text style={styles.title}>{props.title}</Text>
-            </View>
+            </MotiView>
             <View style={styles.SecondIconContainer}>
                 <Button size="lg" p="$3.5" bg="transparent" marginTop={3}>
                     <Pressable onPress={props.onPress2}>

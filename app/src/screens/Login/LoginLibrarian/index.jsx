@@ -163,7 +163,7 @@ const LoginLibrarian = ({ navigation }) => {
                             action="primary"
                             style={styles.linkButton}
                         >
-                            <ButtonText style={styles.textButton}>Crie Agora</ButtonText>
+                            <ButtonText style={styles.textButton}>Contate-nos</ButtonText>
                         </Button>
                     </MotiView>
                 </View>
