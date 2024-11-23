@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f6f6',
         alignItems: "center"
     },
+    //BottomSheetStyles
     bookContainer: {
         flex: 1,
         justifyContent: "center",
