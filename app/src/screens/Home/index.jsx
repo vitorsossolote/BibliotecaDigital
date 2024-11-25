@@ -44,14 +44,18 @@ export default function Home({ navigation }) {
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
     const [selectedBook, setSelectedBook] = useState(null);
     const [isFavorited, setIsFavorited] = useState(false);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+    const handleBottomSheetChange = (index) => {
+        setIsBottomSheetOpen(index !== -1);
+        // Emitir evento para o AppNavigator
+        navigation.setParams({ isBottomSheetOpen: index !== -1 });
+    };
 
     const handleOpenPress = (livros) => {
         setSelectedBook(livros);
-
-        // Check if book is already in favorites
         const isBookFavorited = checkFavoriteStatus(livros.id);
         setIsFavorited(isBookFavorited);
-
         bottomSheetref.current?.expand();
     };
 
@@ -93,7 +97,7 @@ export default function Home({ navigation }) {
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
-                        <Reservar onPress={() => console.log("teste")} />
+                        <Reservar onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
                         <Section title="Melhores da Semana" onPress={() => navigation.navigate("SearchScreen")} />
@@ -109,7 +113,8 @@ export default function Home({ navigation }) {
                     ref={bottomSheetref}
                     snapPoints={snapPoints}
                     index={-1}
-                    enablePanDownToClose={true}>
+                    enablePanDownToClose={true}
+                    onChange={handleBottomSheetChange}>
                     <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
                         {selectedBook && ( // Só renderiza se houver um livro selecionado
                             <>
@@ -153,8 +158,8 @@ export default function Home({ navigation }) {
                                         isDisabled={true}
                                     />
                                     <Text style={[styles.status,
-                                    { color: selectedBook.estado.toLowerCase() === 'disponivel' ? '#34A853' : '#ee2d32' }]}>
-                                        {selectedBook.estado}
+                                    { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                     </Text>
                                 </View>
                                 <View style={styles.buttonContainer}>

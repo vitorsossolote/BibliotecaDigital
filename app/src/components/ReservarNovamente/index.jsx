@@ -7,16 +7,18 @@ import {
     Pressable
 } from "@gluestack-ui/themed"
 import book from "../../../assets/book2.png"
-const { width: screenWidth } = Dimensions.get('window');
 import { SafeAreaView } from 'moti';
 import { FlatList } from 'react-native-gesture-handler';
 import { useAuth } from "../../contexts/AuthContext";
 
-type Props = ButtonProps & PressableProps & {
-    onPress: any
+const { width: screenWidth } = Dimensions.get('window');
+
+type Props = {
+    onPress: (livros: any) => void; 
 }
 
 export default function Reservar({ onPress }: Props) {
+ 
     const {livros } = useAuth();
     const latestItem = useMemo(() => {
         return livros.reduce((prev, current) => {
@@ -34,13 +36,13 @@ export default function Reservar({ onPress }: Props) {
                         size="md"
                         variant="solid"
                         action="primary"
-                        onPress={onPress}
+                        onPress={() => onPress(item)}
                     >
                         <ButtonText>Reservar Agora</ButtonText>
                     </Button>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Pressable onPress={onPress}>
+                    <Pressable onPress={() => onPress(item)}>
                         <Image style={styles.Image} source={item.image} alt="Parabéns" />
                     </Pressable>
                 </View>
@@ -61,16 +63,15 @@ export default function Reservar({ onPress }: Props) {
 
 const styles = StyleSheet.create({
     card: {
-        flex: 1,
         width: screenWidth - 40,
         marginHorizontal: 20,
         height: 160,
         flexDirection: 'row',
-        backgroundColor: "#f6f6f6",
+        backgroundColor: "#f3f3f3",
         borderRadius: 20,
-        bottom: 20,
-        right: 10,
-        // elevation: 5,
+        marginBottom: 15,
+        right: 8,
+        
     },
     textContainer: {
         width: 240,
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         height: "100%",
-        paddingLeft: 15,
+        width: 145,
+        right:10,
     },
     Image: {
         width: 110,

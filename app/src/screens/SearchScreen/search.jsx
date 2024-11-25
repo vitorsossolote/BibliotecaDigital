@@ -12,7 +12,7 @@ import book from "../../../assets/book7.png";
 
 const SearchScreen = ({ navigation }) => {
     const [searchText, setSearchText] = useState('');
-    const { user, livros, loading, error, addToFavorites, removeFromFavorites, checkFavoriteStatus } = useAuth();
+    const { user, livros, loading, error, addToFavorites, removeFromFavorites, checkFavoriteStatus,authLibrarianData } = useAuth();
     const [list, setList] = useState(livros);
     const [selectedBook, setSelectedBook] = useState(null);
     const [isFavorited, setIsFavorited] = useState(false);
@@ -104,7 +104,9 @@ const SearchScreen = ({ navigation }) => {
                         isDisabled={true}
                     />
                     <Text style={styles.author}>{truncateTitle(data.autor || "Sem Autor")}</Text>
-                    <Text style={styles.status}>{data.estado || "Sem informação"}</Text>
+                    <Text style={[styles.bookStatus, 
+                            { color: data.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
+                            ]}>{data.estado}{data.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -183,16 +185,42 @@ const SearchScreen = ({ navigation }) => {
                                                 </MotiView>
                                             )}
                                         </Pressable>
-                                        <Pressable style={{backgroundColor:"#ee2d32", width:50,height:30, justifyContent:"center",alignItems:"center", borderRadius:10,borderWidth:1, borderColor:"#ee2d32", marginTop:10,}}
-                                            onPress={() => console.log("Excluiu")}
-                                        >
-                                            <Text style={{color:"#fff", fontWeight:"bold"}}>Excluir</Text>
-                                        </Pressable>
-                                        <Pressable style={{backgroundColor:"#fff", width:50,height:30, justifyContent:"center",alignItems:"center", borderRadius:10,borderWidth:1, borderColor:"#ee2d32", marginTop:10,}}
-                                            onPress={() => navigation.navigate("EditBooks")}
-                                        >
-                                            <Text style={{color:"#000", fontWeight:"bold"}}>Editar</Text>
-                                        </Pressable>
+                                        {authLibrarianData && (
+                                            <>
+                                                <Pressable 
+                                                    style={{
+                                                        backgroundColor:"#ee2d32", 
+                                                        width:50,
+                                                        height:30, 
+                                                        justifyContent:"center",
+                                                        alignItems:"center", 
+                                                        borderRadius:10,
+                                                        borderWidth:1, 
+                                                        borderColor:"#ee2d32", 
+                                                        marginTop:10,
+                                                    }}
+                                                    onPress={() => console.log("Excluiu")}
+                                                >
+                                                    <Text style={{color:"#fff", fontWeight:"bold"}}>Excluir</Text>
+                                                </Pressable>
+                                                <Pressable 
+                                                    style={{
+                                                        backgroundColor:"#fff", 
+                                                        width:50,
+                                                        height:30, 
+                                                        justifyContent:"center",
+                                                        alignItems:"center", 
+                                                        borderRadius:10,
+                                                        borderWidth:1, 
+                                                        borderColor:"#ee2d32", 
+                                                        marginTop:10,
+                                                    }}
+                                                    onPress={() => navigation.navigate("EditBooks")}
+                                                >
+                                                    <Text style={{color:"#000", fontWeight:"bold"}}>Editar</Text>
+                                                </Pressable>
+                                            </>
+                                        )}
                                     </View>
                                 </View>
                                 <View style={styles.bottomSheetGenderContainer}>
@@ -215,7 +243,7 @@ const SearchScreen = ({ navigation }) => {
                                     styles.bottomSheetStatus,
                                     { color: selectedBook.estado?.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
                                 ]}>
-                                    {selectedBook.estado}
+                                    {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                 </Text>
                             </View>
                             <View style={styles.bottomSheetButtonContainer}>
