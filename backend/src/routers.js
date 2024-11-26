@@ -42,9 +42,9 @@ router.post("/api/loginLibrarian", clientController.loginLibrarian);
 //Rota para Criar Livro
 router.post("/api/registerBook", clientController.registerBook);
 // Rota para atualizar um livro
-router.put("/api/updateBook/:id", clientController.updateBook);
+// router.put("/api/updateBook/:id", clientController.updateBook);
 //Rota para deletar um livro
-router.delete("/api/deleteBook/:id", clientController.deleteBook);
+// router.delete("/api/deleteBook/:id", clientController.deleteBook);
 //Listar todos os Livros
 router.get("/api/listBooks", clientController.listarLivros); 
 //Listar Livros por ID

@@ -19,11 +19,12 @@ type Props = {
 
 export default function Reservar({ onPress }: Props) {
  
-    const {livros } = useAuth();
+    const {livros} = useAuth();
     const latestItem = useMemo(() => {
-        return livros.reduce((prev, current) => {
-            return (prev.id > current.id) ? prev : current;
-        });
+        if (livros.length === 0) return null;
+    
+        const maxId = Math.max(...livros.map(livro => livro.id));
+        return livros.find(livro => livro.id === maxId);
     }, [livros]);
 
     const RenderItem = ({item}) => {

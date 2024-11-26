@@ -127,7 +127,7 @@ const RegisterAutor = ({ navigation }) => {
                                             style={{
                                                 flex: 1,
                                                 width: '100%',
-                                                borderRadius: 10
+                                                borderRadius: 360,
                                             }}
                                             resizeMode="cover"
                                         />

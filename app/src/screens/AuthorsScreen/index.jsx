@@ -38,18 +38,6 @@ export default function AuthorsScreen({ navigation }) {
                         <Image source={autor1} alt="autor" resizeMode="container" style={styles.authorImage} />
                         <Text style={styles.authorGenderText}>Suspense</Text>
                         <Text style={styles.authorNameText}>Tess Gunty</Text>
-                        <View style={styles.ratingContainer}>
-                            <AirbnbRating
-                                count={5}
-                                defaultRating={4}
-                                size={35}
-                                showRating={false}
-                                unSelectedColor="#000"
-                                starContainerStyle={styles.starRating}
-                                readonly={true}
-                            />
-                            <Text style={styles.ratingNumber}>(4.0)</Text>
-                        </View>
                     </View>
                     <View style={styles.aboutContainer}>
                         <Text style={styles.aboutHeader}>Sobre</Text>
