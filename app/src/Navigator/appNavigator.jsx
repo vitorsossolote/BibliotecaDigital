@@ -153,23 +153,28 @@ function HomeTabLibrarianNavigator() {
   return (
     
     <Tab.Navigator
-      screenOptions={{
+    screenOptions={({ route, navigation }) => ({
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: [
-          {
-            position: 'absolute',
-            backgroundColor: "#fff",
-            borderTopWidth: 0,
-            bottom: 14,
-            marginHorizontal: 20,
-            elevation: 1,
-            borderRadius: 30,
-            height: 60,
-          },
-        ]
-      }}
-    >
+        tabBarStyle: (props) => {
+            const isBottomSheetOpen = props.route?.params?.isBottomSheetOpen;
+            
+            return [
+                {
+                    position: 'absolute',
+                    backgroundColor: "#fff",
+                    borderTopWidth: 0,
+                    bottom: 14,
+                    marginHorizontal: 20,
+                    elevation: 1,
+                    borderRadius: 30,
+                    height: 60,
+                    display: isBottomSheetOpen ? 'none' : 'flex',
+                },
+            ];
+        },
+    })}
+>
       <Tab.Screen
         name="Home"
         component={Home}
