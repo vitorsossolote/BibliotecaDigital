@@ -1,6 +1,7 @@
 const express = require("express");
 const clientController = require("../controller/controller");
 const router = express.Router();
+const { verifyLibrarianToken } = require('../controller/controller'); 
 
 router.get("/", clientController.getRoot);
 
@@ -12,8 +13,10 @@ router.post("/api/loginLibrarian", clientController.loginLibrarian);//Validar o 
 
 router.get("/api/listBooks", clientController.listarLivros); //Listar todos os livros
 router.get("/api/listBooks/:id", clientController.ListarLivrosByID); //Listar livros por ID
-router.get('/api/searchLivros/:searchTerm', clientController.searchLivros);
-router.post("/api/registerBook", clientController.registerBook);
+router.get('/api/searchLivros/:searchTerm', clientController.searchLivros); //Listar livro por termo
+router.post("/api/registerBook", clientController.registerBook); //Criar Livro
+router.post("/api/registerGender", clientController.registerGender); // Criar Genero
+router.post("/api/registerAutor", clientController.registerAutor); // Criar Autor
 
 //teste
 // router.post("/api/validade", clientController.loginBiblio);

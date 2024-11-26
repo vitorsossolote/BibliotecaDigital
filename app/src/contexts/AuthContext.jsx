@@ -2,6 +2,11 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const AuthContext = createContext({});
 import axios from 'axios';
+const api = axios.create({
+    baseURL: 'http://10.0.2.2:8085/api',
+    timeout: 10000,
+});
+
 
 export const AuthProvider = ({ children }) => {
     const [authData, setAuthData] = useState(null);
@@ -10,14 +15,14 @@ export const AuthProvider = ({ children }) => {
     const [favorites, setFavorites] = useState([]);
     const [livros, setLivros] = useState([]);
     const [livroSelecionado, setLivroSelecionado] = useState(null);
-    // const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         Promise.all([
             loadStorageData(),
             loadLibrarianStorageData(),
-            loadFavorites()
+            loadFavorites(),
+            buscarLivros(),
         ]).finally(() => {
             setLoading(false);
         });
@@ -26,24 +31,59 @@ export const AuthProvider = ({ children }) => {
     const buscarLivros = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('/api/listBooks');
+            const response = await api.get('/listBooks');
+            console.log('Resposta da API:', response.data); // Debug
             setLivros(response.data);
             setError(null);
         } catch (err) {
-            setError(err.response?.data?.msg || 'Erro ao buscar livros');
+            console.error('Erro completo:', err); // Debug
+            setError(
+                err.response?.data?.msg || 
+                err.message || 
+                'Erro ao buscar livros'
+            );
         } finally {
             setLoading(false);
         }
     };
-
     const buscarLivroPorId = async (id) => {
         setLoading(true);
         try {
-            const response = await axios.get(`/api/listBooks/${id}`);
+            const response = await axios.get(`http://localhost:8085/api/listBooks/${id}`);
             setLivroSelecionado(response.data);
             setError(null);
         } catch (err) {
             setError(err.response?.data?.msg || 'Erro ao buscar livro');
+        } finally {
+            setLoading(false);
+        }
+    };
+    const searchLivros = async (searchTerm) => {
+        setLoading(true);
+        try {
+            if (!searchTerm.trim()) {
+                await buscarLivros();
+                return;
+            }
+    
+            const response = await api.get(`/searchLivros/${searchTerm}`);
+            console.log('Resultado da busca:', response.data);
+            
+            if (response.data && Array.isArray(response.data)) {
+                setLivros(response.data);
+                setError(null);
+            } else {
+                setLivros([]);
+                setError('Formato de resposta inválido');
+            }
+        } catch (err) {
+            console.error('Erro na busca:', err);
+            setError(
+                err.response?.data?.msg || 
+                err.message || 
+                'Erro ao buscar livros'
+            );
+            setLivros([]);
         } finally {
             setLoading(false);
         }
@@ -226,20 +266,6 @@ export const AuthProvider = ({ children }) => {
 
     const isLibrarianAuthenticated = () => {
         return !!authLibrarianData?.librarianToken;
-    };
-
-    const searchLivros = async (searchTerm) => {
-        setLoading(true);
-        try {
-            const response = await axios.get(`/api/searchBooks?searchTerm=${searchTerm}`);
-            setLivros(response.data);
-            setError(null);
-        } catch (err) {
-            setError(err.response?.data?.msg || 'Erro ao buscar livros');
-            setLivros([]); 
-        } finally {
-            setLoading(false);
-        }
     };
 
     return (

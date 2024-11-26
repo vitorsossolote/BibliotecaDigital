@@ -29,6 +29,18 @@ const useModel = {
       .catch((erro)=> console.log(erro))
     return result;
   },
+  getGenderByName: async (nome_genero) => {
+    const [result] = await connection
+      .query("SELECT * FROM gender WHERE nome_genero=?", [nome_genero])
+      .catch((erro)=> console.log(erro))
+    return result;
+  },
+  getAutorByName: async (nome_autor) => {
+    const [result] = await connection
+      .query("SELECT * FROM autores WHERE nome_autor=?", [nome_autor])
+      .catch((erro)=> console.log(erro))
+    return result;
+  },
 
   getByCfb: async (rm) => {
     const [result] = await connection
@@ -153,7 +165,7 @@ const useModel = {
 
     searchLivros: async (searchTerm) => {
       const [result] = await connection
-        .query("SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ?", [`%${searchTerm}%`, `%${searchTerm}%`])
+        .query("SELECT * FROM livros WHERE titulo LIKE ? OR nome_autor LIKE ?", [`%${searchTerm}%`, `%${searchTerm}%`])
         .catch((erro) => console.log(erro));
       return result;
     },
@@ -161,25 +173,104 @@ const useModel = {
     
     // Outros métodos para manipulação de livros podem ser adicionados aqui
   
-  registerBooks: async (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) => {  
+    registerBooks: async (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) => {  
+      if (!codigo) {
+        throw new Error('O código é obrigatório');
+      }
+  
+      
+      try {
+  
+        // Primeiro, verifica se o autor existe
+        const [autores] = await connection.query(
+          "SELECT id_autor FROM autores WHERE nome_autor = ?", 
+          [nome_autor]
+        );
+  
+        // Se o autor não existir, cria o autor
+        if (autores.length === 0) {
+          const [novoAutor] = await connection.query(
+            "INSERT INTO autores (nome_autor) VALUES (?)", 
+            [nome_autor]
+          );
+          autorId = novoAutor.insertId;
+        } else {
+          autorId = autores[0].id_autor;
+        }
+  
+        // Verifica se o gênero existe
+        const [generos] = await connection.query(
+          "SELECT nome_genero FROM gender WHERE nome_genero = ?", 
+          [nome_genero]
+        );
+  
+        // Se o gênero não existir, cadastra o genero
+        if (generos.length === 0) {
+          const [novoGender] = await connection.query(
+            "INSERT INTO gender (nome_genero) VALUES (?)", 
+            [nome_genero]
+          );
+          genderId = novoGender.insertId;
+        } else {
+          genderId = gender[0].id_genero;
+        }
+  
+        // Insere o livro
+        const [result] = await connection.query(
+          "INSERT INTO livros (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)", 
+          [
+            image, 
+            titulo, 
+            descricao, 
+            nome_autor, 
+            editora, 
+            nome_genero, 
+            quantidade, 
+            codigo, 
+            avaliacao, 
+            estado
+          ]
+        );
+  
+  
+        return result;
+      } catch (error) {
+        throw error;
+      } 
+    },
 
-    if (!codigo) {
-      throw new Error('O código é obrigatório');
+  registerGender: async (nome_genero) => {  
+
+    if (!nome_genero) {
+      throw new Error('O nome do genero é obrigatório');
     }
 
     try {
       const [result] = await connection
-        .query("INSERT INTO livros (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)", [
+        .query("INSERT INTO gender (nome_genero) VALUES (?)", [
+          nome_genero
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  registerAutor: async (nome_autor, data_nascimento, image, avaliacao,sobre) => {  
+
+    if (!nome_autor) {
+      throw new Error('O nome é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO autores (nome_autor, data_nascimento, image, avaliacao,sobre) VALUES (?,?,?,?,?)", [
+          nome_autor, 
+          data_nascimento, 
           image, 
-          titulo, 
-          descricao, 
-          autor, 
-          editora, 
-          genero, 
-          quantidade, 
-          codigo, 
-          avaliacao, 
-          estado
+          avaliacao,
+          sobre
         ]);
 
       return result;

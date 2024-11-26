@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-47:/values-fi/values-fi.xml",
+            "outputFile": "com.app-mergeDebugResources-48:/values-fi/values-fi.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\8518926d18513c220d3093a04b83b5cb\\transformed\\core-1.9.0\\res\\values-fi\\values-fi.xml",
@@ -71,6 +71,23 @@
                         "startOffsets": "2943,3614,6437,6584,6652,6800,7749,7819,7898,10742,10827,10913,10987,11150,11234,11310,11395,11479,11559,11638,11713,11899,11975,12055,12126",
                         "endColumns": "70,81,71,67,82,68,69,78,78,84,85,73,81,83,75,84,83,79,78,74,84,75,79,70,78",
                         "endOffsets": "3009,3691,6504,6647,6730,6864,7814,7893,7972,10822,10908,10982,11064,11229,11305,11390,11474,11554,11633,11708,11793,11970,12050,12121,12200"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-fi\\values-fi.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,178,243,293",
+                        "endColumns": "122,64,49,48",
+                        "endOffsets": "173,238,288,337"
+                    },
+                    "to": {
+                        "startLines": "138,139,140,141",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "12205,12328,12393,12443",
+                        "endColumns": "122,64,49,48",
+                        "endOffsets": "12323,12388,12438,12487"
                     }
                 },
                 {

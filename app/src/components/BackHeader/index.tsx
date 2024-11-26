@@ -26,7 +26,7 @@ const BackHeader = (props: Props) => (
     <GluestackUIProvider config={config}>
         <SafeAreaView style={[styles.container, {top:20}]} >
             <View style={styles.firstIconContainer}>
-                <Pressable onPress={props.onPress}>
+                <Pressable onPress={props.onPress} >
                     <ArrowLeft color={"#000"} size={30}/>
                 </Pressable>
             </View>

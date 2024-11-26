@@ -10,12 +10,14 @@ MERGED from [:react-native-safe-area-context] C:\Users\Aluno\Desktop\BibliotecaD
 MERGED from [:react-native-screens] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-firebase_auth] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\auth\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-30:12
+MERGED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-33:12
 MERGED from [:react-native-vector-icons] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-async-storage_async-storage] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-masked-view_masked-view] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-masked-view\masked-view\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-reanimated] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-reanimated\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-svg] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [com.facebook.react:react-android:0.75.3] C:\Users\Aluno\.gradle\caches\8.8\transforms\7a10f1cf6b11de846454d60bb446ea16\transformed\react-android-0.75.3-debug\AndroidManifest.xml:2:1-24:12
+MERGED from [com.github.yalantis:ucrop:2.2.6-native] C:\Users\Aluno\.gradle\caches\8.8\transforms\d6781fd093f471fa4d54311f9fff3004\transformed\ucrop-2.2.6-native\AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.material:material:1.6.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\343d4f1321dc92882dfa6bd3ddde9cd3\transformed\material-1.6.1\AndroidManifest.xml:17:1-26:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\c1cbe06943b9b58f6bc4fc06af5557d7\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\260aa0f043f31353d634273318777bfd\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
@@ -37,8 +39,8 @@ MERGED from [com.google.android.play:integrity:1.2.0] C:\Users\Aluno\.gradle\cac
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\d4fe2a4b7a37a0f025f9e4514ae49db4\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\88415ffb6753fe6d646dbe5614a97ee2\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.loader:loader:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\8fa6772de7a546688d9e7a030120624c\transformed\loader-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a9c838de46dd01493339dd7c313f865\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a16354d1c39143ab1504c170405efad\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a9c838de46dd01493339dd7c313f865\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a794a6f6b9a3393d761adcd1e9adf1c5\transformed\autofill-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\f3a2fc91410acc4d48c40552df738f53\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\e206f8f58001c9e0034461a085d76103\transformed\emoji2-1.2.0\AndroidManifest.xml:17:1-35:12
@@ -88,8 +90,9 @@ MERGED from [com.facebook.react:hermes-android:0.75.3] C:\Users\Aluno\.gradle\ca
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\302e7d76f5802a625822bd4481ff23b6\transformed\profileinstaller-1.3.0\AndroidManifest.xml:17:1-55:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\a61319dceaf95216b7917af3f2c16d10\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\09bcc4d2a8b236bebb2f20f4a233711d\transformed\tracing-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a342d020648de51dcb8b07d38fbf39f1\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\c619847d8de32e07b3ee0f7673c7620e\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.exifinterface:exifinterface:1.1.0-beta01] C:\Users\Aluno\.gradle\caches\8.8\transforms\937bf40d044c5add0fc1e2e518eeb58b\transformed\exifinterface-1.1.0-beta01\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a342d020648de51dcb8b07d38fbf39f1\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\012fadc867c61f70f21492c904f29dff\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\c6f1cb320c7b9c4bde55c54ed167fa93\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-components:18.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\c0f8f753e584b38c5b9bc1a172ff184d\transformed\firebase-components-18.0.0\AndroidManifest.xml:15:1-20:12
@@ -128,6 +131,8 @@ MERGED from C:\Users\Aluno\Desktop\BibliotecaDigital\app\android\app\src\main\An
 INJECTED from C:\Users\Aluno\Desktop\BibliotecaDigital\app\android\app\src\debug\AndroidManifest.xml:5:5-8:50
 MERGED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-28:19
 MERGED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-28:19
+MERGED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:17:5-31:19
+MERGED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:17:5-31:19
 MERGED from [com.facebook.react:react-android:0.75.3] C:\Users\Aluno\.gradle\caches\8.8\transforms\7a10f1cf6b11de846454d60bb446ea16\transformed\react-android-0.75.3-debug\AndroidManifest.xml:18:5-22:19
 MERGED from [com.facebook.react:react-android:0.75.3] C:\Users\Aluno\.gradle\caches\8.8\transforms\7a10f1cf6b11de846454d60bb446ea16\transformed\react-android-0.75.3-debug\AndroidManifest.xml:18:5-22:19
 MERGED from [com.google.android.material:material:1.6.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\343d4f1321dc92882dfa6bd3ddde9cd3\transformed\material-1.6.1\AndroidManifest.xml:24:5-20
@@ -241,6 +246,8 @@ MERGED from [:react-native-firebase_auth] C:\Users\Aluno\Desktop\BibliotecaDigit
 MERGED from [:react-native-firebase_auth] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\auth\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:6:5-44
 MERGED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:6:5-44
+MERGED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-vector-icons] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-vector-icons] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-async-storage_async-storage] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
@@ -253,6 +260,8 @@ MERGED from [:react-native-svg] C:\Users\Aluno\Desktop\BibliotecaDigital\app\nod
 MERGED from [:react-native-svg] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [com.facebook.react:react-android:0.75.3] C:\Users\Aluno\.gradle\caches\8.8\transforms\7a10f1cf6b11de846454d60bb446ea16\transformed\react-android-0.75.3-debug\AndroidManifest.xml:10:5-44
 MERGED from [com.facebook.react:react-android:0.75.3] C:\Users\Aluno\.gradle\caches\8.8\transforms\7a10f1cf6b11de846454d60bb446ea16\transformed\react-android-0.75.3-debug\AndroidManifest.xml:10:5-44
+MERGED from [com.github.yalantis:ucrop:2.2.6-native] C:\Users\Aluno\.gradle\caches\8.8\transforms\d6781fd093f471fa4d54311f9fff3004\transformed\ucrop-2.2.6-native\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.yalantis:ucrop:2.2.6-native] C:\Users\Aluno\.gradle\caches\8.8\transforms\d6781fd093f471fa4d54311f9fff3004\transformed\ucrop-2.2.6-native\AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.android.material:material:1.6.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\343d4f1321dc92882dfa6bd3ddde9cd3\transformed\material-1.6.1\AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.material:material:1.6.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\343d4f1321dc92882dfa6bd3ddde9cd3\transformed\material-1.6.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\c1cbe06943b9b58f6bc4fc06af5557d7\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
@@ -295,10 +304,10 @@ MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Aluno\.gr
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\88415ffb6753fe6d646dbe5614a97ee2\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\8fa6772de7a546688d9e7a030120624c\transformed\loader-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.loader:loader:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\8fa6772de7a546688d9e7a030120624c\transformed\loader-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a9c838de46dd01493339dd7c313f865\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a9c838de46dd01493339dd7c313f865\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a16354d1c39143ab1504c170405efad\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a16354d1c39143ab1504c170405efad\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a9c838de46dd01493339dd7c313f865\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\5a9c838de46dd01493339dd7c313f865\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a794a6f6b9a3393d761adcd1e9adf1c5\transformed\autofill-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a794a6f6b9a3393d761adcd1e9adf1c5\transformed\autofill-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\f3a2fc91410acc4d48c40552df738f53\transformed\emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
@@ -397,10 +406,12 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Aluno\.gradle\cach
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Aluno\.gradle\caches\8.8\transforms\a61319dceaf95216b7917af3f2c16d10\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\09bcc4d2a8b236bebb2f20f4a233711d\transformed\tracing-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\09bcc4d2a8b236bebb2f20f4a233711d\transformed\tracing-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a342d020648de51dcb8b07d38fbf39f1\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a342d020648de51dcb8b07d38fbf39f1\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\c619847d8de32e07b3ee0f7673c7620e\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\c619847d8de32e07b3ee0f7673c7620e\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.exifinterface:exifinterface:1.1.0-beta01] C:\Users\Aluno\.gradle\caches\8.8\transforms\937bf40d044c5add0fc1e2e518eeb58b\transformed\exifinterface-1.1.0-beta01\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.1.0-beta01] C:\Users\Aluno\.gradle\caches\8.8\transforms\937bf40d044c5add0fc1e2e518eeb58b\transformed\exifinterface-1.1.0-beta01\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a342d020648de51dcb8b07d38fbf39f1\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\a342d020648de51dcb8b07d38fbf39f1\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\012fadc867c61f70f21492c904f29dff\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\012fadc867c61f70f21492c904f29dff\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Aluno\.gradle\caches\8.8\transforms\c6f1cb320c7b9c4bde55c54ed167fa93\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
@@ -479,6 +490,44 @@ ADDED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital
 		ADDED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:27:13-35
 	android:name
 		ADDED from [:react-native-firebase_app] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:13-88
+queries
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-11:15
+intent#action:name:android.media.action.IMAGE_CAPTURE
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-10:18
+action#android.media.action.IMAGE_CAPTURE
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-73
+	android:name
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:21-70
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:5-15:38
+	android:maxSdkVersion
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:9-35
+	android:name
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:9-65
+provider#com.reactnative.ivpusic.imagepicker.IvpusicImagePickerFileProvider
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:18:9-26:20
+	android:grantUriPermissions
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:22:13-47
+	android:authorities
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:20:13-60
+	android:exported
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:13-37
+	android:name
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:13-94
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:13-25:78
+	android:resource
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:17-75
+	android:name
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:17-67
+activity#com.yalantis.ucrop.UCropActivity
+ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:28:9-30:72
+	android:theme
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:30:13-69
+	android:name
+		ADDED from [:react-native-image-crop-picker] C:\Users\Aluno\Desktop\BibliotecaDigital\app\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:29:13-60
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from C:\Users\Aluno\Desktop\BibliotecaDigital\app\android\app\src\debug\AndroidManifest.xml:2:1-9:12 reason: com.reactnative.ivpusic.imagepicker requested WRITE_EXTERNAL_STORAGE
 uses-permission#android.permission.SYSTEM_ALERT_WINDOW
 ADDED from [com.facebook.react:react-android:0.75.3] C:\Users\Aluno\.gradle\caches\8.8\transforms\7a10f1cf6b11de846454d60bb446ea16\transformed\react-android-0.75.3-debug\AndroidManifest.xml:16:5-78
 	android:name

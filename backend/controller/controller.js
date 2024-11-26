@@ -297,14 +297,15 @@ const useController = {
   // createNewMensagem: async (req, res) => {
   //     const { id, nome, numero, email, mensagem } = req.body;
   //Criar novo livro
-  registerBook: async (req, res) => {
+ 
+registerBook: async (req, res) => {
     const { 
       image, 
       titulo, 
       descricao, 
-      autor, 
+      nome_autor, 
       editora, 
-      genero, 
+      nome_genero, 
       quantidade, 
       codigo,
       avaliacao = 0,
@@ -312,11 +313,15 @@ const useController = {
     } = req.body;
 
     console.log("Dados recebidos no controller:", {
-      image, titulo, descricao, autor, editora, genero, quantidade, codigo
+      image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo
     });
 
     if (!codigo) {
       return res.status(400).json({ msg: "O código é obrigatório" });
+    }
+
+    if (!nome_autor) {
+      return res.status(400).json({ msg: "O nome do autor é obrigatório" });
     }
 
     try {
@@ -329,27 +334,109 @@ const useController = {
       }
 
       console.log("Dados antes de chamar registerBooks:", {
-        image,titulo,descricao,autor, editora, genero, quantidade, codigo, avaliacao, estado
+        image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado
       });
 
       const result = await clientController.registerBooks(
         image,
         titulo,
         descricao,
-        autor,
+        nome_autor,
         editora,
-        genero,
+        nome_genero,
         quantidade,
         codigo,
-        avaliacao, //Dados padrões
-        estado //Dados padrões
+        avaliacao,
+        estado
       );
-      return res.status(201).json({ msg: "Livro cadastrado com sucesso" });
+
+      return res.status(201).json({ 
+        msg: "Livro cadastrado com sucesso",
+        result: result 
+      });
     } catch (error) {
       console.error("Erro ao cadastrar livro:", error);
+      return res.status(500).json({ 
+        msg: "Erro interno do servidor",
+        error: error.message 
+      });
+    }
+  },
+
+  registerGender: async (req, res) => {
+    const { 
+      nome_genero
+    } = req.body;
+
+    console.log("Dados recebidos no controller:", {
+      nome_genero
+    });
+
+    if (!nome_genero) {
+      return res.status(400).json({ msg: "O nome do genero é obrigatório" });
+    }
+
+    try {
+      const sqlGenderName = await clientController.getGenderByName(nome_genero);
+
+      if (sqlGenderName.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O código deste livro já está cadastrado no Banco de Dados" });
+      }
+
+
+      const result = await clientController.registerGender(
+        nome_genero
+      );
+      return res.status(201).json({ msg: "Genero cadastrado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao cadastrar genero:", error);
       return res.status(500).json({ msg: "Erro interno do servidor" });
     }
   },
+
+  registerAutor: async (req, res) => {
+    const { 
+      nome_autor, 
+      data_nascimento, 
+      image, 
+      avaliacao,
+      sobre
+    } = req.body;
+
+    console.log("Dados recebidos no controller:", {
+      nome_autor, data_nascimento, image, avaliacao,sobre
+    });
+
+    if (!nome_autor) {
+      return res.status(400).json({ msg: "O nome é obrigatório" });
+    }
+
+    try {
+      const sqlAutorName = await clientController.getAutorByName(nome_autor);
+
+      if (sqlAutorName.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O nome deste autor já está cadastrado no Banco de Dados" });
+      }
+
+
+      const result = await clientController.registerAutor(
+        nome_autor, 
+        data_nascimento, 
+        image, 
+        avaliacao,
+        sobre
+      );
+      return res.status(201).json({ msg: "Autor cadastrado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao cadastrar Autor:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
 }
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {

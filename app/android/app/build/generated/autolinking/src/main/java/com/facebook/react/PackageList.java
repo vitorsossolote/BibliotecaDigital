@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 // @react-native-firebase/auth
 import io.invertase.firebase.auth.ReactNativeFirebaseAuthPackage;
+// react-native-image-crop-picker
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
 // @react-native-async-storage/async-storage
@@ -77,6 +79,7 @@ public class PackageList {
       new MainReactPackage(mConfig),
       new ReactNativeFirebaseAppPackage(),
       new ReactNativeFirebaseAuthPackage(),
+      new PickerPackage(),
       new VectorIconsPackage(),
       new AsyncStoragePackage(),
       new RNCMaskedViewPackage(),

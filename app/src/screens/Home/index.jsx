@@ -39,19 +39,23 @@ function signOut() {
 }
 
 export default function Home({ navigation }) {
-    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus } = useAuth();
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, livros } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
     const [selectedBook, setSelectedBook] = useState(null);
     const [isFavorited, setIsFavorited] = useState(false);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-    const handleOpenPress = (bookData) => {
-        setSelectedBook(bookData);
+    const handleBottomSheetChange = (index) => {
+        setIsBottomSheetOpen(index !== -1);
+        // Emitir evento para o AppNavigator
+        navigation.setParams({ isBottomSheetOpen: index !== -1 });
+    };
 
-        // Check if book is already in favorites
-        const isBookFavorited = checkFavoriteStatus(bookData.id);
+    const handleOpenPress = (livros) => {
+        setSelectedBook(livros);
+        const isBookFavorited = checkFavoriteStatus(livros.id);
         setIsFavorited(isBookFavorited);
-
         bottomSheetref.current?.expand();
     };
 
@@ -68,10 +72,10 @@ export default function Home({ navigation }) {
             } else {
                 addToFavorites({
                     id: selectedBook.id,
-                    name: selectedBook.name,
+                    titulo: selectedBook.titulo,
                     image: selectedBook.image,
-                    description: selectedBook.description,
-                    status: selectedBook.status
+                    descricao: selectedBook.descricao,
+                    estado: selectedBook.estado
                 });
                 ToastAndroid.show("Adicionado aos favoritos", ToastAndroid.SHORT);
             }
@@ -93,7 +97,7 @@ export default function Home({ navigation }) {
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
-                        <Reservar onPress={() => console.log("teste")} />
+                        <Reservar onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
                         <Section title="Melhores da Semana" onPress={() => navigation.navigate("SearchScreen")} />
@@ -109,7 +113,8 @@ export default function Home({ navigation }) {
                     ref={bottomSheetref}
                     snapPoints={snapPoints}
                     index={-1}
-                    enablePanDownToClose={true}>
+                    enablePanDownToClose={true}
+                    onChange={handleBottomSheetChange}>
                     <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
                         {selectedBook && ( // Só renderiza se houver um livro selecionado
                             <>
@@ -118,7 +123,7 @@ export default function Home({ navigation }) {
                                 </View>
                                 <View style={styles.detailContainer}>
                                     <View style={styles.headerContainer}>
-                                        <Text style={styles.title}>{selectedBook.name}</Text>
+                                        <Text style={styles.title}>{selectedBook.titulo}</Text>
                                         <Pressable
                                             size="md"
                                             bg="transparent"
@@ -139,7 +144,7 @@ export default function Home({ navigation }) {
                                     <View style={styles.genderContainer}>
                                         <Text style={styles.genderText}>Suspense</Text>
                                     </View>
-                                    <Text style={styles.description}>{selectedBook.description}</Text>
+                                    <Text style={styles.description}>{selectedBook.descricao}</Text>
                                 </View>
                                 <View style={styles.ratingContainer}>
                                     <Text style={styles.ratingTitle}>Avaliação</Text>
@@ -153,8 +158,8 @@ export default function Home({ navigation }) {
                                         isDisabled={true}
                                     />
                                     <Text style={[styles.status,
-                                    { color: selectedBook.status.toLowerCase() === 'disponivel' ? '#34A853' : '#ee2d32' }]}>
-                                        {selectedBook.status}
+                                    { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                     </Text>
                                 </View>
                                 <View style={styles.buttonContainer}>
@@ -162,7 +167,7 @@ export default function Home({ navigation }) {
                                         size="md"
                                         variant="solid"
                                         action="primary"
-                                        isDisabled={selectedBook.status.toLowerCase() !== 'disponivel'}
+                                        isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
                                         isFocusVisible={false}
                                         style={styles.buttonPrincipal}
                                     >
@@ -198,6 +203,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f6f6',
         alignItems: "center"
     },
+    //BottomSheetStyles
     bookContainer: {
         flex: 1,
         justifyContent: "center",

@@ -144,7 +144,7 @@ export default function Profile({ navigation }) {
                     <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
-                    <Button onPress={handleOpenPress} variant="link">
+                    <Button onPress={handleLogout} variant="link">
                         <ButtonText style={styles.buttonText}>Logout</ButtonText>
                     </Button>
                 </View>

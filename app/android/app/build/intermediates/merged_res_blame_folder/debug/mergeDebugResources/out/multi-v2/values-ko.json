@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-47:/values-ko/values-ko.xml",
+            "outputFile": "com.app-mergeDebugResources-48:/values-ko/values-ko.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\54e47014ad813f368c5d20639dda24d8\\transformed\\credentials-1.2.0-rc01\\res\\values-ko\\values-ko.xml",
@@ -105,6 +105,23 @@
                         "startOffsets": "10809",
                         "endColumns": "100",
                         "endOffsets": "10905"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-ko\\values-ko.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,112,164",
+                        "endColumns": "56,51,46",
+                        "endOffsets": "107,159,206"
+                    },
+                    "to": {
+                        "startLines": "138,139,140",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "11188,11245,11297",
+                        "endColumns": "56,51,46",
+                        "endOffsets": "11240,11292,11339"
                     }
                 },
                 {
