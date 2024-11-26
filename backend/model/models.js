@@ -371,6 +371,20 @@ const useModel = {
       .catch((erro) => console.log(erro));
     return result;
   },
+  getAllAutores: async () => {
+    const [result] = await connection
+      .query("SELECT * FROM autores")
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
+  getAllGeneros: async () => {
+    const [result] = await connection
+      .query("SELECT * FROM gender")
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
 
 
   // registerMensagem: async (id, nome, numero, email, mensagem) =>{

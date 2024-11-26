@@ -525,6 +525,33 @@ registerBook: async (req, res) => {
       });
     }
   },
+
+
+  ListarAutores: async (req, res) => {
+    try {
+      const autores = await clientController.getAllAutores();
+      res.status(200).json(autores);
+    } catch (error) {
+      console.error("Erro ao buscar Autores:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar Autores", 
+        error: error.message 
+      });
+    }
+  },
+  ListarGeneros: async (req, res) => {
+    try {
+      const generos = await clientController.getAllGeneros();
+      res.status(200).json(generos);
+    } catch (error) {
+      console.error("Erro ao buscar Generos:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar Generos", 
+        error: error.message 
+      });
+    }
+  },
+
 }
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {

@@ -56,6 +56,8 @@ router.get('/api/searchLivros/:searchTerm', clientController.searchLivros);
 
 // Criar um Genero
 router.post("/api/registerGender", clientController.registerGender); 
+//Listar todos os generos
+router.get('/api/generos' ,clientController.ListarGeneros);
 //Listar Livros por genero id
 router.get('/api/ListBooks/genero/:id_genero', clientController.listarLivrosPorGenero);
 //Listar Livros por genero nome
@@ -64,6 +66,8 @@ router.get('/api/ListBooks/genero/name/:nome_genero', clientController.listarLiv
 
 // Criar um Autor
 router.post("/api/registerAutor", clientController.registerAutor);
+//Listar todos os autores
+router.get('/api/autores' ,clientController.ListarAutores);
 // Listar Livros por Autor ID 
 router.get('/api/ListBooks/autor/:id_autor', clientController.listarLivrosPorAutor);
 // Listar Livros por Nome Autor
