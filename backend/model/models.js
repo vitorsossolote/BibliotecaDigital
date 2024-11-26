@@ -279,6 +279,46 @@ const useModel = {
     }
   },
 
+  registerGender: async (nome_genero) => {  
+
+    if (!nome_genero) {
+      throw new Error('O nome do genero é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO gender (nome_genero) VALUES (?)", [
+          nome_genero
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  registerAutor: async (nome_autor, data_nascimento, image, avaliacao,sobre) => {  
+
+    if (!nome_autor) {
+      throw new Error('O nome é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO autores (nome_autor, data_nascimento, image, avaliacao,sobre) VALUES (?,?,?,?,?)", [
+          nome_autor, 
+          data_nascimento, 
+          image, 
+          avaliacao,
+          sobre
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   // registerMensagem: async (id, nome, numero, email, mensagem) =>{
   //     const [result] = await connection.query("INSERT INTO contato values(?,?,?,?,?)", [id, nome, numero, email, mensagem])
   //     .catch(erro => console.log(erro));
