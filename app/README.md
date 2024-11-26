@@ -35,6 +35,7 @@
 ## react-native async storage | npm install @react-native-async-storage/async-storage
 ## image crop picker | npm i react-native-image-crop-picker --save
 ## jwt | npm i jsonwebtoken
+## cron | npm i node-cron
 
 
 

@@ -10,6 +10,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
+    "node-cron": "^3.0.3",
     "readable-stream": "^4.5.2"
   }
 }

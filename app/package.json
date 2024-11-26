@@ -21,6 +21,7 @@
     "deprecated-react-native-prop-types": "^2.2.0",
     "firebase": "^11.0.1",
     "moti": "^0.29.0",
+    "node-cron": "^3.0.3",
     "react": "18.3.1",
     "react-native": "0.75.3",
     "react-native-image-crop-picker": "^0.41.5",
