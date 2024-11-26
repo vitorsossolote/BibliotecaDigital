@@ -211,7 +211,7 @@ const useModel = {
         );
         genderId = novoGender.insertId;
       } else {
-        genderId = gender[0].id_genero;
+        genderId = gender[1].id_genero;
       }
 
       // Insere o livro

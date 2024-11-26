@@ -4,11 +4,7 @@
             "outputFile": "com.app-mergeDebugResources-48:/values-zh/values-zh.xml",
             "map": [
                 {
-<<<<<<< HEAD
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-zh\\values-zh.xml",
-=======
-                    "source": "C:\\Users\\Vitor\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-zh\\values-zh.xml",
->>>>>>> 0fc449222eb5fccc17d0b78fb84ce91c7f21d8b2
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

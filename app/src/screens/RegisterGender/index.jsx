@@ -65,15 +65,15 @@ const RegisterGender = ({ navigation }) => {
                     >
                         <BackHeader onPress={() => navigation.navigate("AdminLibrarian")}
                             title="Bem Vindo"
-                            subtitle="Cadastre um Livro" />
+                            subtitle="Cadastre um Genero" />
                         <View style={styles.inputContainer}>
                             <MotiView
                                 from={{ translateX: -50 }}
                                 animate={{ translateX: 0, }}
                                 transition={{ duration: 3000, type: "spring" }}>
                                 <InputTest
-                                    inputText="Nome do Livro"
-                                    formTitle="Título"
+                                    inputText="Nome do Genero"
+                                    formTitle="Genero"
                                     inputSize={15}
                                     valuee={nome_genero}
                                     onChangeText={text => setGenero(text)}

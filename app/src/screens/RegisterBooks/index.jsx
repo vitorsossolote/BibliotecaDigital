@@ -1,31 +1,39 @@
-import { useState, useEffect } from "react";
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { Select } from '@gluestack-ui/themed';
+import React, { useState, useEffect } from "react";
 import {
     GluestackUIProvider,
     SafeAreaView,
     Button,
     ButtonText,
-} from "@gluestack-ui/themed"
-import { MotiView } from "moti"
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Alert, KeyboardAvoidingView, Platform } from "react-native"
-import { config } from "@gluestack-ui/config"
+    Select,
+    SelectTrigger,
+    SelectInput,
+    SelectContent,
+    SelectItem,
+    SelectDragIndicator,
+    SelectDragIndicatorWrapper,
+    SelectPortal
+} from "@gluestack-ui/themed";
+import { config } from "@gluestack-ui/config";
+import { StyleSheet,Pressable, Text, View, TouchableOpacity, ScrollView, Image, Alert, KeyboardAvoidingView, Platform, TextInput } from "react-native";
+import { MotiView } from "moti";
+import ImagePicker from 'react-native-image-crop-picker';
+import axios from "axios";
 import BackHeader from "../../components/BackHeader/index";
 import InputTest from "../../components/InputTest";
 import ModalComp from "../../components/Modal/1Modal";
-import ImagePicker from 'react-native-image-crop-picker';
-import axios from "axios";
-import book from "../../../assets/book.png"
 
 const RegisterBooks = ({ navigation }) => {
-    const [image, setImage] = useState('')
-    const [titulo, setTitulo] = useState('')
-    const [autor, setAutor] = useState('')
-    const [editora, setEditora] = useState('')
-    const [genero, setGenero] = useState('')
-    const [quantidade, setQuantidade] = useState('')
-    const [codigo, setCodigo] = useState('')
-    const [descricao, setDescricao] = useState('')
+    const [image, setImage] = useState('');
+    const [titulo, setTitulo] = useState('');
+    const [nome_autor, setAutor] = useState('');
+    const [editora, setEditora] = useState('');
+    const [nome_genero, setGenero] = useState('');
+    const [quantidade, setQuantidade] = useState('');
+    const [codigo, setCodigo] = useState('');
+    const [descricao, setDescricao] = useState('');
+
+    const [autores, setAutores] = useState([]);
+    const [generos, setGeneros] = useState([]);
 
     const selectPhoto = () => {
         ImagePicker.openPicker({
@@ -51,7 +59,6 @@ const RegisterBooks = ({ navigation }) => {
                 return;
             }
 
-            console.log('Image size (bytes):', imageSizeInBytes);
             const data = `data:${image.mime};base64,${image.data}`;
             setImage(data);
         }).catch(error => {
@@ -60,38 +67,51 @@ const RegisterBooks = ({ navigation }) => {
         });
     };
 
-    const data = {
-        image: image,
-        titulo: titulo,
-        autor: autor,
-        editora: editora,
-        genero: genero,
-        quantidade: quantidade,
-        codigo: codigo,
-        descricao: descricao
-    };
+    useEffect(() => {
+        const fetchAutoresEGeneros = async () => {
+            try {
+                const responseAutores = await axios.get('http://10.0.2.2:8085/api/autores');
+                const responseGeneros = await axios.get('http://10.0.2.2:8085/api/generos');
+
+                setAutores(responseAutores.data);
+                setGeneros(responseGeneros.data);
+            } catch (error) {
+                console.error('Erro ao buscar autores e gêneros:', error);
+                Alert.alert('Erro', 'Não foi possível carregar autores e gêneros');
+            }
+        };
+
+        fetchAutoresEGeneros();
+    }, []);
 
     const handleCadastrarLivro = async () => {
-        if (!image || !titulo || !autor || !editora || !genero || !quantidade || !codigo || !descricao) {
-            Alert.alert('Todos os campos são obrigatórios')
-            return
+        if (!image || !titulo || !nome_autor || !editora || !nome_genero || !quantidade || !codigo || !descricao) {
+            Alert.alert('Todos os campos são obrigatórios');
+            return;
         }
-        console.log(data)
+
+        const data = {
+            image,
+            titulo,
+            nome_autor,
+            editora,
+            nome_genero,
+            quantidade,
+            codigo,
+            descricao
+        };
+
         try {
             await axios.post('http://10.0.2.2:8085/api/registerBook', data);
             Alert.alert('Cadastro do livro realizado com sucesso');
-            navigation.navigate('HomeTabLibrarian')
+            navigation.navigate('HomeTabLibrarian');
         } catch (error) {
-            if (error) {
-                console.log(error)
-            }
-            else if (error.response.status === 401) {
-                console.log('O código' + data.codigo + 'já existe na base de dados')
-                Alert.alert('O código' + data.codigo + 'já existe na base de dados')
-            }
-            else {
-                console.log(error + 'Ocorreu um erro ao cadastrar o livro.');
-                Alert.alert(error + 'Ocorreu um erro ao cadastrar o livro.')
+            if (error.response && error.response.status === 401) {
+                console.log(`O código ${data.codigo} já existe na base de dados`);
+                Alert.alert(`O código ${data.codigo} já existe na base de dados`);
+            } else {
+                console.log(error);
+                Alert.alert('Ocorreu um erro ao cadastrar o livro.');
             }
         }
     };
@@ -108,15 +128,19 @@ const RegisterBooks = ({ navigation }) => {
                         bounces={false}
                         showsVerticalScrollIndicator={false}
                     >
-                        <BackHeader onPress={() => navigation.navigate("AdminLibrarian")}
+                        <BackHeader
+                            onPress={() => navigation.navigate("AdminLibrarian")}
                             title="Bem Vindo"
-                            subtitle="Cadastre um Livro" />
+                            subtitle="Cadastre um Livro"
+                        />
+
                         <View style={styles.inputContainer}>
                             <MotiView
                                 from={{ translateX: -50 }}
                                 animate={{ translateX: 0 }}
                                 transition={{ duration: 3000, type: "spring" }}
-                                style={styles.bookContainer}>
+                                style={styles.bookContainer}
+                            >
                                 <TouchableOpacity
                                     onPress={selectPhoto}
                                     style={{
@@ -125,10 +149,10 @@ const RegisterBooks = ({ navigation }) => {
                                         borderColor: "#000",
                                         borderWidth: 1,
                                         borderRadius: 10,
-                                        padding: 5,
                                         justifyContent: "center",
                                         alignItems: "center"
-                                    }}>
+                                    }}
+                                >
                                     {image ? (
                                         <Image
                                             source={{ uri: image }}
@@ -150,10 +174,12 @@ const RegisterBooks = ({ navigation }) => {
                                     )}
                                 </TouchableOpacity>
                             </MotiView>
+
                             <MotiView
                                 from={{ translateX: -50 }}
-                                animate={{ translateX: 0, }}
-                                transition={{ duration: 3000, type: "spring" }}>
+                                animate={{ translateX: 0 }}
+                                transition={{ duration: 3000, type: "spring" }}
+                            >
                                 <InputTest
                                     inputText="Nome do Livro"
                                     formTitle="Título"
@@ -164,7 +190,72 @@ const RegisterBooks = ({ navigation }) => {
                             </MotiView>
                             <MotiView
                                 from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
+                                animate={{ translateX: 0 }}
+                                transition={{ duration: 3500, type: "spring" }}
+                                style={{bottom:5}}
+                            >
+                                <Text style={styles.formText}>Autor</Text>
+                                <Select
+                                    onValueChange={(value) => setAutor(value)}
+                                   
+                                >
+                                    <SelectTrigger style={styles.input}>
+                                        <SelectInput placeholder="Selecione um autor" style={styles.inputText} />
+                                    </SelectTrigger>
+                                    <SelectPortal>
+                                        <SelectContent>
+                                            <SelectDragIndicatorWrapper>
+                                                <SelectDragIndicator />
+                                            </SelectDragIndicatorWrapper>
+                                            <Pressable onPress={() => navigation.navigate("RegisterAutor")}>
+                                                <Text style={{color:"#ee2d32"}}>Ou adicione um aqui</Text></Pressable>
+                                            {autores.map((a) => (
+                                                <SelectItem
+                                                    key={a.id_autor}
+                                                    label={a.nome_autor}
+                                                    value={a.nome_autor}
+                                                />
+                                            ))}
+                                        </SelectContent>
+                                    </SelectPortal>
+                                </Select>
+                                </MotiView>
+                                <MotiView
+                                    from={{ translateX: -50 }}
+                                    animate={{ translateX: 0 }}
+                                    transition={{ duration: 4000, type: "spring" }}
+                                    style={{bottom:30}}
+                                >
+                                    <Text style={styles.formText}>Gênero</Text>
+                                    <Select
+                                        onValueChange={(value) => setGenero(value)}
+                                    >
+                                        <SelectTrigger style={styles.input}>
+                                            <SelectInput placeholder="Selecione um gênero" style={styles.inputText} />
+                                        </SelectTrigger>
+                                        <SelectPortal>
+                                            <SelectContent>
+                                                <SelectDragIndicatorWrapper>
+                                                    <SelectDragIndicator />
+                                                </SelectDragIndicatorWrapper>
+                                                <Pressable onPress={() => navigation.navigate("RegisterGender")}>
+                                                <Text style={{color:"#ee2d32"}}>Ou adicione um aqui</Text></Pressable>
+                                                {generos.map((g) => (
+                                                    <SelectItem
+                                                        key={g.id_genero}
+                                                        label={g.nome_genero}
+                                                        value={g.nome_genero}
+                                                    />
+                                                
+                                                ))}
+                                            </SelectContent>
+                                        </SelectPortal>
+                                    </Select>
+                                </MotiView>
+                                <View style={[styles.inputContainer, {bottom:100}]}>
+                            <MotiView
+                                from={{ translateX: -50 }}
+                                animate={{ translateX: 0 }}
                                 transition={{ duration: 4000, type: "spring" }}
                             >
                                 <InputTest
@@ -175,22 +266,10 @@ const RegisterBooks = ({ navigation }) => {
                                     onChangeText={text => setDescricao(text)}
                                 />
                             </MotiView>
+
                             <MotiView
                                 from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
-                                transition={{ duration: 4000, type: "spring" }}
-                            >
-                                <InputTest
-                                    inputText="Nome do Autor"
-                                    formTitle="Autor"
-                                    inputSize={15}
-                                    valuee={autor}
-                                    onChangeText={text => setAutor(text)}
-                                />
-                            </MotiView>
-                            <MotiView
-                                from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
+                                animate={{ translateX: 0 }}
                                 transition={{ duration: 4000, type: "spring" }}
                             >
                                 <InputTest
@@ -201,22 +280,10 @@ const RegisterBooks = ({ navigation }) => {
                                     onChangeText={text => setEditora(text)}
                                 />
                             </MotiView>
+
                             <MotiView
                                 from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
-                                transition={{ duration: 4000, type: "spring" }}
-                            >
-                                <InputTest
-                                    inputText="Qual o Gênero"
-                                    formTitle="Gênero"
-                                    inputSize={15}
-                                    valuee={genero}
-                                    onChangeText={text => setGenero(text)}
-                                />
-                            </MotiView>
-                            <MotiView
-                                from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
+                                animate={{ translateX: 0 }}
                                 transition={{ duration: 5000, type: "spring" }}
                             >
                                 <InputTest
@@ -228,9 +295,10 @@ const RegisterBooks = ({ navigation }) => {
                                     onChangeText={text => setQuantidade(text)}
                                 />
                             </MotiView>
+
                             <MotiView
                                 from={{ translateX: -50 }}
-                                animate={{ translateX: -0 }}
+                                animate={{ translateX: 0 }}
                                 transition={{ duration: 5000, type: "spring" }}
                             >
                                 <InputTest
@@ -242,26 +310,31 @@ const RegisterBooks = ({ navigation }) => {
                                     onChangeText={text => setCodigo(text)}
                                 />
                             </MotiView>
+                            </View>
                         </View>
                         <MotiView
-                            from={{ translateY: 110, }}
+                            from={{ translateY: 110 }}
                             animate={{ translateY: 0 }}
-                            transition={{ duration: 3000, delay: 1000 }}>
+                            transition={{ duration: 3000, delay: 1000 }}
+                        >
                             <View style={styles.buttonContainer}>
                                 <ModalComp buttonTitle={"Cadastrar Livro"} onPress={handleCadastrarLivro} />
                             </View>
                         </MotiView>
+
                         <View style={styles.EnterAccountContainer}>
                             <MotiView
                                 from={{ translateX: -230 }}
                                 animate={{ translateX: 0 }}
-                                transition={{ duration: 1000, delay: 1500, type: "timing" }}>
+                                transition={{ duration: 1000, delay: 1500, type: "timing" }}
+                            >
                                 <Text style={styles.textAccount}>Quer atualizar um livro?</Text>
                             </MotiView>
                             <MotiView
                                 from={{ translateX: 200 }}
                                 animate={{ translateX: 0 }}
-                                transition={{ duration: 1000, delay: 1500, type: "timing" }}>
+                                transition={{ duration: 1000, delay: 1500, type: "timing" }}
+                            >
                                 <Button
                                     onPress={() => console.log("teste")}
                                     size="md"
@@ -277,12 +350,12 @@ const RegisterBooks = ({ navigation }) => {
                 </KeyboardAvoidingView>
             </SafeAreaView>
         </GluestackUIProvider>
-    )
-}
+    );
+};
+
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        width: "100%",
+        flex:1,
         backgroundColor: '#fff',
     },
     scrollContainer: {
@@ -293,7 +366,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     inputContainer: {
-        backgroundColor: '#fff',
         marginTop: 40,
         gap: 35,
     },
@@ -336,6 +408,75 @@ const styles = StyleSheet.create({
         marginTop: 650,
         position: "absolute"
     },
+    selectContainer: {
+        padding: 15,
+    },
+    selectRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    select: {
+        flex: 1,
+        marginRight: 10,
+    },
+    addButton: {
+        backgroundColor: '#EE2D32',
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    addButtonText: {
+        color: 'white',
+        fontSize: 20,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: '80%',
+    },
+    modalTitle: {
+        fontSize: 18,
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    modalInput: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    input: {
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        width: 327,
+        height: 48,
+        alignSelf: 'center',
+    },
+    formText: {
+        color: 'black',
+        fontWeight: 'bold',
+        left: 40,
+        bottom: 2,
+    },
+    inputText: {
+        color: 'gray',
+        fontSize: 15,
+    },
+
 });
 
 export default RegisterBooks;

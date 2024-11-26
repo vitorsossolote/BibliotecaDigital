@@ -71,8 +71,8 @@ const SearchScreen = ({ navigation }) => {
                 livros.filter(
                     (item) =>
                         item.titulo.toLowerCase().indexOf(searchText.toLowerCase()) > -1 ||
-                        item.genero.toLowerCase().indexOf(searchText.toLowerCase()) > -1 ||
-                        item.autor.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+                        item.nome_autor.toLowerCase().indexOf(searchText.toLowerCase()) > -1 ||
+                        item.nome_genero.toLowerCase().indexOf(searchText.toLowerCase()) > -1
                 )
             );
         }
@@ -92,7 +92,7 @@ const SearchScreen = ({ navigation }) => {
                     <Text style={styles.title}>
                         {truncateTitle(data.titulo || "Sem título")}
                     </Text>
-                    <Text style={styles.gender}>{data.genero || "Gênero não especificado"}</Text>
+                    <Text style={styles.gender}>{data.nome_genero || "Gênero não especificado"}</Text>
                     <AirbnbRating
                         count={5}
                         defaultRating={data.rating || 4}
@@ -103,7 +103,7 @@ const SearchScreen = ({ navigation }) => {
                         readonly={true}
                         isDisabled={true}
                     />
-                    <Text style={styles.author}>{truncateTitle(data.autor || "Sem Autor")}</Text>
+                    <Text style={styles.author}>{truncateTitle(data.nome_autor || "Sem Autor")}</Text>
                     <Text style={[styles.bookStatus, 
                             { color: data.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
                             ]}>{data.estado}{data.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}</Text>

@@ -3922,16 +3922,6 @@
 "@types/prop-types@*":
   version "15.7.13"
 
-<<<<<<< HEAD
-"@types/react-native@*", "@types/react-native@>=0.72":
-  version "0.73.0"
-  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.73.0.tgz"
-  integrity sha512-6ZRPQrYM72qYKGWidEttRe6M5DZBEV5F+MHMHqd4TTYx0tfkcdrUFGdef6CCxY0jXU7wldvd/zA/b0A/kTeJmA==
-  dependencies:
-    react-native "*"
-
-=======
->>>>>>> 0fc449222eb5fccc17d0b78fb84ce91c7f21d8b2
 "@types/react-test-renderer@^18.0.0":
   version "18.3.0"
   dependencies:
@@ -6863,42 +6853,6 @@ lighthouse-logger@^1.0.0:
     debug "^2.6.9"
     marky "^1.2.2"
 
-<<<<<<< HEAD
-lightningcss-win32-x64-msvc@1.28.2:
-  version "1.28.2"
-  resolved "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.28.2.tgz"
-  integrity sha512-3piBifyT3avz22o6mDKywQC/OisH2yDK+caHWkiMsF82i3m5wDBadyCjlCQ5VNgzYkxrWZgiaxHDdd5uxsi0/A==
-
-lightningcss@^1.27.0:
-  version "1.28.2"
-  resolved "https://registry.npmjs.org/lightningcss/-/lightningcss-1.28.2.tgz"
-  integrity sha512-ePLRrbt3fgjXI5VFZOLbvkLD5ZRuxGKm+wJ3ujCqBtL3NanDHPo/5zicR5uEKAPiIjBYF99BM4K4okvMznjkVA==
-  dependencies:
-    detect-libc "^1.0.3"
-  optionalDependencies:
-    lightningcss-darwin-arm64 "1.28.2"
-    lightningcss-darwin-x64 "1.28.2"
-    lightningcss-freebsd-x64 "1.28.2"
-    lightningcss-linux-arm-gnueabihf "1.28.2"
-    lightningcss-linux-arm64-gnu "1.28.2"
-    lightningcss-linux-arm64-musl "1.28.2"
-    lightningcss-linux-x64-gnu "1.28.2"
-    lightningcss-linux-x64-musl "1.28.2"
-    lightningcss-win32-arm64-msvc "1.28.2"
-    lightningcss-win32-x64-msvc "1.28.2"
-
-lilconfig@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/lilconfig/-/lilconfig-2.1.0.tgz"
-  integrity sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==
-
-lilconfig@^3.0.0:
-  version "3.1.2"
-  resolved "https://registry.npmjs.org/lilconfig/-/lilconfig-3.1.2.tgz"
-  integrity sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==
-
-=======
->>>>>>> 0fc449222eb5fccc17d0b78fb84ce91c7f21d8b2
 lines-and-columns@^1.1.6:
   version "1.2.4"
 
