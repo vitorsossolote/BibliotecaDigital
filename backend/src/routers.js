@@ -42,9 +42,9 @@ router.post("/api/loginLibrarian", clientController.loginLibrarian);
 //Rota para Criar Livro
 router.post("/api/registerBook", clientController.registerBook);
 // Rota para atualizar um livro
-router.put("/api/updateBook/:id", clientController.updateBook);
+// router.put("/api/updateBook/:id", clientController.updateBook);
 //Rota para deletar um livro
-router.delete("/api/deleteBook/:id", clientController.deleteBook);
+// router.delete("/api/deleteBook/:id", clientController.deleteBook);
 //Listar todos os Livros
 router.get("/api/listBooks", clientController.listarLivros); 
 //Listar Livros por ID
@@ -56,30 +56,33 @@ router.get('/api/searchLivros/:searchTerm', clientController.searchLivros);
 
 // Criar um Genero
 router.post("/api/registerGender", clientController.registerGender); 
-
+//Listar Livros por genero id
+router.get('/api/ListBooks/genero/:id_genero', clientController.listarLivrosPorGenero);
+//Listar Livros por genero nome
+router.get('/api/ListBooks/genero/name/:nome_genero', clientController.listarLivrosPorNomeGenero);
 // AUTOR --------------------------------------------------------------------------------
 
 // Criar um Autor
-router.post("/api/registerAutor", clientController.registerAutor); 
+router.post("/api/registerAutor", clientController.registerAutor);
+// Listar Livros por Autor ID 
+router.get('/api/ListBooks/autor/:id_autor', clientController.listarLivrosPorAutor);
+// Listar Livros por Nome Autor
+router.get('/api/ListBooks/autor/name/:nome_autor', clientController.listarLivrosPorNomeAutor);
 
 // EMPRÉSTIMO ---------------------------------------------------------------------------
 
-// Criar um novo empréstimo
-router.post("/api/emprestimo", clientController.createEmprestimo);
-// Atualizar o estado de um empréstimo (apenas bibliotecário)
-router.put("/api/emprestimo/:id/atualizarEstado", clientController.atualizarEstadoEmprestimo);
-// Rota para listar todos os empréstimos
-router.get('/api/emprestimo/listEmprestimo', clientController.getAllEmprestimos);
-// Rota para listar os empréstimos de um usuário específico
-router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmprestimosByUserRm);
-// Rota para listar os empréstimos de um usuário específico
-router.put('/api/emprestimo/atualizarEstadoEmprestimo/:id', clientController.atualizarEstadoEmprestimo);
-// Endpoint para verificar e atualizar empréstimos atrasados manualmente
-router.post("/api/emprestimos/verificar-atrasos", clientController.atualizarAtrasos);
-
-
-
-
+// // Criar um novo empréstimo
+// router.post("/api/emprestimo", clientController.createEmprestimo);
+// // Atualizar o estado de um empréstimo (apenas bibliotecário)
+// router.put("/api/emprestimo/:id/atualizarEstado", clientController.atualizarEstadoEmprestimo);
+// // Rota para listar todos os empréstimos
+// router.get('/api/emprestimo/listEmprestimo', clientController.getAllEmprestimos);
+// // Rota para listar os empréstimos de um usuário específico
+// router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmprestimosByUserRm);
+// // Rota para listar os empréstimos de um usuário específico
+// router.put('/api/emprestimo/atualizarEstadoEmprestimo/:id', clientController.atualizarEstadoEmprestimo);
+// // Endpoint para verificar e atualizar empréstimos atrasados manualmente
+// router.post("/api/emprestimos/verificar-atrasos", clientController.atualizarAtrasos);
 
 //teste
 // router.post("/api/validade", clientController.loginBiblio);

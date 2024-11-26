@@ -171,68 +171,70 @@ const useModel = {
     },
   
     
-    // Outros métodos para manipulação de livros podem ser adicionados aqui
   
     registerBooks: async (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) => {  
       if (!codigo) {
         throw new Error('O código é obrigatório');
       }
-  
-      
+    
       try {
-  
-        // Primeiro, verifica se o autor existe
+        // Primeiro, verifica se o autor existe e obtém seu ID
+        let autorId;
         const [autores] = await connection.query(
           "SELECT id_autor FROM autores WHERE nome_autor = ?", 
           [nome_autor]
         );
-  
-        // Se o autor não existir, cria o autor
-        if (autores.length === 0) {
+    
+        // Se o autor existir, use o ID existente
+        if (autores.length > 0) {
+          autorId = autores[0].id_autor;
+        } else {
+          // Se o autor não existir, crie um novo
           const [novoAutor] = await connection.query(
             "INSERT INTO autores (nome_autor) VALUES (?)", 
             [nome_autor]
           );
           autorId = novoAutor.insertId;
-        } else {
-          autorId = autores[0].id_autor;
         }
-  
-        // Verifica se o gênero existe
+    
+        // Verifica se o gênero existe e obtém seu ID
+        let generoId;
         const [generos] = await connection.query(
-          "SELECT nome_genero FROM gender WHERE nome_genero = ?", 
+          "SELECT id_genero FROM gender WHERE nome_genero = ?", 
           [nome_genero]
         );
-  
-        // Se o gênero não existir, cadastra o genero
-        if (generos.length === 0) {
-          const [novoGender] = await connection.query(
+    
+        // Se o gênero existir, use o ID existente
+        if (generos.length > 0) {
+          generoId = generos[0].id_genero;
+        } else {
+          // Se o gênero não existir, crie um novo
+          const [novoGenero] = await connection.query(
             "INSERT INTO gender (nome_genero) VALUES (?)", 
             [nome_genero]
           );
-          genderId = novoGender.insertId;
-        } else {
-          genderId = gender[0].id_genero;
+          generoId = novoGenero.insertId;
         }
-  
-        // Insere o livro
+    
+        // Insere o livro com os IDs de autor e gênero
         const [result] = await connection.query(
-          "INSERT INTO livros (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)", 
+          "INSERT INTO livros (image, titulo, descricao, id_autor, id_genero, editora, quantidade, codigo, avaliacao, estado, nome_autor, nome_genero) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
           [
             image, 
             titulo, 
             descricao, 
-            nome_autor, 
+            autorId,  // Usando o ID do autor 
+            generoId, // Usando o ID do gênero
             editora, 
-            nome_genero, 
             quantidade, 
             codigo, 
             avaliacao, 
-            estado
+            estado,
+            nome_autor,
+            nome_genero
           ]
         );
-  
-  
+    
         return result;
       } catch (error) {
         throw error;
@@ -318,6 +320,58 @@ const useModel = {
       throw error;
     }
   },
+
+  // Add these methods to your existing useModel object
+
+  // Listar todos os livros de um autor específico por ID
+  getLivrosByAutorId: async (id_autor) => {
+    const [result] = await connection
+      .query(`
+        SELECT l.*, a.nome_autor, a.data_nascimento, a.image as autor_image, a.sobre as autor_sobre
+        FROM livros l
+        JOIN autores a ON l.id_autor = a.id_autor
+        WHERE l.id_autor = ?
+      `, [id_autor])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
+  getLivrosByAutorName: async (nome_autor) => {
+    const [result] = await connection
+      .query(`
+        SELECT l.*, a.nome_autor, a.data_nascimento, a.image as autor_image, a.sobre as autor_sobre
+        FROM livros l
+        JOIN autores a ON l.nome_autor = a.nome_autor
+        WHERE l.nome_autor = ?
+      `, [nome_autor])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
+  // Listar todos os livros de um gênero específico por ID
+  getLivrosByGeneroId: async (id_genero) => {
+    const [result] = await connection
+      .query(`
+        SELECT l.*, g.nome_genero
+        FROM livros l
+        JOIN gender g ON l.id_genero = g.id_genero
+        WHERE l.id_genero = ?
+      `, [id_genero])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+  getLivrosByGeneroNome: async (nome_genero) => {
+    const [result] = await connection
+      .query(`
+        SELECT l.*, g.nome_genero
+        FROM livros l
+        JOIN gender g ON l.nome_genero = g.nome_genero
+        WHERE l.nome_genero = ?
+      `, [nome_genero])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
 
   // registerMensagem: async (id, nome, numero, email, mensagem) =>{
   //     const [result] = await connection.query("INSERT INTO contato values(?,?,?,?,?)", [id, nome, numero, email, mensagem])

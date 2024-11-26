@@ -437,6 +437,94 @@ registerBook: async (req, res) => {
     }
   },
 
+  // Listar livros de um autor por ID
+  listarLivrosPorAutor: async (req, res) => {
+    const { id_autor } = req.params;
+
+    try {
+      const livros = await clientController.getLivrosByAutorId(id_autor);
+      
+      if (!livros || livros.length === 0) {
+        return res.status(404).json({ 
+          msg: "Nenhum livro encontrado para este autor" 
+        });
+      }
+
+      res.status(200).json(livros);
+    } catch (error) {
+      console.error("Erro ao buscar livros do autor:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livros do autor", 
+        error: error.message 
+      });
+    }
+  },
+  listarLivrosPorNomeAutor: async (req, res) => {
+    const { nome_autor } = req.params;
+
+    try {
+      const livros = await clientController.getLivrosByAutorName(nome_autor);
+      
+      if (!livros || livros.length === 0) {
+        return res.status(404).json({ 
+          msg: "Nenhum livro encontrado para este autor" 
+        });
+      }
+
+      res.status(200).json(livros);
+    } catch (error) {
+      console.error("Erro ao buscar livros do autor:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livros do autor", 
+        error: error.message 
+      });
+    }
+  },
+
+  // Listar livros de um gênero por ID
+  listarLivrosPorGenero: async (req, res) => {
+    const { id_genero } = req.params;
+
+    try {
+      const livros = await clientController.getLivrosByGeneroId(id_genero);
+      
+      if (!livros || livros.length === 0) {
+        return res.status(404).json({ 
+          msg: "Nenhum livro encontrado para este gênero" 
+        });
+      }
+
+      res.status(200).json(livros);
+    } catch (error) {
+      console.error("Erro ao buscar livros do gênero:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livros do gênero", 
+        error: error.message 
+      });
+    }
+  },
+
+  listarLivrosPorNomeGenero: async (req, res) => {
+    const { nome_genero } = req.params;
+
+    try {
+      const livros = await clientController.getLivrosByGeneroNome(nome_genero);
+      
+      if (!livros || livros.length === 0) {
+        return res.status(404).json({ 
+          msg: "Nenhum livro encontrado para este gênero" 
+        });
+      }
+
+      res.status(200).json(livros);
+    } catch (error) {
+      console.error("Erro ao buscar livros do gênero:", error);
+      res.status(500).json({ 
+        msg: "Erro ao buscar livros do gênero", 
+        error: error.message 
+      });
+    }
+  },
 }
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {
