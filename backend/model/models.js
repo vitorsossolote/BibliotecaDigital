@@ -29,6 +29,18 @@ const useModel = {
       .catch((erro)=> console.log(erro))
     return result;
   },
+  getGenderByName: async (nome_genero) => {
+    const [result] = await connection
+      .query("SELECT * FROM gender WHERE nome_genero=?", [nome_genero])
+      .catch((erro)=> console.log(erro))
+    return result;
+  },
+  getAutorByName: async (nome_autor) => {
+    const [result] = await connection
+      .query("SELECT * FROM autores WHERE nome_autor=?", [nome_autor])
+      .catch((erro)=> console.log(erro))
+    return result;
+  },
 
   getByCfb: async (rm) => {
     const [result] = await connection
@@ -180,6 +192,46 @@ const useModel = {
           codigo, 
           avaliacao, 
           estado
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  registerGender: async (nome_genero) => {  
+
+    if (!nome_genero) {
+      throw new Error('O nome do genero é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO gender (nome_genero) VALUES (?)", [
+          nome_genero
+        ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  registerAutor: async (nome_autor, data_nascimento, image, avaliacao,sobre) => {  
+
+    if (!nome_autor) {
+      throw new Error('O nome é obrigatório');
+    }
+
+    try {
+      const [result] = await connection
+        .query("INSERT INTO autores (nome_autor, data_nascimento, image, avaliacao,sobre) VALUES (?,?,?,?,?)", [
+          nome_autor, 
+          data_nascimento, 
+          image, 
+          avaliacao,
+          sobre
         ]);
 
       return result;

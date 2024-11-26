@@ -108,7 +108,7 @@ const RegisterBooks = ({ navigation }) => {
                         bounces={false}
                         showsVerticalScrollIndicator={false}
                     >
-                        <BackHeader onPress={() => navigation.navigate("HomeTabLibrarian")}
+                        <BackHeader onPress={() => navigation.navigate("AdminLibrarian")}
                             title="Bem Vindo"
                             subtitle="Cadastre um Livro" />
                         <View style={styles.inputContainer}>

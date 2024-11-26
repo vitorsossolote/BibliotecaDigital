@@ -350,6 +350,80 @@ const useController = {
       return res.status(500).json({ msg: "Erro interno do servidor" });
     }
   },
+  registerGender: async (req, res) => {
+    const { 
+      nome_genero
+    } = req.body;
+
+    console.log("Dados recebidos no controller:", {
+      nome_genero
+    });
+
+    if (!nome_genero) {
+      return res.status(400).json({ msg: "O nome do genero é obrigatório" });
+    }
+
+    try {
+      const sqlGenderName = await clientController.getGenderByName(nome_genero);
+
+      if (sqlGenderName.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O código deste livro já está cadastrado no Banco de Dados" });
+      }
+
+
+      const result = await clientController.registerGender(
+        nome_genero
+      );
+      return res.status(201).json({ msg: "Genero cadastrado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao cadastrar genero:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  registerAutor: async (req, res) => {
+    const { 
+      nome_autor, 
+      data_nascimento, 
+      image, 
+      avaliacao,
+      sobre
+    } = req.body;
+
+    console.log("Dados recebidos no controller:", {
+      nome_autor, data_nascimento, image, avaliacao,sobre
+    });
+
+    if (!nome_autor) {
+      return res.status(400).json({ msg: "O nome é obrigatório" });
+    }
+
+    try {
+      const sqlAutorName = await clientController.getAutorByName(nome_autor);
+
+      if (sqlAutorName.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O nome deste autor já está cadastrado no Banco de Dados" });
+      }
+
+
+      const result = await clientController.registerAutor(
+        nome_autor, 
+        data_nascimento, 
+        image, 
+        avaliacao,
+        sobre
+      );
+      return res.status(201).json({ msg: "Autor cadastrado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao cadastrar Autor:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
 }
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {
