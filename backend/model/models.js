@@ -26,19 +26,19 @@ const useModel = {
   getByBookCode: async (codigo) => {
     const [result] = await connection
       .query("SELECT * FROM livros WHERE codigo=?", [codigo])
-      .catch((erro)=> console.log(erro))
+      .catch((erro) => console.log(erro))
     return result;
   },
   getGenderByName: async (nome_genero) => {
     const [result] = await connection
       .query("SELECT * FROM gender WHERE nome_genero=?", [nome_genero])
-      .catch((erro)=> console.log(erro))
+      .catch((erro) => console.log(erro))
     return result;
   },
   getAutorByName: async (nome_autor) => {
     const [result] = await connection
       .query("SELECT * FROM autores WHERE nome_autor=?", [nome_autor])
-      .catch((erro)=> console.log(erro))
+      .catch((erro) => console.log(erro))
     return result;
   },
 
@@ -49,7 +49,7 @@ const useModel = {
     return result;
   },
 
-  registerStudent: async (nome, email, rm, senha) => {  
+  registerStudent: async (nome, email, rm, senha) => {
 
     if (!senha) {
       throw new Error('Senha é obrigatória');
@@ -82,14 +82,14 @@ const useModel = {
       );
 
       if (student.length === 0) {
-        return null; 
+        return null;
       }
 
       const isValid = await bcrypt.compare(senha, student[0].senha);
       if (isValid) {
         return student[0];
       } else {
-        return null; 
+        return null;
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -97,7 +97,7 @@ const useModel = {
     }
   },
 
-  registerLibrarian: async ( nome, email, cfb, senha) => {
+  registerLibrarian: async (nome, email, cfb, senha) => {
 
     if (!senha) {
       throw new Error('Senha é obrigatória');
@@ -148,51 +148,89 @@ const useModel = {
   },
 
   //Buscar livros
-    getAllLivros: async () => {
-      const [result] = await connection
-        .query("SELECT * FROM livros")
-        .catch((erro) => console.log(erro));
-      return result;
-    },
+  getAllLivros: async () => {
+    const [result] = await connection
+      .query("SELECT * FROM livros")
+      .catch((erro) => console.log(erro));
+    return result;
+  },
 
-    //Buscar livros por ID
-    getLivroById: async (id) => {
-      const [result] = await connection
-        .query("SELECT * FROM livros WHERE id =?", [id])
-        .catch((erro) => console.log(erro));
-      return result;
-    },
+  //Buscar livros por ID
+  getLivroById: async (id) => {
+    const [result] = await connection
+      .query("SELECT * FROM livros WHERE id =?", [id])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
 
-    searchLivros: async (searchTerm) => {
-      const [result] = await connection
-        .query("SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ?", [`%${searchTerm}%`, `%${searchTerm}%`])
-        .catch((erro) => console.log(erro));
-      return result;
-    },
-  
-    
-    // Outros métodos para manipulação de livros podem ser adicionados aqui
-  
-  registerBooks: async (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) => {  
+  searchLivros: async (searchTerm) => {
+    const [result] = await connection
+      .query("SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ?", [`%${searchTerm}%`, `%${searchTerm}%`])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
 
+  // Outros métodos para manipulação de livros podem ser adicionados aqui
+
+  registerBooks: async (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) => {
     if (!codigo) {
       throw new Error('O código é obrigatório');
     }
 
+
     try {
-      const [result] = await connection
-        .query("INSERT INTO livros (image, titulo, descricao, autor, editora, genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)", [
-          image, 
-          titulo, 
-          descricao, 
-          autor, 
-          editora, 
-          genero, 
-          quantidade, 
-          codigo, 
-          avaliacao, 
-          estado
-        ]);
+
+      // Primeiro, verifica se o autor existe
+      const [autores] = await connection.query(
+        "SELECT id_autor FROM autores WHERE nome_autor = ?",
+        [nome_autor]
+      );
+
+      // Se o autor não existir, cria o autor
+      if (autores.length === 0) {
+        const [novoAutor] = await connection.query(
+          "INSERT INTO autores (nome_autor) VALUES (?)",
+          [nome_autor]
+        );
+        autorId = novoAutor.insertId;
+      } else {
+        autorId = autores[0].id_autor;
+      }
+
+      // Verifica se o gênero existe
+      const [generos] = await connection.query(
+        "SELECT nome_genero FROM gender WHERE nome_genero = ?",
+        [nome_genero]
+      );
+
+      // Se o gênero não existir, cadastra o genero
+      if (generos.length === 0) {
+        const [novoGender] = await connection.query(
+          "INSERT INTO gender (nome_genero) VALUES (?)",
+          [nome_genero]
+        );
+        genderId = novoGender.insertId;
+      } else {
+        genderId = gender[0].id_genero;
+      }
+
+      // Insere o livro
+      const [result] = await connection.query(
+        "INSERT INTO livros (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [
+          image,
+          titulo,
+          descricao,
+          nome_autor,
+          editora,
+          nome_genero,
+          quantidade,
+          codigo,
+          avaliacao,
+          estado = "D"
+        ]
+      );
+
 
       return result;
     } catch (error) {
@@ -200,7 +238,7 @@ const useModel = {
     }
   },
 
-  registerGender: async (nome_genero) => {  
+  registerGender: async (nome_genero) => {
 
     if (!nome_genero) {
       throw new Error('O nome do genero é obrigatório');
@@ -218,7 +256,7 @@ const useModel = {
     }
   },
 
-  registerAutor: async (nome_autor, data_nascimento, image, avaliacao,sobre) => {  
+  registerAutor: async (nome_autor, data_nascimento, image, avaliacao, sobre) => {
 
     if (!nome_autor) {
       throw new Error('O nome é obrigatório');
@@ -227,9 +265,9 @@ const useModel = {
     try {
       const [result] = await connection
         .query("INSERT INTO autores (nome_autor, data_nascimento, image, avaliacao,sobre) VALUES (?,?,?,?,?)", [
-          nome_autor, 
-          data_nascimento, 
-          image, 
+          nome_autor,
+          data_nascimento,
+          image,
           avaliacao,
           sobre
         ]);
@@ -261,22 +299,74 @@ const useModel = {
     }
 
     try {
-      const [result] = await connection
-        .query(
-          "UPDATE livros SET image=?, titulo=?, descricao=?, autor=?, editora=?, genero=?, quantidade=?, avaliacao=?, estado=? WHERE id=?",
-          [
-            updateData.image,
-            updateData.titulo,
-            updateData.descricao,
-            updateData.autor,
-            updateData.editora,
-            updateData.genero,
-            updateData.quantidade,
-            updateData.avaliacao,
-            updateData.estado,
-            id
-          ]
+      // Verifica e atualiza o autor se necessário
+      let autorId;
+      const [autoresExistentes] = await connection.query(
+        "SELECT id_autor FROM autores WHERE nome_autor = ?",
+        [updateData.nome_autor]
+      );
+
+      if (autoresExistentes.length === 0) {
+        // Se o autor não existe, busca o autor original
+        const [autorOriginal] = await connection.query(
+          "SELECT nome_autor FROM autores WHERE nome_autor = (SELECT nome_autor FROM livros WHERE id = ?)",
+          [id]
         );
+
+        // Atualiza o nome do autor existente
+        await connection.query(
+          "UPDATE autores SET nome_autor = ? WHERE nome_autor = ?",
+          [updateData.nome_autor, autorOriginal[0].nome_autor]
+        );
+      }
+
+      // Verifica e atualiza o gênero se necessário
+      let genderId;
+      const [generosExistentes] = await connection.query(
+        "SELECT id_genero FROM gender WHERE nome_genero = ?",
+        [updateData.nome_genero]
+      );
+
+      if (generosExistentes.length === 0) {
+        // Se o gênero não existe, busca o gênero original
+        const [generoOriginal] = await connection.query(
+          "SELECT nome_genero FROM gender WHERE nome_genero = (SELECT nome_genero FROM livros WHERE id = ?)",
+          [id]
+        );
+
+        // Atualiza o nome do gênero existente
+        await connection.query(
+          "UPDATE gender SET nome_genero = ? WHERE nome_genero = ?",
+          [updateData.nome_genero, generoOriginal[0].nome_genero]
+        );
+      }
+
+      // Atualiza o livro com os novos dados
+      const [result] = await connection.query(
+        "UPDATE livros SET " +
+        "image=?, " +
+        "titulo=?, " +
+        "descricao=?, " +
+        "nome_autor=?, " +
+        "editora=?, " +
+        "nome_genero=?, " +
+        "quantidade=?, " +
+        "avaliacao=?, " +
+        "estado=? " +
+        "WHERE id=?",
+        [
+          updateData.image,
+          updateData.titulo,
+          updateData.descricao,
+          updateData.nome_autor,
+          updateData.editora,
+          updateData.nome_genero,
+          updateData.quantidade,
+          updateData.avaliacao,
+          updateData.estado = "D",
+          id
+        ]
+      );
 
       return result;
     } catch (error) {
@@ -372,8 +462,8 @@ const useModel = {
     try {
       const [result] = await connection.query(
         `SELECT emprestimo_id FROM emprestimos 
-         WHERE data_devolucao < CURDATE() 
-         AND estado = 'ativo'`
+                                                WHERE data_devolucao < CURDATE() 
+                                                AND estado = 'ativo'`
       );
       return result;
     } catch (error) {
@@ -382,18 +472,18 @@ const useModel = {
     }
   },
 
-updateEmprestimoEstado: async (emprestimoId, novoEstado) => {
-  try {
-    const [result] = await connection.query(
-      "UPDATE emprestimos SET estado = ? WHERE emprestimo_id = ?",
-      [novoEstado, emprestimoId]
-    );
-    return result;
-  } catch (error) {
-    console.error(`Erro ao atualizar estado do empréstimo ${emprestimoId}:`, error);
-    throw error;
-  }
-},
+  updateEmprestimoEstado: async (emprestimoId, novoEstado) => {
+    try {
+      const [result] = await connection.query(
+        "UPDATE emprestimos SET estado = ? WHERE emprestimo_id = ?",
+        [novoEstado, emprestimoId]
+      );
+      return result;
+    } catch (error) {
+      console.error(`Erro ao atualizar estado do empréstimo ${emprestimoId}:`, error);
+      throw error;
+    }
+  },
 
   // registerMensagem: async (id, nome, numero, email, mensagem) =>{
   //     const [result] = await connection.query("INSERT INTO contato values(?,?,?,?,?)", [id, nome, numero, email, mensagem])

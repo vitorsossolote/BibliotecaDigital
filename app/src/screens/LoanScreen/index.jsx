@@ -152,11 +152,6 @@ export default function LoanScreen({ navigation }) {
         );
     };
 
-
-
-
-
-
     //Open Data BottomSheet
     const bottomSheetrefData = useRef(null);
     const snapPoints = useMemo(() => ["30%", "50%", "80%", "95%"], [])
@@ -166,8 +161,23 @@ export default function LoanScreen({ navigation }) {
     const printOptionLabel = (item) => {
         console.log(item)
     }
-
-
+    
+    const press = () => {
+        console.log('Referência do Bottom Sheet:', bottomSheetrefData.current);
+        console.log("teste");
+        try {
+            if (bottomSheetrefData.current) {
+                console.log('Tentando expandir');
+                // Use 0 em vez de 1, já que seus snapPoints têm 3 pontos (0, 1, 2)
+                bottomSheetrefData.current.snapToIndex(0); // Abre no primeiro índice (30%)
+            } else {
+                console.error('Referência do Bottom Sheet é nula');
+            }
+        } catch (error) {
+            console.error('Erro ao abrir Bottom Sheet:', error);
+        }
+    }
+    
     //Open Details BottomSheet
     const bottomSheetrefDetails = useRef(null);
     const handleCloseActionDetails = () => bottomSheetrefDetails.current?.close()
@@ -182,7 +192,7 @@ export default function LoanScreen({ navigation }) {
         <SafeAreaView style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
             <View style={styles.headerContainer}>
-                <Pressable onPress={() => navigation.navigate("Home")}>
+                <Pressable onPress={press}>
                     <MoveLeft color={"#000"} size={30} />
                 </Pressable>
                 <Text style={styles.headerTitle}>Confirmar Empréstimo</Text>

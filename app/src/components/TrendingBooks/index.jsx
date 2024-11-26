@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable, PressableProps, ButtonProps } from 'react-native';
 import {
     Image,
@@ -6,34 +6,52 @@ import {
 import book1 from "../../../assets/book2.png"
 import book2 from "../../../assets/book3.png"
 import book3 from "../../../assets/book4.png"
-import { Data } from '../../data/data';
+import { useAuth } from "../../contexts/AuthContext";
 
 type Props = {
-    onPress: (bookData: any) => void; // Modificado para receber os dados do livro
+    onPress: (livro: any) => void; 
 }
 
-const TrendingBooks = ({ onPress }: Props) => {
-    const getStatusColor = (status: string) => {
-        return status.toLowerCase() === 'disponivel' ? '#2ecc71' : '#ee2d32';
+export default function TrendingBooks ({ onPress }: Props) {
+    const { livros } = useAuth();
+
+    // Função para obter os 10 livros mais bem avaliados
+    const getTopRatedBooks = useCallback(() => {
+        return [...livros]
+            .sort((a, b) => b.avaliacao - a.avaliacao)
+            .slice(0, 10);
+    }, [livros]);
+
+    const topRatedBooks = getTopRatedBooks();
+
+    const getStatusColor = (estado: string) => {
+        return estado.toLowerCase() === 'd' ? '#2ecc71' : '#ee2d32';
+    };
+
+    const truncateTitle = (title) => {
+        if (title.length > 11) {
+            return title.substring(0, 17) + '...';
+        }
+        return title;
     };
 
     const renderItem = ({ item }) => (
         <View style={styles.card}>
             <Pressable onPress={() => onPress(item)}>
                 <View style={styles.imageContainer}>
-                    <Image source={item.image} alt={item.name} style={styles.image} />
+                    <Image source={item.image} alt={item.titulo} style={styles.image} />
                 </View>
             </Pressable>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={[styles.status, { color: getStatusColor(item.status) }]}>
-                {item.status}
+            <Text style={styles.title}>{truncateTitle(item.titulo || "Sem título")}</Text>
+            <Text style={[styles.status, { color: getStatusColor(item.estado) }]}>
+                {item.estado}{item.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
             </Text>
         </View>
     );
 
     return (
         <FlatList
-            data={Data}
+            data={topRatedBooks}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             horizontal
@@ -73,5 +91,3 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 });
-
-export default TrendingBooks;
