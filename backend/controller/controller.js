@@ -298,7 +298,7 @@ const useController = {
   //     const { id, nome, numero, email, mensagem } = req.body;
   //Criar novo livro
  
-registerBook: async (req, res) => {
+  registerBook: async (req, res) => {
     const { 
       image, 
       titulo, 

@@ -218,7 +218,7 @@ const useModel = {
     
         // Insere o livro com os IDs de autor e gênero
         const [result] = await connection.query(
-          "INSERT INTO livros (image, titulo, descricao, autor_id, genero_id, editora, quantidade, codigo, avaliacao, estado, nome_autor, nome_genero) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
+          "INSERT INTO livros (image, titulo, descricao, id_autor, id_genero, editora, quantidade, codigo, avaliacao, estado, nome_autor, nome_genero) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
           [
             image, 
             titulo, 
