@@ -10,7 +10,7 @@ import { AirbnbRating } from "react-native-ratings"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 //Componentes Utilizados
 import { useAuth } from "../../contexts/AuthContext"
-import { MenuProfile } from "../../components/MenuProfile"
+import MenuProfile from "../../components/MenuProfile"
 import Divider from "../../components/Divider"
 //Imagens Utilizadas
 import profile from "../../../assets/profile.png"
@@ -19,6 +19,8 @@ import chat from "../../../assets/Chat.png"
 import heart from "../../../assets/Heart.png"
 import path from "../../../assets/path4542.png"
 import profileIcon from "../../../assets/ProfileIcon.png"
+//Icones
+import { BookPlus, UserRoundPen, BookUser, FolderKanban, FileUser, UserPlus, User,TrendingUp,Heart, ScrollText, MessageCircleMore} from "lucide-react-native"
 
 
 //Inicio do Código
@@ -56,31 +58,31 @@ export default function Profile({ navigation }) {
     ? [
         {
             onPress: () => navigation.navigate("UserProfileScreen"),
-            image: profileIcon,
+            icon: User,
             alt: "Minha Conta",
             title: "Minha Conta"
         },
         {
             onPress: () => console.log("Mais Lidos"),
-            image: path,
+            icon: TrendingUp,
             alt: "Mais Lidos",
             title: "Mais Lidos"
         },
         {
             onPress: () => navigation.navigate("Favorites"),
-            image: heart,
+            icon: Heart,
             alt: "Seus Favoritos",
             title: "Seus Favoritos"
         },
         {
             onPress: () => navigation.navigate("LoanHistory"),
-            image: document,
+            icon: ScrollText,
             alt: "Histórico de Empréstimo",
             title: "Histórico de Empréstimo"
         },
         {
             onPress: () => console.log("Clicou em suporte"),
-            image: chat,
+            icon: MessageCircleMore,
             alt: "Suporte",
             title: "Suporte"
         }
@@ -89,37 +91,36 @@ export default function Profile({ navigation }) {
     ? [
         {
             onPress: () => navigation.navigate("RegisterBooks"),
-            image: chat,
-            alt: "Adicionar Livros",
+            icon: BookPlus,
             title: "Adicionar Livros"
         },
         {
             onPress: () => navigation.navigate("RegisterAutor"),
-            image: chat,
+            icon: UserRoundPen,
             alt: "Adicionar Autores",
             title: "Adicionar Autores"
         },
         {
             onPress: () => navigation.navigate("RegisterGender"),
-            image: chat,
+            icon: BookUser,
             alt: "Adicionar Generos",
             title: "Adicionar Generos"
         },
         {
             onPress: () => navigation.navigate("ManageLoans"),
-            image: chat,
+            icon: FolderKanban,
             alt: "Gerenciar Empréstimos",
             title: "Gerenciar Empréstimos"
         },
         {
             onPress: () => navigation.navigate("StudentManagement"),
-            image: chat,
+            icon: FileUser,
             alt: "Gerenciar Alunos",
             title: "Gerenciar Alunos"
         },
         {
             onPress: () => navigation.navigate("CreateLibrarian"),
-            image: chat,
+            icon: UserPlus,
             alt: "Suporte",
             title: "Criar Bibliotecário"
         }
@@ -166,7 +167,7 @@ export default function Profile({ navigation }) {
                 <MenuProfile
                     key={index}
                     onPress={item.onPress}
-                    image={item.image}
+                    icon={item.icon}
                     alt={item.alt}
                     title={item.title}
                 />

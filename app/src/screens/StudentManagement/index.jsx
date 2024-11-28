@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { 
   View, 
   Text, 
@@ -7,14 +7,36 @@ import {
   TouchableOpacity, 
   Alert, 
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  SafeAreaView
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
 
-// Componente para Item da Lista de Alunos
-const StudentItem = ({ student, onEdit, onDelete }) => {
+const StudentItem = ({ student }) => {
+  const navigation = useNavigation();
+  const { selectUserForEdit, deleteStudent } = useAuth();
+
+  const handleEditStudent = () => {
+    selectUserForEdit(student);
+    navigation.navigate('EditStudent');
+  };
+
+  const handleDeleteStudent = () => {
+    Alert.alert(
+      'Confirmar Exclusão',
+      `Tem certeza que deseja excluir o aluno ${student.nome}?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Excluir',
+          style: 'destructive',
+          onPress: () => deleteStudent(student.rm)
+        }
+      ]
+    );
+  };
+
   return (
     <View style={styles.studentItem}>
       <View style={styles.studentInfo}>
@@ -24,13 +46,13 @@ const StudentItem = ({ student, onEdit, onDelete }) => {
       <View style={styles.studentActions}>
         <TouchableOpacity 
           style={[styles.actionButton, styles.editButton]} 
-          onPress={() => onEdit(student)}
+          onPress={handleEditStudent}
         >
           <Text style={styles.actionButtonText}>Editar</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.actionButton, styles.deleteButton]} 
-          onPress={() => onDelete(student)}
+          onPress={handleDeleteStudent}
         >
           <Text style={styles.actionButtonText}>Excluir</Text>
         </TouchableOpacity>
@@ -39,64 +61,9 @@ const StudentItem = ({ student, onEdit, onDelete }) => {
   );
 };
 
-// Tela Principal de Gerenciamento de Alunos
 const StudentManagementScreen = () => {
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { students, loading, error, fetchStudents } = useAuth();
   const navigation = useNavigation();
-
-  // Função para buscar alunos da API
-  const fetchStudents = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get('http://10.0.2.2:8085/api/listAllStudents');
-      setStudents(response.data);
-      setError(null);
-    } catch (err) {
-      console.error('Erro ao buscar alunos:', err);
-      setError('Não foi possível carregar os alunos');
-      Alert.alert('Erro', 'Não foi possível carregar os alunos');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Carregar alunos quando a tela for renderizada
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
-  const handleEditStudent = (student) => {
-    navigation.navigate('EditStudent', { student });
-  };
-
-  const handleDeleteStudent = (student) => {
-    Alert.alert(
-      'Confirmar Exclusão',
-      `Tem certeza que deseja excluir o aluno ${student.nome}?`,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel'
-        },
-        {
-          text: 'Excluir',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              // Adicione aqui a chamada à API para excluir o aluno
-              await axios.delete(`http://10.0.2.2:8085/api/deleteStudent/${student.rm}`);
-              setStudents(students.filter(s => s.id !== student.id));
-            } catch (err) {
-              console.error('Erro ao excluir aluno:', err);
-              Alert.alert('Erro', 'Não foi possível excluir o aluno');
-            }
-          }
-        }
-      ]
-    );
-  };
 
   // Renderização condicional de carregamento
   if (loading) {
@@ -126,13 +93,7 @@ const StudentManagementScreen = () => {
       <FlatList
         data={students}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <StudentItem 
-            student={item} 
-            onEdit={handleEditStudent}
-            onDelete={handleDeleteStudent}
-          />
-        )}
+        renderItem={({ item }) => <StudentItem student={item} />}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>Nenhum aluno encontrado</Text>
@@ -212,7 +173,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   addButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#ee2d32',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',

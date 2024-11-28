@@ -47,7 +47,7 @@ function signOut() {
 }
 
 export default function Home({ navigation }) {
-    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, livros, librarian, isLibrarianAuthenticated, buscarLivros } = useAuth();
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, selectBookForLoan ,livros, librarian, isLibrarianAuthenticated, buscarLivros } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
     const [selectedBook, setSelectedBook] = useState(null);
@@ -60,6 +60,24 @@ export default function Home({ navigation }) {
         const isBookFavorited = checkFavoriteStatus(livros.id);
         setIsFavorited(isBookFavorited);
         bottomSheetref.current?.expand();
+    };
+
+    const handleContinueToLoan = () => {
+        // Verifica se o usuário está logado
+        if (!user) {
+            ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
+            return;
+        }
+
+        // Verifica se o livro está disponível
+        if (selectedBook.estado.toLowerCase() !== 'd') {
+            ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
+            return;
+        }
+
+        // Seleciona o livro para empréstimo no contexto
+        selectBookForLoan(selectedBook);
+
     };
 
     const handleFavoritePress = () => {
@@ -215,7 +233,7 @@ export default function Home({ navigation }) {
                                             isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
                                             isFocusVisible={false}
                                             style={styles.buttonPrincipal}
-                                            onPress={() => navigation.navigate("EditBooks")}
+                                            onPress={handleContinueToLoan}
                                         >
                                             <ButtonText style={styles.buttonPrincipalText}>
                                                 Continuar com Empréstimo

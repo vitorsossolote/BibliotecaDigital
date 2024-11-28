@@ -127,7 +127,7 @@ const CreateLibrarianAccount = ({ navigation }) => {
 
     return (
         <GluestackUIProvider config={config}>
-            <SafeAreaView style={{backgroundColor:"#fff"}}>
+            <SafeAreaView style={{backgroundColor:"#fff", flex:1,}}>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "android" ? "padding" : "height"}
                     style={styles.keyboardAvoidContainer}

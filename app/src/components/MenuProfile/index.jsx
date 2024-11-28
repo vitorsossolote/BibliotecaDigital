@@ -1,42 +1,50 @@
 import React from "react";
-import {
-    GluestackUIProvider,
-    SafeAreaView,
-    ScrollView,
-    Image
-} from "@gluestack-ui/themed";
-import { config } from "@gluestack-ui/config";
-import { StyleSheet, Text, View, Pressable,} from "react-native"
+import PropTypes from 'prop-types';
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { ChevronRight } from "lucide-react-native";
-//Componentes Utilizados
 
-//Imagens Utilizadas
-
-//Inicio Do Codigo
-
-
-
-export const MenuProfile = ({ image, alt, onPress, title}) => {
+const MenuProfile = ({ 
+    icon: Icon = ChevronRight, 
+    iconColor = "#ee2d32", 
+    onPress, 
+    title 
+}) => {
     return (
         <View style={styles.menuContainer}>
-                <Pressable onPress={onPress}>
-                    <View style={styles.menuContent}>
-                        <View style={styles.menuOptionContainer}>
-                            <View style={styles.iconContainer}>
-                                <Image source={image} alt={alt} style={{ width: 20, height: 20, }} resizeMode="contain" />
-                            </View>
-                            <View style={styles.menuTitleContainer}>
-                                <Text style={styles.menuText}>{title}</Text>
-                            </View>
+            <Pressable onPress={onPress}>
+                <View style={styles.menuContent}>
+                    <View style={styles.menuOptionContainer}>
+                        <View style={styles.iconContainer}>
+                            <Icon size={23} color={iconColor} />
                         </View>
-                        <View>
-                            <ChevronRight color={"#a1a1a1"} />
+                        <View style={styles.menuTitleContainer}>
+                            <Text style={styles.menuText}>{title}</Text>
                         </View>
                     </View>
-                </Pressable>
-            </View>
+                    <View>
+                        <ChevronRight color={"#a1a1a1"} />
+                    </View>
+                </View>
+            </Pressable>
+        </View>
     );
 };
+
+MenuProfile.propTypes = {
+    icon: PropTypes.oneOfType([
+        PropTypes.elementType, 
+        PropTypes.func
+    ]),
+    iconColor: PropTypes.string,
+    onPress: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired
+};
+
+MenuProfile.defaultProps = {
+    icon: ChevronRight,
+    iconColor: "#ee2d32"
+};
+
 const styles = StyleSheet.create({
     menuContainer: {
         flexDirection: "column",
@@ -56,15 +64,13 @@ const styles = StyleSheet.create({
         gap: 30
     },
     iconContainer: {
-        backgroundColor: "#EBF2EF",
+        backgroundColor: "#fafafa",
         borderRadius: 30,
         width: 40,
         height: 40,
         justifyContent: "center",
         alignItems: "center",
-    },
-    icon: {
-
+        elevation:1
     },
     menuTitleContainer: {
         right: 10,
@@ -75,3 +81,5 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
 });
+
+export default MenuProfile;

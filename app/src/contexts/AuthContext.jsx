@@ -17,6 +17,9 @@ export const AuthProvider = ({ children }) => {
     const [autor, setAutor] = useState([]);
     const [livroSelecionado, setLivroSelecionado] = useState(null);
     const [error, setError] = useState(null);
+    const [students, setStudents] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedLoanBooks, setSelectedLoanBooks] = useState([]);
 
     useEffect(() => {
         Promise.all([
@@ -30,6 +33,79 @@ export const AuthProvider = ({ children }) => {
         });
     }, []);
 
+    const selectBookForLoan = (book) => {
+        // Verificar se o livro já está na lista
+        if (selectedLoanBooks.some(selectedBook => selectedBook.id === book.id)) {
+            return false; // Livro já selecionado
+        }
+
+        // Verificar se já tem 2 livros
+        if (selectedLoanBooks.length < 2) {
+            setSelectedLoanBooks([...selectedLoanBooks, book]);
+            return true;
+        } else {
+            // Limite de 2 livros atingido
+            return false;
+        }
+    };
+    const clearSelectedLoanBooks = () => {
+        setSelectedLoanBooks([]);
+    };
+
+    const removeSelectedLoanBook = (bookId) => {
+        setSelectedLoanBooks(selectedLoanBooks.filter(book => book.id !== bookId));
+    };
+
+
+    const fetchStudents = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get('http://10.0.2.2:8085/api/listAllStudents');
+            setStudents(response.data);
+            setError(null);
+        } catch (err) {
+            console.error('Erro ao buscar alunos:', err);
+            setError('Não foi possível carregar os alunos');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Select a user for editing
+    const selectUserForEdit = (user) => {
+        setSelectedUser(user);
+    };
+
+    // Update student
+    const updateStudent = async (studentData) => {
+        try {
+            await axios.put(`http://10.0.2.2:8085/api/updateStudent/${studentData.rm}`, studentData);
+            // Update local state
+            setStudents(students.map(student =>
+                student.rm === studentData.rm ? { ...student, ...studentData } : student
+            ));
+        } catch (err) {
+            console.error('Erro ao atualizar aluno:', err);
+            setError('Não foi possível atualizar o aluno');
+        }
+    };
+
+    // Delete student
+    const deleteStudent = async (rm) => {
+        try {
+            await axios.delete(`http://10.0.2.2:8085/api/deleteStudent/${rm}`);
+            setStudents(students.filter(student => student.rm !== rm));
+        } catch (err) {
+            console.error('Erro ao excluir aluno:', err);
+            setError('Não foi possível excluir o aluno');
+        }
+    };
+
+    // Fetch students on initial load
+    useEffect(() => {
+        fetchStudents();
+    }, []);
+
     const buscarLivros = async () => {
         setLoading(true);
         try {
@@ -40,8 +116,8 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             console.error('Erro completo:', err); // Debug
             setError(
-                err.response?.data?.msg || 
-                err.message || 
+                err.response?.data?.msg ||
+                err.message ||
                 'Erro ao buscar livros'
             );
         } finally {
@@ -58,8 +134,8 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             console.error('Erro completo:', err); // Debug
             setError(
-                err.response?.data?.msg || 
-                err.message || 
+                err.response?.data?.msg ||
+                err.message ||
                 'Erro ao buscar autores'
             );
         } finally {
@@ -85,10 +161,10 @@ export const AuthProvider = ({ children }) => {
                 await buscarLivros();
                 return;
             }
-    
+
             const response = await api.get(`/searchLivros/${searchTerm}`);
             console.log('Resultado da busca:', response.data);
-            
+
             if (response.data && Array.isArray(response.data)) {
                 setLivros(response.data);
                 setError(null);
@@ -99,8 +175,8 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             console.error('Erro na busca:', err);
             setError(
-                err.response?.data?.msg || 
-                err.message || 
+                err.response?.data?.msg ||
+                err.message ||
                 'Erro ao buscar livros'
             );
             setLivros([]);
@@ -306,6 +382,12 @@ export const AuthProvider = ({ children }) => {
                 checkFavoriteStatus,
                 livros,
                 livroSelecionado,
+                students,
+                selectedUser,
+                fetchStudents,
+                selectUserForEdit,
+                updateStudent,
+                deleteStudent,
                 // loading,
                 error,
                 searchLivros,
@@ -313,6 +395,10 @@ export const AuthProvider = ({ children }) => {
                 buscarLivroPorId,
                 buscarAutor,
                 autor,
+                selectedLoanBooks,
+                selectBookForLoan,
+                clearSelectedLoanBooks,
+                removeSelectedLoanBook,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,
