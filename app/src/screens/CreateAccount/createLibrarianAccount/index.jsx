@@ -52,7 +52,7 @@ const CreateLibrarianAccount = ({ navigation }) => {
         try {
             await axios.post('http://10.0.2.2:8085/api/createLibrarian', data);
             Alert.alert('Cadastro realizado com sucesso');
-            navigation.navigate('LoginLibrarian')
+            navigation.goBack()
         } catch (error) {
             if (error) {
                 console.log(error)
@@ -136,7 +136,7 @@ const CreateLibrarianAccount = ({ navigation }) => {
                         contentContainerStyle={styles.scrollContainer}
                         showsVerticalScrollIndicator={false}
                     >
-                        <BackHeader onPress={() => navigation.navigate('LibrarianScreen')}
+                        <BackHeader onPress={() => navigation.goBack()}
                             title="Bem Vindo"
                             subtitle="Crie sua Conta"
                             margin={10} />
@@ -223,28 +223,6 @@ const CreateLibrarianAccount = ({ navigation }) => {
                                 </Button>
                             </View>
                         </MotiView>
-                        <View style={styles.EnterAccountContainer}>
-                            <MotiView
-                                from={{ translateX: -230 }}
-                                animate={{ translateX: 0 }}
-                                transition={{ duration: 1000, delay: 1500, type: "timing" }}>
-                                <Text style={styles.textAccount}>Já tem uma conta?</Text>
-                            </MotiView>
-                            <MotiView
-                                from={{ translateX: 200 }}
-                                animate={{ translateX: 0 }}
-                                transition={{ duration: 1000, delay: 1500, type: "timing" }}>
-                                <Button
-                                    onPress={() => navigation.navigate('LoginLibrarian')}
-                                    size="md"
-                                    variant="link"
-                                    action="primary"
-                                    style={styles.linkButton}
-                                >
-                                    <ButtonText style={styles.textButton}>Entre agora</ButtonText>
-                                </Button>
-                            </MotiView>
-                        </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>

@@ -2,7 +2,7 @@
 
 //Bibliotecas Utilizadas
 import React, { useRef, useMemo } from "react"
-import { Center, View, Text, Image, Button, ButtonText } from "@gluestack-ui/themed"
+import { Center, View, Text, Image, Button, ButtonText, ScrollView } from "@gluestack-ui/themed"
 import { StyleSheet, SafeAreaView, Pressable, Alert } from "react-native"
 import { ChevronRight } from "lucide-react-native"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
@@ -88,16 +88,22 @@ export default function Profile({ navigation }) {
     : librarian 
     ? [
         {
-            onPress: () => navigation.navigate("LibrarianProfileScreen"),
+            onPress: () => navigation.navigate("RegisterBooks"),
             image: chat,
-            alt: "Perfil do Bibliotecário",
-            title: "Meu Perfil"
+            alt: "Adicionar Livros",
+            title: "Adicionar Livros"
         },
         {
-            onPress: () => navigation.navigate("ManageBooks"),
+            onPress: () => navigation.navigate("RegisterAutor"),
             image: chat,
-            alt: "Gerenciar Livros",
-            title: "Gerenciar Livros"
+            alt: "Adicionar Autores",
+            title: "Adicionar Autores"
+        },
+        {
+            onPress: () => navigation.navigate("RegisterGender"),
+            image: chat,
+            alt: "Adicionar Generos",
+            title: "Adicionar Generos"
         },
         {
             onPress: () => navigation.navigate("ManageLoans"),
@@ -106,22 +112,23 @@ export default function Profile({ navigation }) {
             title: "Gerenciar Empréstimos"
         },
         {
-            onPress: () => navigation.navigate("UserManagement"),
+            onPress: () => navigation.navigate("StudentManagement"),
             image: chat,
-            alt: "Gerenciar Usuários",
-            title: "Gerenciar Usuários"
+            alt: "Gerenciar Alunos",
+            title: "Gerenciar Alunos"
         },
         {
-            onPress: () => console.log("Suporte Bibliotecário"),
+            onPress: () => navigation.navigate("CreateLibrarian"),
             image: chat,
             alt: "Suporte",
-            title: "Suporte"
+            title: "Criar Bibliotecário"
         }
     ]
     : [];
 
     return (
         <SafeAreaView style={styles.container}>
+            <ScrollView>
             <View style={styles.headerContainer}>
                 <Center>
                     <Text style={styles.headerText}>Perfil</Text>
@@ -164,6 +171,7 @@ export default function Profile({ navigation }) {
                     title={item.title}
                 />
             ))}
+            </ScrollView>
             {/* Inicio do BottomSheet */}
             <BottomSheet
                 ref={bottomSheetref}

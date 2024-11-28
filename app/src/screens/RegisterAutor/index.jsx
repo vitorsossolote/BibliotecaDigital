@@ -100,7 +100,7 @@ const RegisterAutor = ({ navigation }) => {
                         bounces={false}
                         showsVerticalScrollIndicator={false}
                     >
-                        <BackHeader onPress={() => navigation.navigate("AdminLibrarian")}
+                        <BackHeader onPress={() => navigation.goBack()}
                             title="Bem Vindo"
                             subtitle="Cadastre um Autor" />
                         <View style={styles.inputContainer}>

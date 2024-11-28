@@ -1,76 +1,86 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     GluestackUIProvider,
     Image,
     SafeAreaView,
     ScrollView,
+    Input,
+    InputSlot,
+    InputIcon,
+    InputField
 } from "@gluestack-ui/themed";
 import { config } from "@gluestack-ui/config";
-import { StyleSheet, Text, View, } from "react-native"
+import { StyleSheet, Text, View,FlatList,Pressable } from "react-native"
 import { MoveLeft, Search } from 'lucide-react-native'
+import { useAuth } from '../../contexts/AuthContext';
 //Componentes Utilizados
 import MainHeader from "../../components/MainHeader";
 //Imagens Utilizadas
 import authorImage from "../../../assets/autor1.png";
+import book from "../../../assets/book.png"
 //Inicio Do Codigo
 
 export default function SearchAuthorScreen({ navigation }) {
+    const [searchText, setSearchText] = useState('');
+    const { autor } = useAuth();
+    const [list, setList] = useState(autor);
+    useEffect(() => {
+        if (searchText === '') {
+            setList(autor);
+        } else {
+            setList(
+                autor.filter(
+                    (item) =>
+                        item.nome_autor.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+                )
+            );
+        }
+    }, [searchText]);
+    const RenderAutorItem = ({ data }) => (
+        <Pressable 
+            onPress={() => navigation.navigate("AuthorsScreen", { author: data })}
+            style={styles.authorsSection}
+        >
+            <View style={styles.authorsContainer}>
+                <View styles={styles.authorsImageContainer}>
+                    <Image style={styles.authorsImage} source={data.image ? { uri: data.image } : book} />
+                </View>
+                <View style={styles.authorTextContainer}>
+                    <Text style={styles.authorsTitle}>{data.nome_autor}</Text>
+                    <Text style={styles.authorsDesc}>{data.sobre}</Text>
+                </View>
+            </View>
+        </Pressable>
+    );
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.headerContainer}>
-                    <MainHeader title="Autores" icon1={MoveLeft} icon2={Search} onPress={() => navigation.navigate("Home")} onPress2={() => navigation.navigate("SearchScreen")}/>
+                    <MainHeader title="Autores" icon1={MoveLeft} onPress={() => navigation.navigate("Home")} onPress2={() => navigation.navigate("SearchScreen")} />
                 </View>
                 <View style={styles.contentContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.title}>Autores</Text>
                         <Text style={styles.subtitle}>Checar autores</Text>
                     </View>
-                    <View style={styles.genderSection}>
-                        <ScrollView horizontal={true} style={styles.genderContainer} showsHorizontalScrollIndicator={false}>
-                            <View style={{ flexDirection: "row", gap: 15 }}>
-                                <View style={styles.selectedGenderContainer}>
-                                    <Text style={styles.selectedGenderText}>Todos</Text>
-                                    <View style={{ height: 3, backgroundColor: "#ee2d32", width: 30 }} />
-                                </View>
-                                <View style={styles.genderTextContainer}>
-                                    <Text style={styles.unselectedGenderText}>Ação</Text>
-                                </View>
-                                <View style={styles.genderTextContainer}>
-                                    <Text style={styles.unselectedGenderText}>Terror</Text>
-                                </View>
-                                <View style={styles.genderTextContainer}>
-                                    <Text style={styles.unselectedGenderText}>Suspense</Text>
-                                </View>
-                                <View style={styles.genderTextContainer}>
-                                    <Text style={styles.unselectedGenderText}>Romance</Text>
-                                </View>
-                                <View style={styles.genderTextContainer}>
-                                    <Text style={styles.unselectedGenderText}>Ficção</Text>
-                                </View>
-                            </View>
-                        </ScrollView>
+                    <View>
+                        <Input style={styles.searchbarContainer}>
+                            <InputSlot style={styles.inputSlot}>
+                                <InputIcon as={Search} size={'xl'} />
+                            </InputSlot>
+                            <InputField
+                                placeholder="Pesquisar..."
+                                style={styles.searchText}
+                                value={searchText}
+                                onChangeText={(t) => setSearchText(t)}
+                            />
+                        </Input>
                     </View>
-                    <View style={styles.authorsSection}>
-                        <View style={styles.authorsContainer}>
-                            <View styles={styles.authorsImageContainer}>
-                                <Image style={styles.authorsImage} source={authorImage} />
-                            </View>
-                            <View style={styles.authorTextContainer}>
-                                <Text style={styles.authorsTitle}>John Freeman</Text>
-                                <Text style={styles.authorsDesc}>American writer he  was the editor of the  </Text>
-                            </View>
-                        </View>
-                        <View style={styles.authorsContainer}>
-                            <View styles={styles.authorsImageContainer}>
-                                <Image style={styles.authorsImage} source={authorImage} />
-                            </View>
-                            <View style={styles.authorTextContainer}>
-                                <Text style={styles.authorsTitle}>John Freeman</Text>
-                                <Text style={styles.authorsDesc}>American writer he  was the editor of the  </Text>
-                            </View>
-                        </View>
-                    </View>
+                    <FlatList
+                    data={list}
+                    renderItem={({ item }) => <RenderAutorItem data={item} />}
+                    keyExtractor={(item) => item.id}
+                />
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -88,6 +98,24 @@ const styles = StyleSheet.create({
     contentContainer: {
         margin: 30,
         bottom: 10
+    },
+    searchbarContainer: {
+        borderRadius: 10,
+        width: 320,
+        height: 50,
+        alignSelf: "center",
+        backgroundColor: "#f5f5f5",
+        flexDirection: "row",
+        paddingLeft: 10,
+        alignItems: "center",
+        marginTop: 20,
+    },
+    inputSlot: {
+        marginRight: 20
+    },
+    searchText: {
+        fontSize: 18,
+        top: 1
     },
     textContainer: {
         flexDirection: "column-reverse",

@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [favorites, setFavorites] = useState([]);
     const [livros, setLivros] = useState([]);
+    const [autor, setAutor] = useState([]);
     const [livroSelecionado, setLivroSelecionado] = useState(null);
     const [error, setError] = useState(null);
 
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }) => {
             loadLibrarianStorageData(),
             loadFavorites(),
             buscarLivros(),
+            buscarAutor(),
         ]).finally(() => {
             setLoading(false);
         });
@@ -41,6 +43,24 @@ export const AuthProvider = ({ children }) => {
                 err.response?.data?.msg || 
                 err.message || 
                 'Erro ao buscar livros'
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+    const buscarAutor = async () => {
+        setLoading(true);
+        try {
+            const response = await api.get('/autores');
+            console.log('Resposta da API:', response.data); // Debug
+            setAutor(response.data);
+            setError(null);
+        } catch (err) {
+            console.error('Erro completo:', err); // Debug
+            setError(
+                err.response?.data?.msg || 
+                err.message || 
+                'Erro ao buscar autores'
             );
         } finally {
             setLoading(false);
@@ -291,6 +311,8 @@ export const AuthProvider = ({ children }) => {
                 searchLivros,
                 buscarLivros,
                 buscarLivroPorId,
+                buscarAutor,
+                autor,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,

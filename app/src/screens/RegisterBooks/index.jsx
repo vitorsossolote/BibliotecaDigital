@@ -129,7 +129,7 @@ const RegisterBooks = ({ navigation }) => {
                         showsVerticalScrollIndicator={false}
                     >
                         <BackHeader
-                            onPress={() => navigation.navigate("AdminLibrarian")}
+                            onPress={() => navigation.goBack()}
                             title="Bem Vindo"
                             subtitle="Cadastre um Livro"
                         />

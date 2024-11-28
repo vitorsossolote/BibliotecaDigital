@@ -31,9 +31,10 @@ import SearchScreen from '../screens/SearchScreen/search';
 import LoanHistory from '../screens/LoanHistory';
 import RegisterBooks from '../screens/RegisterBooks';
 import EditBooks from '../screens/EditBooks';
-import AdminLibrarian from '../screens/AdminLibrarian';
 import RegisterAutor from '../screens/RegisterAutor';
 import RegisterGender from '../screens/RegisterGender';
+import StudentManagementScreen from '../screens/StudentManagement';
+import EditStudentScreen from '../screens/EditStudent';
 
 
 
@@ -206,8 +207,8 @@ function HomeTabLibrarianNavigator() {
         }}
       />
       <Tab.Screen
-        name="AdminLibrarian"
-        component={AdminLibrarian}
+        name="RegisterBooks"
+        component={RegisterBooks}
         options={{
           tabBarIcon: ({ focused, size }) => (
             <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
@@ -264,6 +265,10 @@ export default function AppNavigator() {
             <Stack.Screen name="EditBooks" component={EditBooks} />
             <Stack.Screen name="RegisterAutor" component={RegisterAutor} />
             <Stack.Screen name="RegisterGender" component={RegisterGender} />
+            <Stack.Screen name="CreateLibrarian" component={CreateLibrarianAccount} />
+            <Stack.Screen name="CreateStudent" component={CreateStudentAccount} />
+            <Stack.Screen name="StudentManagement" component={StudentManagementScreen} />
+            <Stack.Screen name="EditStudent" component={EditStudentScreen} />
           </>
         ) : authData ? (
           // Student Routes

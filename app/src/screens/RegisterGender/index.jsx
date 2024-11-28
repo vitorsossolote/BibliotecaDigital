@@ -63,7 +63,7 @@ const RegisterGender = ({ navigation }) => {
                         bounces={false}
                         showsVerticalScrollIndicator={false}
                     >
-                        <BackHeader onPress={() => navigation.navigate("AdminLibrarian")}
+                        <BackHeader onPress={() => navigation.goBack()}
                             title="Bem Vindo"
                             subtitle="Cadastre um Genero" />
                         <View style={styles.inputContainer}>
