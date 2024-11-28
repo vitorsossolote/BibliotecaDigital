@@ -1034,13 +1034,28 @@ const useController = {
 
   getEmprestimosByUserRm: async (req, res) => {
     const { user_rm } = req.params;
-
+  
+    console.log('Received RM:', user_rm);
+    console.log('RM Type:', typeof user_rm);
+  
     try {
       const emprestimos = await clientController.getEmprestimosByUserRm(user_rm);
+      
+      // Se nenhum empréstimo for encontrado, retorne um array vazio
+      if (emprestimos.length === 0) {
+        return res.status(404).json({ 
+          message: 'Nenhum empréstimo encontrado para este usuário',
+          user_rm: user_rm 
+        });
+      }
+  
       return res.status(200).json(emprestimos);
     } catch (error) {
       console.error(`Erro ao obter empréstimos do usuário RM ${user_rm}:`, error);
-      return res.status(500).json({ msg: 'Erro interno do servidor' });
+      return res.status(500).json({ 
+        msg: 'Erro interno do servidor',
+        error: error.message 
+      });
     }
   },
 

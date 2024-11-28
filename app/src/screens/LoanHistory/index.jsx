@@ -28,11 +28,34 @@ export default function LoanHistory({ navigation }) {
             }
 
             try {
-                const response = await axios.get(`http://10.0.2.2:8085/api/emprestimo/listEmprestimo/${authData.user.rm}`);
-                
+                // First, fetch the loan history
+                const loansResponse = await axios.get(`http://10.0.2.2:8085/api/emprestimo/listEmprestimo/${authData.user.rm}`);
+
+                // Fetch book details for each loan
+                const loansWithBookDetails = await Promise.all(
+                    loansResponse.data.map(async (loan) => {
+                        if (loan.livro_id) {
+                            try {
+                                // Fetch full book details using livro_id
+                                const bookResponse = await axios.get(`http://10.0.2.2:8085/api/listBooks/${loan.livro_id}`);
+                                return {
+                                    ...loan,
+                                    livro: bookResponse.data // Replace or augment existing book info
+                                };
+                            } catch (bookError) {
+                                console.error(`Error fetching book details for loan ${loan.id}:`, bookError);
+                                return loan; // Return original loan if book fetch fails
+                            }
+                        }
+                        return loan;
+                    })
+                );
+
                 // Sort loans by date (most recent first)
-                const sortedLoans = response.data.sort((a, b) => new Date(b.data_emprestimo) - new Date(a.data_emprestimo));
-                
+                const sortedLoans = loansWithBookDetails.sort((a, b) =>
+                    new Date(b.data_emprestimo) - new Date(a.data_emprestimo)
+                );
+
                 setLoans(sortedLoans);
                 setLoading(false);
             } catch (err) {
@@ -53,8 +76,8 @@ export default function LoanHistory({ navigation }) {
 
     // Helper function to determine status color
     const getStatusColor = (status) => {
-        switch(status) {
-            case 'DEVOLVIDO': return '#4CAF50'; // Green
+        switch (status) {
+            case 'CONCLUIDO': return '#4CAF50'; // Green
             case 'ATRASADO': return '#ee2d32'; // Red
             case 'PENDENTE': return '#FFC107'; // Yellow
             default: return '#000';
@@ -81,11 +104,11 @@ export default function LoanHistory({ navigation }) {
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.headerContainer}>
-                    <MainHeader 
-                        title="Histórico de Empréstimo" 
-                        icon1={MoveLeft} 
-                        onPress={() => navigation.navigate("Profile")} 
-                        marginRight={10} 
+                    <MainHeader
+                        title="Histórico de Empréstimo"
+                        icon1={MoveLeft}
+                        onPress={() => navigation.navigate("Profile")}
+                        marginRight={10}
                     />
                 </View>
                 {loans.length === 0 ? (
@@ -109,32 +132,32 @@ export default function LoanHistory({ navigation }) {
                                     {monthLoans.map((loan, index) => (
                                         <React.Fragment key={loan.id}>
                                             <View style={styles.loanDetailsContainer}>
-                                                <Image 
-                                                    source={{ uri: loan.livro?.image || 'fallback_image_url' }} 
-                                                    style={styles.loanImage} 
+                                                <Image
+                                                    source={{ uri: loan.image || 'fallback_image_url' }}
+                                                    style={styles.loanImage}
                                                 />
                                                 <View style={styles.loanDetailsTextContainer}>
                                                     <Text style={styles.loanDetailsText}>
-                                                        {`Dia ${new Date(loan.data_emprestimo).getDate()} | ${loan.livro?.titulo}`}
+                                                        {`Dia ${new Date(loan.data_emprestimo).getDate()} | ${loan.titulo}`}
                                                     </Text>
                                                     <View style={styles.loanStatus}>
-                                                        <Text 
+                                                        <Text
                                                             style={[
-                                                                styles.loanStatusText, 
-                                                                { color: getStatusColor(loan.status) }
+                                                                styles.loanStatusText,
+                                                                { color: getStatusColor(loan.estado) }
                                                             ]}
                                                         >
-                                                            {loan.status === 'DEVOLVIDO' ? 'Devolvido' : 
-                                                             loan.status === 'ATRASADO' ? 'Atrasado' : 
-                                                             'Pendente'}
+                                                            {loan.estado}
                                                         </Text>
                                                         {/* Assuming each loan is for a single book, but you might want to adjust this */}
-                                                        <Text style={styles.loanItems}>• 1 item</Text>
+                                                        <Text style={styles.loanItems}> • 1 item</Text>
+                                                        
                                                     </View>
+                                                    <Text style={{color:"#ee2d32"}}>Devolver  {loan.data_devolucao}</Text>
                                                 </View>
                                             </View>
                                             {index < monthLoans.length - 1 && (
-                                                <View style={{height:1.5, width:"100%", backgroundColor:"#e6e6e6"}}/>
+                                                <View style={{ height: 1.5, width: "100%", backgroundColor: "#e6e6e6" }} />
                                             )}
                                         </React.Fragment>
                                     ))}
@@ -174,7 +197,7 @@ const styles = StyleSheet.create({
         borderColor: "#e6e6e6",
         borderRadius: 10,
         padding: 15,
-        gap:20
+        gap: 20
     },
     loanDetailsContainer: {
         flexDirection: 'row',

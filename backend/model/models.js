@@ -705,22 +705,75 @@ const useModel = {
     }
   },
 
-  getAllEmprestimos: async () => {
-    try {
-      const [rows] = await connection.query('SELECT * FROM emprestimos');
-      return rows;
-    } catch (error) {
-      console.error('Erro ao obter todos os empréstimos:', error);
-      throw error;
-    }
-  },
-
   getEmprestimosByUserRm: async (user_rm) => {
     try {
-      const [rows] = await connection.query('SELECT * FROM emprestimos WHERE user_rm = ?', [user_rm]);
+      const query = `
+        SELECT 
+          e.emprestimo_id, 
+          e.livro_id, 
+          e.user_rm, 
+          e.data_emprestimo, 
+          e.data_devolucao, 
+          e.estado, 
+          e.avaliacao,
+          l.titulo,
+          l.image,
+          l.editora,
+          l.nome_autor,
+          l.nome_genero
+        FROM 
+          emprestimos e
+        LEFT JOIN 
+          livros l ON e.livro_id = l.id
+        WHERE 
+          e.user_rm = ?
+        ORDER BY 
+          e.data_emprestimo DESC
+      `;
+  
+      // Use console.log para depuração
+      console.log('Executing query with RM:', user_rm);
+      console.log('Full Query:', query);
+  
+      const [rows] = await connection.query(query, [user_rm]);
+      
+      console.log('Query Results:', rows);
+      console.log('Number of rows:', rows.length);
+  
       return rows;
     } catch (error) {
       console.error(`Erro ao obter empréstimos do usuário RM ${user_rm}:`, error);
+      throw error;
+    }
+  },
+  
+  getAllEmprestimos: async () => {
+    try {
+      const [rows] = await connection.query(`
+        SELECT 
+          e.emprestimo_id, 
+          e.livro_id, 
+          e.user_rm, 
+          e.data_emprestimo, 
+          e.data_devolucao, 
+          e.estado, 
+          e.avaliacao,
+          l.titulo,
+          l.image,
+          l.editora,
+          l.nome_autor,
+          l.nome_genero
+        FROM 
+          emprestimos e
+        LEFT JOIN 
+          livros l ON e.livro_id = l.id
+        ORDER BY 
+          e.data_emprestimo DESC
+      `);
+      
+      return rows;
+    } catch (error) {
+      console.error('Erro ao obter todos os empréstimos:', error);
       throw error;
     }
   },
