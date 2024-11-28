@@ -2,72 +2,79 @@ const express = require("express");
 const clientController = require("../controller/controller");
 const router = express.Router();
 
-// const cron = require("node-cron");
-
-// // Verifica a cada 1 minuto
-// cron.schedule('* * * * *', async () => {
-//     try {
-//       console.log('Iniciando verificação automática de empréstimos atrasados...');
-//       const resultado = await atualizarAtrasos();
-      
-//       console.log(
-//         resultado.atualizados > 0 
-//           ? `Verificação concluída: ${resultado.mensagem}` 
-//           : 'Nenhum empréstimo atrasado encontrado'
-//       );
-//     } catch (error) {
-//       console.error('Erro na tarefa automática de verificação:', error);
-//     }
-//   });
-  
 //Rota raiz do projeto
 router.get("/", clientController.getRoot);
 
 // USUÁRIO --------------------------------------------------------------------------------
 
-//Cadastrar novo usuario
-router.post("/api/createStudent", clientController.createNewStudent); 
+//Cadastrar novo estudante
+router.post("/api/createStudent", clientController.createNewStudent);
 //Validar o Login do Estudante
 router.post("/api/loginStudent", clientController.loginStudent);
+//Atualizar Cadastro do estudante
+router.put("/api/updateStudent/:rm", clientController.updateStudent);
+// Deletar estudante
+router.delete("/api/deleteStudent/:rm", clientController.deleteStudent);
+//Listar todos os Estudantes
+router.get("/api/listAllStudents", clientController.listarStudents);
+//Listar estudantes por ID
+router.get("/api/listStudents/:id", clientController.ListarStudentsByID);
+//Listar estudantes por RM
+router.get("/api/listStudentsByRm/:rm", clientController.ListarStudentsByRm);
+//Listar estudantes por Email
+router.get("/api/listStudentsByEmail/:email", clientController.ListarStudentsByEmail);
 
 // BIBLIOTECÁRIO -------------------------------------------------------------------------
 
 //Cadastrar novo Bibliotecario
-router.post("/api/createLibrarian", clientController.createNewLibrarian); 
+router.post("/api/createLibrarian", clientController.createNewLibrarian);
 //Validar o Login do Bibliotecario
 router.post("/api/loginLibrarian", clientController.loginLibrarian);
+// Atualizar cadastro dos Bibliotecarios
+router.put("/api/librarian/:cfb", clientController.updateLibrarian);
+// Deletar cadastro dos Bibliotecarios
+router.delete("/api/deleteLibrarian/:cfb", clientController.deleteLibrarian);
+// Listar Todos os Bibliotecarios
+router.get("/api/listAllLibrarian", clientController.listarAllLibrarians);
+//Listar Bibliotecarios por ID
+router.get("/api/listLibrarianById/:id", clientController.listarLibrarianById);
+//Listar Bibliotecarios por CFB
+router.get("/api/ListLibrarianByCfb/:cfb", clientController.listarLibrarianByCfb);
+// Listar Bibliotecarios por Email
+router.get("/api/listLibrarianByEmail/:email", clientController.listarLibrarianByEmail);
 
 // LIVRO ---------------------------------------------------------------------------------
 
 //Rota para Criar Livro
 router.post("/api/registerBook", clientController.registerBook);
 // Rota para atualizar um livro
-// router.put("/api/updateBook/:id", clientController.updateBook);
+router.put("/api/updateBook/:id", clientController.updateBook);
 //Rota para deletar um livro
-// router.delete("/api/deleteBook/:id", clientController.deleteBook);
+router.delete("/api/deleteBook/:id", clientController.deleteBook)
 //Listar todos os Livros
-router.get("/api/listBooks", clientController.listarLivros); 
+router.get("/api/listBooks", clientController.listarLivros);
 //Listar Livros por ID
 router.get("/api/listBooks/:id", clientController.ListarLivrosByID);
 //Listar os Livros por Termo
-router.get('/api/searchLivros/:searchTerm', clientController.searchLivros); 
+router.get('/api/searchLivros/:searchTerm', clientController.searchLivros);
 
 // GÊNERO -------------------------------------------------------------------------------
 
 // Criar um Genero
-router.post("/api/registerGender", clientController.registerGender); 
+router.post("/api/registerGender", clientController.registerGender);
 //Listar todos os generos
-router.get('/api/generos' ,clientController.ListarGeneros);
+router.get('/api/generos', clientController.ListarGeneros);
 //Listar Livros por genero id
 router.get('/api/ListBooks/genero/:id_genero', clientController.listarLivrosPorGenero);
 //Listar Livros por genero nome
 router.get('/api/ListBooks/genero/name/:nome_genero', clientController.listarLivrosPorNomeGenero);
+
 // AUTOR --------------------------------------------------------------------------------
 
 // Criar um Autor
 router.post("/api/registerAutor", clientController.registerAutor);
 //Listar todos os autores
-router.get('/api/autores' ,clientController.ListarAutores);
+router.get('/api/autores', clientController.ListarAutores);
 // Listar Livros por Autor ID 
 router.get('/api/ListBooks/autor/:id_autor', clientController.listarLivrosPorAutor);
 // Listar Livros por Nome Autor
@@ -76,17 +83,15 @@ router.get('/api/ListBooks/autor/name/:nome_autor', clientController.listarLivro
 // EMPRÉSTIMO ---------------------------------------------------------------------------
 
 // // Criar um novo empréstimo
-// router.post("/api/emprestimo", clientController.createEmprestimo);
+router.post("/api/emprestimo", clientController.createEmprestimo);
 // // Atualizar o estado de um empréstimo (apenas bibliotecário)
-// router.put("/api/emprestimo/:id/atualizarEstado", clientController.atualizarEstadoEmprestimo);
+router.put("/api/emprestimo/:id/atualizarEstado", clientController.atualizarEstadoEmprestimo);
 // // Rota para listar todos os empréstimos
-// router.get('/api/emprestimo/listEmprestimo', clientController.getAllEmprestimos);
+router.get('/api/emprestimo/listEmprestimo', clientController.getAllEmprestimos);
 // // Rota para listar os empréstimos de um usuário específico
-// router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmprestimosByUserRm);
-// // Rota para listar os empréstimos de um usuário específico
-// router.put('/api/emprestimo/atualizarEstadoEmprestimo/:id', clientController.atualizarEstadoEmprestimo);
+router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmprestimosByUserRm);
 // // Endpoint para verificar e atualizar empréstimos atrasados manualmente
-// router.post("/api/emprestimos/verificar-atrasos", clientController.atualizarAtrasos);
+router.post("/api/emprestimos/verificar-atrasos", clientController.atualizarAtrasos);
 
 //teste
 // router.post("/api/validade", clientController.loginBiblio);

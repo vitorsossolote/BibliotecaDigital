@@ -25,6 +25,10 @@ const useController = {
       return res.status(400).json({ msg: "Senha é obrigatória" });
     }
 
+    if (!email.includes('@') && !email.includes('.com')) {
+      return res.status(400).json({ msg: "Email inválido" })
+    }
+
     try {
       const sql = await clientController.getByEmail(email);
       const sqlConfirmRm = await clientController.getByRm(rm);
@@ -102,8 +106,144 @@ const useController = {
     }
   },
 
+  //Listar todos os Estudantes
+  listarStudents: async (req, res) => {
+    try {
+      const estudantes = await clientController.getAllStudents();
+      res.status(200).json(estudantes);
+    } catch (error) {
+      console.error("Erro ao buscar os estudantes:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar os estudantes",
+        error: error.message
+      });
+    }
+  },
+
+  //Listar os Estudantes por ID
+  ListarStudentsByID: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const Students = await clientController.getByID(id);
+
+      // Verifica se o array está vazio
+      if (!Students || Students.length === 0) {
+        return res.status(404).json({
+          msg: `Não existe nenhum aluno com o ID ${id}`
+        });
+      }
+
+      res.status(200).json(Students);
+    } catch (error) {
+      console.error("Erro ao buscar estudante:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar estudante",
+        error: error.message
+      });
+    }
+  },
+
+  ListarStudentsByRm: async (req, res) => {
+    const { rm } = req.params;
+
+    try {
+      const Students = await clientController.getByRm(rm);
+
+      // Verifica se o array está vazio
+      if (!Students || Students.length === 0) {
+        return res.status(404).json({
+          msg: `Não existe nenhum aluno com o RM ${rm}`
+        });
+      }
+
+      res.status(200).json(Students);
+    } catch (error) {
+      console.error("Erro ao buscar estudante:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar estudante",
+        error: error.message
+      });
+    }
+  },
+
+  ListarStudentsByEmail: async (req, res) => {
+    const { email } = req.params;
+
+    try {
+      const Students = await clientController.getByEmail(email);
+
+      // Verifica se o array está vazio
+      if (!Students || Students.length === 0) {
+        return res.status(404).json({
+          msg: `Não existe nenhum aluno com o email ${email}`
+        });
+      }
+
+      res.status(200).json(Students);
+    } catch (error) {
+      console.error("Erro ao buscar estudante:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar estudante",
+        error: error.message
+      });
+    }
+  },
+
+  //Atualizar os Estudantes
+  updateStudent: async (req, res) => {
+    const { rm } = req.params;
+    const updateData = req.body;
+
+    if (!rm) {
+      return res.status(400).json({ msg: "O RM é obrigatório" });
+    }
+
+    try {
+      // Verifica se o estudante existe
+      const student = await clientController.getByRm(rm);
+      if (student.length === 0) {
+        return res.status(404).json({ msg: "Estudante não encontrado" });
+      }
+
+      // Atualiza o estudante
+      const result = await clientController.updateStudentInDB(rm, updateData);
+      return res.status(200).json({ msg: "Estudante atualizado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao atualizar estudante:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  //Deletar os Estudantes
+  deleteStudent: async (req, res) => {
+    const { rm } = req.params;
+
+    if (!rm) {
+      return res.status(400).json({ msg: "O RM é obrigatório" });
+    }
+
+    try {
+      // Verifica se o estudante existe
+      const student = await clientController.getByRm(rm);
+      if (student.length === 0) {
+        return res.status(404).json({ msg: "Estudante não encontrado" });
+      }
+
+      // Deleta o estudante
+      const result = await clientController.deleteStudentFromDB(rm);
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ msg: "Estudante não encontrado" });
+      }
+      return res.status(200).json({ msg: "Estudante deletado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao deletar estudante:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
   //Verificar Token do estudante
-  
+
   // Middleware para verificar token
   verifyToken: async (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1]; // Bearer TOKEN
@@ -148,7 +288,7 @@ const useController = {
     }
 
     try {
-      const sql = await clientController.getByEmail(email);
+      const sql = await clientController.getLibrarianByEmail(email);
       const sqlConfirmCfb = await clientController.getByCfb(cfb);
 
       if (sql.length > 0) {
@@ -212,6 +352,143 @@ const useController = {
     }
   },
 
+  updateLibrarian: async (req, res) => {
+    const { cfb } = req.params;
+    const updateData = req.body;
+
+    // Validações básicas
+    if (!cfb) {
+      return res.status(400).json({ msg: "CFB é obrigatório" });
+    }
+
+    try {
+      // Primeiro, verificar se o bibliotecário existe
+      const librarian = await clientController.getByCfb(cfb);
+      if (librarian.length === 0) {
+        return res.status(404).json({ msg: "Bibliotecário não encontrado" });
+      }
+      // Atualiza o estudante
+      const result = await clientController.updateLibrarianInDB(cfb, updateData);
+      return res.status(200).json({ msg: "Bibliotecario atualizado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao atualizar o Bibliotecario:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+      
+  },
+
+  // Deletar o cadastro do bibliotecário
+  deleteLibrarian: async (req, res) => {
+    const { cfb } = req.params;
+
+    if (!cfb) {
+      return res.status(400).json({ msg: "CFB é obrigatório" });
+    }
+
+    try {
+      // Primeiro, verificar se o bibliotecário existe
+      const librarian = await clientController.getByCfb(cfb);
+      if (librarian.length === 0) {
+        return res.status(404).json({ msg: "Bibliotecário não encontrado" });
+      }
+
+      // Deleta o biblitoecario
+      const result = await clientController.deleteLibrarianFromDB(cfb);
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ msg: "Bibliotecário não encontrado" });
+      }
+      return res.status(200).json({ msg: "Bibliotecário deletado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao deletar o Bibliotecário:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  //Listar os Bibliotecarios por ID
+  listarLibrarianById: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const Librarian = await clientController.getLibrarianById(id);
+
+      // Verifica se o array está vazio
+      if (!Librarian || Librarian.length === 0) {
+        return res.status(404).json({
+          msg: `Não existe nenhum bibliotecario com o ID ${id}`
+        });
+      }
+
+      res.status(200).json(Librarian);
+    } catch (error) {
+      console.error("Erro ao buscar bibliotecario:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar bibliotecario",
+        error: error.message
+      });
+    }
+  },
+
+  //Listar Bibliotecarios por Email
+  listarLibrarianByEmail: async (req, res) => {
+    const { email } = req.params;
+
+    try {
+      const Librarian = await clientController.getLibrarianByEmail(email);
+
+      // Verifica se o array está vazio
+      if (!Librarian || Librarian.length === 0) {
+        return res.status(404).json({
+          msg: `Não existe nenhum bibliotecario com o email ${email}`
+        });
+      }
+
+      res.status(200).json(Librarian);
+    } catch (error) {
+      console.error("Erro ao buscar bibliotecario:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar bibliotecario",
+        error: error.message
+      });
+    }
+  },
+
+  //Listar Bibliotecarios por CFB
+  listarLibrarianByCfb: async (req, res) => {
+    const { cfb } = req.params;
+
+    try {
+      const Librarian = await clientController.getByCfb(cfb);
+
+      // Verifica se o array está vazio
+      if (!Librarian || Librarian.length === 0) {
+        return res.status(404).json({
+          msg: `Não existe nenhum bibliotecario com o CFB ${cfb}`
+        });
+      }
+
+      res.status(200).json(Librarian);
+    } catch (error) {
+      console.error("Erro ao buscar bibliotecario:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar bibliotecario",
+        error: error.message
+      });
+    }
+  },
+
+  listarAllLibrarians: async (req, res) => {
+    try {
+      const Librarian = await clientController.getAllLibrarian();
+      res.status(200).json(Librarian);
+    } catch (error) {
+      console.error("Erro ao buscar os bibliotecarios:", error);
+      res.status(500).json({
+        msg: "Erro ao buscar os bibliotecarios",
+        error: error.message
+      });
+    }
+  },
+
   //Verificar Token do Bibliotecário
 
   verifyLibrarianToken: async (req, res, next) => {
@@ -237,9 +514,9 @@ const useController = {
       res.status(200).json(livros);
     } catch (error) {
       console.error("Erro ao buscar livros:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livros", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livros",
+        error: error.message
       });
     }
   },
@@ -251,19 +528,19 @@ const useController = {
 
     try {
       const livro = await clientController.getLivroById(id);
-      
+
       if (!livro) {
-        return res.status(404).json({ 
-          msg: "Livro não encontrado" 
+        return res.status(404).json({
+          msg: "Livro não encontrado"
         });
       }
 
       res.status(200).json(livro);
     } catch (error) {
       console.error("Erro ao buscar livro:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livro", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livro",
+        error: error.message
       });
     }
   },
@@ -271,24 +548,24 @@ const useController = {
   //Pesquisar Livros
   searchLivros: async (req, res) => {
     const searchTerm = req.params.searchTerm; // Certifique-se de pegar corretamente o parâmetro
-  
+
     if (!searchTerm || searchTerm.trim() === '') {
       return res.status(400).json({ msg: "Termo de busca é obrigatório" });
     }
-  
+
     try {
       const livros = await clientController.searchLivros(searchTerm);
-      
+
       if (livros.length === 0) {
         return res.status(404).json({ msg: "Nenhum livro encontrado" });
       }
-  
+
       res.status(200).json(livros);
     } catch (error) {
       console.error("Erro ao buscar livros:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livros", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livros",
+        error: error.message
       });
     }
   },
@@ -297,7 +574,7 @@ const useController = {
   // createNewMensagem: async (req, res) => {
   //     const { id, nome, numero, email, mensagem } = req.body;
   //Criar novo livro
- 
+
   registerBook: async (req, res) => {
     const { 
       image, 
@@ -363,8 +640,49 @@ const useController = {
     }
   },
 
+  deleteBook: async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ msg: "O ID é obrigatório" });
+    }
+
+    try {
+      // Verifica se o livro existe
+      const livro = await clientController.getLivroById(id);
+      if (livro.length === 0) {
+        return res.status(404).json({ msg: "Livro não encontrado" });
+      }
+
+      // Verifica o estado do livro
+      const estadoAtual = livro[0].estado; // Ve se está disponível para alguma modificação
+      const quantidadeAtual = livro[0].quantidade; // Quantidade de livros presentes 
+
+      if (estadoAtual !== "D") {
+        return res.status(403).json({ msg: "O livro não pode ser deletado, pois não está disponível." });
+      }
+
+      if (quantidadeAtual > 1) {
+        // Reduz a quantidade do livro em vez de deletar
+        const result = await clientController.updateBookQuantity(id, quantidadeAtual - 1);
+        return res.status(200).json({ msg: "Quantidade do livro atualizada com sucesso", quantidadeAtualizada: quantidadeAtual - 1 });
+      } else {
+        // Deleta o livro porque a quantidade é 1
+        const result = await clientController.deleteBook(id);
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ msg: "Livro não encontrado" });
+        }
+        return res.status(200).json({ msg: "Livro deletado com sucesso" });
+      }
+    } catch (error) {
+      console.error("Erro ao deletar livro:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+
   registerGender: async (req, res) => {
-    const { 
+    const {
       nome_genero
     } = req.body;
 
@@ -397,16 +715,16 @@ const useController = {
   },
 
   registerAutor: async (req, res) => {
-    const { 
-      nome_autor, 
-      data_nascimento, 
-      image, 
+    const {
+      nome_autor,
+      data_nascimento,
+      image,
       avaliacao,
       sobre
     } = req.body;
 
     console.log("Dados recebidos no controller:", {
-      nome_autor, data_nascimento, image, avaliacao,sobre
+      nome_autor, data_nascimento, image, avaliacao, sobre
     });
 
     if (!nome_autor) {
@@ -424,9 +742,9 @@ const useController = {
 
 
       const result = await clientController.registerAutor(
-        nome_autor, 
-        data_nascimento, 
-        image, 
+        nome_autor,
+        data_nascimento,
+        image,
         avaliacao,
         sobre
       );
@@ -443,19 +761,19 @@ const useController = {
 
     try {
       const livros = await clientController.getLivrosByAutorId(id_autor);
-      
+
       if (!livros || livros.length === 0) {
-        return res.status(404).json({ 
-          msg: "Nenhum livro encontrado para este autor" 
+        return res.status(404).json({
+          msg: "Nenhum livro encontrado para este autor"
         });
       }
 
       res.status(200).json(livros);
     } catch (error) {
       console.error("Erro ao buscar livros do autor:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livros do autor", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livros do autor",
+        error: error.message
       });
     }
   },
@@ -464,19 +782,19 @@ const useController = {
 
     try {
       const livros = await clientController.getLivrosByAutorName(nome_autor);
-      
+
       if (!livros || livros.length === 0) {
-        return res.status(404).json({ 
-          msg: "Nenhum livro encontrado para este autor" 
+        return res.status(404).json({
+          msg: "Nenhum livro encontrado para este autor"
         });
       }
 
       res.status(200).json(livros);
     } catch (error) {
       console.error("Erro ao buscar livros do autor:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livros do autor", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livros do autor",
+        error: error.message
       });
     }
   },
@@ -487,19 +805,19 @@ const useController = {
 
     try {
       const livros = await clientController.getLivrosByGeneroId(id_genero);
-      
+
       if (!livros || livros.length === 0) {
-        return res.status(404).json({ 
-          msg: "Nenhum livro encontrado para este gênero" 
+        return res.status(404).json({
+          msg: "Nenhum livro encontrado para este gênero"
         });
       }
 
       res.status(200).json(livros);
     } catch (error) {
       console.error("Erro ao buscar livros do gênero:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livros do gênero", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livros do gênero",
+        error: error.message
       });
     }
   },
@@ -509,19 +827,19 @@ const useController = {
 
     try {
       const livros = await clientController.getLivrosByGeneroNome(nome_genero);
-      
+
       if (!livros || livros.length === 0) {
-        return res.status(404).json({ 
-          msg: "Nenhum livro encontrado para este gênero" 
+        return res.status(404).json({
+          msg: "Nenhum livro encontrado para este gênero"
         });
       }
 
       res.status(200).json(livros);
     } catch (error) {
       console.error("Erro ao buscar livros do gênero:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar livros do gênero", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar livros do gênero",
+        error: error.message
       });
     }
   },
@@ -533,9 +851,9 @@ const useController = {
       res.status(200).json(autores);
     } catch (error) {
       console.error("Erro ao buscar Autores:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar Autores", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar Autores",
+        error: error.message
       });
     }
   },
@@ -545,12 +863,238 @@ const useController = {
       res.status(200).json(generos);
     } catch (error) {
       console.error("Erro ao buscar Generos:", error);
-      res.status(500).json({ 
-        msg: "Erro ao buscar Generos", 
-        error: error.message 
+      res.status(500).json({
+        msg: "Erro ao buscar Generos",
+        error: error.message
       });
     }
   },
+
+  updateBook: async (req, res) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!id) {
+      return res.status(400).json({ msg: "O ID é obrigatório" });
+    }
+
+    try {
+      // Verifica se o livro existe
+      const livro = await clientController.getLivroById(id);
+      if (livro.length === 0) {
+        return res.status(404).json({ msg: "Livro não encontrado" });
+      }
+
+      // Verifica o estado do livro
+      const estadoAtual = livro[0].estado; // Assume que o estado está na primeira posição do resultado
+      if (estadoAtual !== "D") {
+        return res.status(403).json({ msg: "O livro não pode ser alterado, pois não está disponível." });
+      }
+
+      // Atualiza o livro
+      const result = await clientController.updateBook(id, updateData);
+      return res.status(200).json({ msg: "Livro atualizado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao atualizar livro:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  // Método createEmprestimo
+  createEmprestimo: async (req, res) => {
+    const { user_rm, livro_id, prazo_dias } = req.body;
+
+    if (!user_rm || !livro_id || !prazo_dias) {
+      return res.status(400).json({ msg: "Todos os campos são obrigatórios" });
+    }
+
+    if (![7, 14].includes(prazo_dias)) {
+      return res.status(400).json({ msg: "O prazo deve ser de 7 ou 14 dias" });
+    }
+
+    try {
+      // Verificar quantidade de empréstimos ativos
+      const emprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
+
+      if (emprestimosAtivos >= 2) {
+        return res.status(400).json({
+          msg: "Você já possui 2 empréstimos ativos. Por favor, devolva um dos livros antes de fazer um novo empréstimo."
+        });
+      }
+
+      // Obter livro pelo ID e verificar quantidade
+      const livro = await clientController.getQntLivrosById(livro_id);
+      if (!livro) {
+        return res.status(404).json({ msg: `Livro não encontrado: ID ${livro_id}` });
+      }
+
+      if (livro.quantidade <= 0) {
+        return res.status(400).json({ msg: "Nenhum exemplar disponível para empréstimo" });
+      }
+
+      // Criar data de empréstimo e devolução no formato ISO (YYYY-MM-DD)
+      const dataAtual = new Date();
+      const dataDevolucao = new Date();
+      dataDevolucao.setDate(dataDevolucao.getDate() + prazo_dias);
+
+      const dataEmprestimoFormatada = dataAtual.toISOString().split('T')[0];
+      const dataDevolucaoFormatada = dataDevolucao.toISOString().split('T')[0];
+
+      // Criar o empréstimo
+      await clientController.criarEmprestimo(
+        user_rm,
+        livro_id,
+        dataEmprestimoFormatada,
+        dataDevolucaoFormatada
+      );
+
+      // Subtrair a quantidade de livros disponíveis
+      await clientController.subtrairQuantidadeLivro(livro_id);
+
+      // Verificar se a quantidade restante é 0 e alterar o estado para "E" se necessário
+      if (livro.quantidade - 1 === 0) {
+        await clientController.updateLivroEstado(livro_id, 'E');
+      }
+
+      return res.status(201).json({ msg: "Empréstimo criado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao criar empréstimo:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  atualizarEstadoEmprestimo: async (req, res) => {
+    const { id } = req.params;
+    const { novo_estado, avaliacao } = req.body;
+
+    // Validações
+    if (!id || !novo_estado) {
+      return res.status(400).json({ msg: "ID e novo estado são obrigatórios" });
+    }
+
+    if (!["ativo", "concluído", "atrasado"].includes(novo_estado)) {
+      return res.status(400).json({ msg: "Estado inválido" });
+    }
+
+    // Validação da avaliação
+    if (novo_estado === "concluído" && (!avaliacao === 1 || avaliacao === 2 || avaliacao === 3 || avaliacao === 4  || avaliacao === 5 )) {
+      return res.status(400).json({ msg: "Avaliação inválida. Deve ser um número entre 1 e 5" });
+    }
+
+    try {
+      // Verificar se o empréstimo existe
+      const [emprestimo] = await clientController.getEmprestimoById(id);
+      if (!emprestimo) {
+        return res.status(404).json({ msg: "Empréstimo não encontrado" });
+      }
+
+      // Se for uma devolução (concluído), verificar a quantidade de empréstimos
+      if (novo_estado === "concluído") {
+        // Atualizar estado do livro para "Disponível"
+        await clientController.updateLivroEstado(emprestimo.livro_id, 'D');
+
+        // Atualizar avaliação do empréstimo
+        await clientController.atualizarAvaliacaoEmprestimo(id, avaliacao);
+
+        // Atualizar avaliação média do livro
+        await clientController.atualizarAvaliacaoLivro(emprestimo.livro_id, avaliacao);
+      }
+      // Se for uma nova solicitação de empréstimo (ativo), verificar limite
+      else if (novo_estado === "ativo") {
+        // Contar empréstimos ativos do usuário
+        const emprestimosAtivos = await clientController.countEmprestimosAtivos(emprestimo.user_rm);
+
+        if (emprestimosAtivos >= 2) {
+          return res.status(400).json({
+            msg: "Limite de empréstimos excedido. Devolva um livro antes de solicitar outro."
+          });
+        }
+      }
+
+      // Atualizar o estado do empréstimo
+      await clientController.atualizarEstadoEmprestimo(id, novo_estado);
+
+      return res.status(200).json({ msg: "Estado do empréstimo atualizado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao atualizar estado do empréstimo:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  // Atualizar o estado de um empréstimo (bibliotecário)
+  getAllEmprestimos: async (req, res) => {
+    try {
+      const emprestimos = await clientController.getAllEmprestimos();
+      return res.status(200).json(emprestimos);
+    } catch (error) {
+      console.error('Erro ao obter todos os empréstimos:', error);
+      return res.status(500).json({ msg: 'Erro interno do servidor' });
+    }
+  },
+
+  getEmprestimosByUserRm: async (req, res) => {
+    const { user_rm } = req.params;
+
+    try {
+      const emprestimos = await clientController.getEmprestimosByUserRm(user_rm);
+      return res.status(200).json(emprestimos);
+    } catch (error) {
+      console.error(`Erro ao obter empréstimos do usuário RM ${user_rm}:`, error);
+      return res.status(500).json({ msg: 'Erro interno do servidor' });
+    }
+  },
+
+  atualizarAtrasos: async (req, res) => {
+    try {
+      // Obter empréstimos cuja data_devolucao expirou
+      const emprestimosAtrasados = await clientController.getEmprestimosAtrasados();
+
+      if (emprestimosAtrasados.length === 0) {
+        return res.status(200).json({ msg: "Nenhum empréstimo atrasado encontrado." });
+      }
+
+      // Array para armazenar detalhes dos empréstimos atrasados
+      const detalhesAtrasados = [];
+
+      // Atualizar o estado de cada empréstimo para "atrasado"
+      for (const emprestimo of emprestimosAtrasados) {
+        await clientController.atualizarEstadoEmprestimo(emprestimo.emprestimo_id, "atrasado");
+
+        // Formatar datas
+        const dataEmprestimo = new Date(emprestimo.data_emprestimo);
+        const dataDevolucao = new Date(emprestimo.data_devolucao);
+
+        // Opções de formatação de data
+        const opcoesData = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        };
+        const opcoesHora = {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        };
+
+        // Adicionar detalhes do empréstimo atrasado
+        detalhesAtrasados.push({
+          mensagem_formatada: `O aluno ${emprestimo.aluno_nome} que possui o RM ${emprestimo.aluno_rm} emprestou o livro ${emprestimo.livro_titulo}. 
+        O empréstimo foi realizado no dia ${dataEmprestimo.toLocaleDateString('pt-BR', opcoesData)} às ${dataEmprestimo.toLocaleTimeString('pt-BR', opcoesHora)} horas. 
+        A data prevista para devolução era ${dataDevolucao.toLocaleDateString('pt-BR', opcoesData)} às ${dataDevolucao.toLocaleTimeString('pt-BR', opcoesHora)} horas.`
+        });
+      }
+
+      return res.status(200).json({
+        msg: `${emprestimosAtrasados.length} empréstimo(s) atualizado(s) para 'atrasado'.`,
+        emprestimos_atrasados: detalhesAtrasados
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar empréstimos atrasados:", error);
+      return res.status(500).json({ msg: "Erro interno ao verificar atrasos." });
+    }
+  },
+
+
 
 }
 // //CONTATO NOVA MENSAGEM
