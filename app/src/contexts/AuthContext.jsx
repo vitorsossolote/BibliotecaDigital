@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native'
 const AuthContext = createContext({});
 import axios from 'axios';
 const api = axios.create({
@@ -32,6 +33,93 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         });
     }, []);
+
+
+    const realizarEmprestimo = async (livrosIds, prazo_dias) => {
+        console.log('Iniciando realizarEmprestimo');
+        console.log('IDs dos livros:', livrosIds);
+        console.log('Prazo:', prazo_dias);
+        console.log('Dados de autenticação:', authData);
+    
+        try {
+            // Verificar se há livros selecionados
+            if (!livrosIds || livrosIds.length === 0) {
+                console.log('Erro: Nenhum livro selecionado');
+                Alert.alert('Erro', 'Nenhum livro selecionado');
+                throw new Error('Nenhum livro selecionado');
+            }
+    
+            // Verificar prazo
+            if (![7, 14].includes(prazo_dias)) {
+                console.log('Erro: Prazo inválido');
+                Alert.alert('Erro', 'O prazo deve ser de 7 ou 14 dias');
+                throw new Error('Prazo inválido');
+            }
+    
+            // Verificar se o usuário está autenticado
+            if (!authData?.user?.rm) {
+                console.log('Erro: Usuário não autenticado');
+                Alert.alert('Erro', 'Usuário não autenticado');
+                throw new Error('Usuário não autenticado');
+            }
+    
+            // Criar promises para cada empréstimo
+            const emprestimosPromises = livrosIds.map(livroId => {
+                console.log(`Preparando empréstimo para livro ${livroId}`);
+                return api.post('/emprestimo', {
+                    user_rm: authData.user.rm,
+                    livro_id: livroId,
+                    prazo_dias: prazo_dias
+                });
+            });
+    
+            console.log('Enviando requisições de empréstimo');
+            const resultados = await Promise.all(emprestimosPromises);
+    
+            console.log('Resultados dos empréstimos:', resultados);
+    
+            // Limpar seleção após sucesso
+            clearSelectedLoanBooks();
+    
+            // Feedback de sucesso personalizado
+            Alert.alert(
+                'Empréstimo Realizado', 
+                `${livrosIds.length} livro(s) emprestado(s) por ${prazo_dias} dias`
+            );
+    
+            return resultados;
+        } catch (error) {
+            console.error('Erro completo durante o empréstimo:', error);
+            
+            // Log detalhado do erro
+            if (error.response) {
+                console.error('Detalhes da resposta:', {
+                    status: error.response.status,
+                    data: error.response.data,
+                    headers: error.response.headers
+                });
+    
+                switch(error.response.status) {
+                    case 400:
+                        Alert.alert('Erro', error.response.data.msg || 'Erro na solicitação');
+                        break;
+                    case 404:
+                        Alert.alert('Livro não encontrado', 'Um dos livros selecionados não está disponível');
+                        break;
+                    default:
+                        Alert.alert('Erro', 'Não foi possível realizar o empréstimo');
+                }
+            } else if (error.request) {
+                console.error('Erro na requisição:', error.request);
+                Alert.alert('Erro', 'Não foi possível conectar ao servidor');
+            } else {
+                console.error('Erro configuração:', error.message);
+                Alert.alert('Erro', error.message || 'Erro desconhecido');
+            }
+            
+            throw error;
+        }
+    };
 
     const selectBookForLoan = (book) => {
         // Verificar se o livro já está na lista
@@ -399,6 +487,7 @@ export const AuthProvider = ({ children }) => {
                 selectBookForLoan,
                 clearSelectedLoanBooks,
                 removeSelectedLoanBook,
+                realizarEmprestimo,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,

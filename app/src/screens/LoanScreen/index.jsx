@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState, useCallback } from "react"
 import { Center, View, Text, StatusBar, GluestackUIProvider, Button, ButtonText, Image, Pressable } from "@gluestack-ui/themed"
 import { config } from "@gluestack-ui/config"
-import { StyleSheet, SafeAreaView, Dimensions } from "react-native"
+import { StyleSheet, SafeAreaView, Dimensions, Alert} from "react-native"
 import { Bell, ChevronRight, MoveLeft } from "lucide-react-native"
 import BottomSheet, { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -12,10 +12,93 @@ import book1 from "../../../assets/book.png"
 
 // Importar o hook de contexto
 import { useAuth } from '../../contexts/AuthContext'; // Ajuste o caminho conforme necessário
+import DateOptionGroup from "./dateOptionGroup"
 
 export default function LoanScreen({ navigation }) {
     // Acessar o contexto
-    const { selectedLoanBooks } = useAuth();
+    const {
+        selectedLoanBooks,
+        realizarEmprestimo,
+        clearSelectedLoanBooks
+    } = useAuth();
+    const [selectedDuration, setSelectedDuration] = useState(null);
+    const [deliveryDate, setDeliveryDate] = useState();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleDurationSelect = (days) => {
+        // Calculate new delivery date based on selected duration
+        const today = new Date();
+        const newDeliveryDate = new Date(today);
+        newDeliveryDate.setDate(today.getDate() + days);
+
+        // Format the date
+        const formattedDate = newDeliveryDate.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: 'short'
+        });
+
+        // Update the delivery date
+        setDeliveryDate(formattedDate);
+        setSelectedDuration(days);
+        // Close the bottom sheet
+        handleCloseDateTimeSheet();
+    };
+
+    const handleConfirmLoan = async () => {
+        console.log('Iniciando confirmação de empréstimo');
+        console.log('Livros selecionados:', selectedLoanBooks);
+        console.log('Duração selecionada:', selectedDuration);
+    
+        // Já existente
+        if (!selectedDuration) {
+            console.log('Erro: Nenhum prazo selecionado');
+            Alert.alert('Erro', 'Por favor, selecione um prazo de empréstimo');
+            return;
+        }
+    
+        if (selectedLoanBooks.length === 0) {
+            console.log('Erro: Nenhum livro selecionado');
+            Alert.alert('Erro', 'Nenhum livro selecionado para empréstimo');
+            return;
+        }
+    
+        // Nova validação: Verificar prazo
+        if (![7, 14].includes(selectedDuration)) {
+            console.log('Erro: Prazo inválido');
+            Alert.alert('Erro', 'O prazo deve ser de 7 ou 14 dias');
+            return;
+        }
+    
+        try {
+            setLoading(true);
+            console.log('Iniciando realizarEmprestimo');
+            
+            // Extrair IDs dos livros selecionados
+            const bookIds = selectedLoanBooks.map(book => book.id);
+            console.log('IDs dos livros:', bookIds);
+    
+            await realizarEmprestimo(bookIds, selectedDuration);
+            
+            console.log('Empréstimo realizado com sucesso');
+            Alert.alert('Sucesso', 'Empréstimo realizado com sucesso');
+            
+            // Navegar para outra tela ou atualizar estado
+            // navigation.navigate('SuccessScreen'); // Exemplo de navegação
+        } catch (error) {
+            console.error('Erro completo durante o empréstimo:', error);
+            console.error('Detalhes do erro:', 
+                error.response ? error.response.data : 'Sem resposta do servidor',
+                error.message
+            );
+            
+            Alert.alert('Erro', error.message || 'Não foi possível realizar o empréstimo');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
 
     const { width: screenWidth } = Dimensions.get('window');
 
@@ -23,16 +106,16 @@ export default function LoanScreen({ navigation }) {
     const BorrowedBooksCarrosel = () => {
         const renderItem = ({ item }) => (
             <View style={Detailstyles.carroselContainer}>
-                <Image 
-                    source={item?.image ? { uri: item.image } : book1} 
-                    alt="Livro" 
-                    resizeMode="contain" 
-                    style={Detailstyles.Image} 
+                <Image
+                    source={item?.image ? { uri: item.image } : book1}
+                    alt="Livro"
+                    resizeMode="contain"
+                    style={Detailstyles.Image}
                 />
                 <View style={Detailstyles.carroselTextContainer}>
                     <Text style={Detailstyles.carroselTitle}>{item?.titulo || 'Nome do Livro'}</Text>
                     <Text style={Detailstyles.carroselTitle}>Data de entrega</Text>
-                    <Text style={Detailstyles.carroselData}>02.Nov.2024</Text>
+                    <Text style={Detailstyles.carroselData}>{deliveryDate}</Text>
                     <Text style={Detailstyles.carroselTitle}>Avaliação:</Text>
                     <AirbnbRating
                         count={5}
@@ -70,7 +153,7 @@ export default function LoanScreen({ navigation }) {
                         borderRadius: 5,
                         marginHorizontal: -1,
                         backgroundColor: '#ee2d32',
-                        bottom: 20
+                        bottom: 240
                     }}
                     tappableDots={true}
                     inactiveDotStyle={{
@@ -91,7 +174,8 @@ export default function LoanScreen({ navigation }) {
     const booksBottomSheetRef = useRef(null);
 
     // Snappoints for bottom sheets (adjust as needed)
-    const snapPoints = useMemo(() => ['50%', '75%'], []);
+    const snapPoints = useMemo(() => ['67%', '75%'], []);
+    const snapPointsDate = useMemo(() => ['37%', '40%'], []);
 
     // Handle opening bottom sheets
     const handleOpenDetailsSheet = useCallback(() => {
@@ -150,7 +234,7 @@ export default function LoanScreen({ navigation }) {
                             />
                             <View style={styles.dateContainer}>
                                 <Text style={styles.summaryTitle}>Data de entrega</Text>
-                                <Text style={styles.dateText}> 02 Ago</Text>
+                                <Text style={styles.dateText}>{deliveryDate}</Text>
                             </View>
                             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, width: "90%", left: 20, top: 10 }} />
                             <View>
@@ -161,15 +245,15 @@ export default function LoanScreen({ navigation }) {
                         </View>
                         <View style={styles.LoanOptionsContainer}>
                             <View style={styles.dateHourContainer}>
-                                <Text style={styles.dateHourTitle}>Data e Hora</Text>
+                                <Text style={styles.dateHourTitle}>Data</Text>
                                 <View style={styles.dateHourContent}>
                                     <View style={styles.ImageContainer}>
                                         <Image source={Calendar} style={styles.ImageStyle} resizeMode="contain" />
                                     </View>
                                     <View>
                                         <View style={styles.dateHourTextContainer}>
-                                            <Text style={styles.dateHour}>Data e Hora</Text>
-                                            <Text style={styles.dateHourSubtitle}>Escolher Data e Hora</Text>
+                                            <Text style={styles.dateHour}>Data</Text>
+                                            <Text style={styles.dateHourSubtitle}>Escolher Data</Text>
                                         </View>
                                     </View>
                                     <Pressable onPress={handleOpenDateTimeSheet}>
@@ -179,77 +263,53 @@ export default function LoanScreen({ navigation }) {
                                     </Pressable>
                                 </View>
                             </View>
-                            <View style={styles.addBookContainer}>
-                                <Text style={styles.addBookTitle}>Livros</Text>
-                                <View style={styles.addBookContent}>
-                                    <View style={styles.ImageContainer}>
-                                        <Image source={Calendar} style={styles.ImageStyle} resizeMode="contain" />
-                                    </View>
-                                    <View>
-                                        <View style={styles.addBookTextContainer}>
-                                            <Text style={styles.addBook}>Livros</Text>
-                                            <Text style={styles.addBookSubtitle}>Adicione ou Remova Livros</Text>
-                                        </View>
-                                    </View>
-                                    <Pressable style={styles.iconContainer} onPress={handleOpenBooksSheet}>
-                                        <ChevronRight color={"#292929"} size={40} />
-                                    </Pressable>
-                                </View>
-                            </View>
                         </View>
-                        <Button style={styles.finishButton}>
-                            <ButtonText style={styles.finishButtonText}>Confirmar</ButtonText>
+                        <Button
+                            style={styles.finishButton}
+                            onPress={handleConfirmLoan}
+                            isDisabled={loading}
+                        >
+                            <ButtonText style={styles.finishButtonText}>
+                                {loading ? 'Processando...' : 'Confirmar'}
+                            </ButtonText>
                         </Button>
                     </View>
 
                     {/* Bottom Sheets */}
                     <BottomSheetModal
-                    ref={detailsBottomSheetRef}
-                    index={0}
-                    snapPoints={snapPoints}
-                    backgroundStyle={styles.bottomSheetBackground}
-                    handleIndicatorStyle={styles.bottomSheetIndicator}
-                >
-                    <BottomSheetView style={styles.bottomSheetContent}>
-                        <Text style={styles.bottomSheetTitle}>Detalhes do Livro</Text>
-                        <View style={Detailstyles.contentContainer}>
-                            <View style={Detailstyles.borrowedBooks}>
-                                <Text style={Detailstyles.borrowedBooksText}>Livros Emprestados ({selectedLoanBooks.length})</Text>
-                            </View>
-                            <View style={{flex:1, left:10 }}>
-                                {selectedLoanBooks ? (
-                                    <BorrowedBooksCarrosel />
-                                ) : (
-                                    <Text>Nenhum livro selecionado</Text>
-                                )}
-                            </View>
-                        </View>
-                    </BottomSheetView>
-                </BottomSheetModal>
-
-                    <BottomSheetModal
-                        ref={dateTimeBottomSheetRef}
+                        ref={detailsBottomSheetRef}
                         index={0}
                         snapPoints={snapPoints}
                         backgroundStyle={styles.bottomSheetBackground}
                         handleIndicatorStyle={styles.bottomSheetIndicator}
                     >
                         <BottomSheetView style={styles.bottomSheetContent}>
-                            <Text style={styles.bottomSheetTitle}>Escolher Data e Hora</Text>
-                            {/* Add date and time selection content here */}
+                            <Text style={styles.bottomSheetTitle}>Detalhes do Livro</Text>
+                            <View style={Detailstyles.contentContainer}>
+                                <View style={Detailstyles.borrowedBooks}>
+                                    <Text style={Detailstyles.borrowedBooksText}>Livros Emprestados ({selectedLoanBooks.length})</Text>
+                                </View>
+                                <View style={{ flex: 1, left: 10 }}>
+                                    {selectedLoanBooks.length > 0 ? (
+                                        <BorrowedBooksCarrosel />
+                                    ) : (
+                                        <Text>Nenhum livro selecionado</Text>
+                                    )}
+                                </View>
+                            </View>
                         </BottomSheetView>
                     </BottomSheetModal>
 
                     <BottomSheetModal
-                        ref={booksBottomSheetRef}
+                        ref={dateTimeBottomSheetRef}
                         index={0}
-                        snapPoints={snapPoints}
+                        snapPoints={snapPointsDate}
                         backgroundStyle={styles.bottomSheetBackground}
                         handleIndicatorStyle={styles.bottomSheetIndicator}
                     >
                         <BottomSheetView style={styles.bottomSheetContent}>
-                            <Text style={styles.bottomSheetTitle}>Adicionar ou Remover Livros</Text>
-                            {/* Add book management content here */}
+                            <Text style={styles.bottomSheetTitle}>Escolher Data</Text>
+                            <DateOptionGroup onSelectDuration={handleDurationSelect} />
                         </BottomSheetView>
                     </BottomSheetModal>
                 </SafeAreaView>
@@ -528,13 +588,14 @@ const Detailstyles = StyleSheet.create({
         color: "#000",
         fontSize: 20,
         fontWeight: "bold",
+        left: 15
     },
     carroselContainer: {
         justifyContent: "center",
         flexDirection: "row",
         borderRadius: 20,
         marginTop: 15,
-        width:"100%",
+        width: "100%",
     },
     Image: {
         width: 230,
