@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import {
     Button,
@@ -17,45 +17,26 @@ type Props = {
 }
 
 export default function Reservar({ onPress }: Props) {
-    const { user, buscarUltimoEmprestimoLivro } = useAuth();
-    const [latestLoanBook, setLatestLoanBook] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { fetchUserLoans, user } = useAuth();
+    const [lastLoan, setLastLoan] = useState(null);
 
     useEffect(() => {
-        const fetchLatestLoanBook = async () => {
-            try {
-                setLoading(true);
-                
-                console.log('Usuário atual:', user);
-                
-                if (user && user.rm) {
-                    console.log('Buscando último empréstimo para RM:', user.rm);
-                    
-                    const book = await buscarUltimoEmprestimoLivro(user.rm);
-                    
-                    console.log('Livro do último empréstimo:', book);
-                    
-                    if (book) {
-                        setLatestLoanBook(book);
-                    } else {
-                        console.log('Nenhum livro de empréstimo encontrado');
-                    }
-                } else {
-                    console.log('Usuário ou RM não disponível');
+        const loadLastLoan = async () => {
+            if (user?.rm) {
+                const loans = await fetchUserLoans();
+                if (loans && loans.length > 0) {
+                    // Get the most recent loan (first in the array due to DESC order in SQL)
+                    setLastLoan(loans[0]);
                 }
-            } catch (err) {
-                console.error('Erro ao buscar último empréstimo:', err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
             }
         };
 
-        fetchLatestLoanBook();
+        loadLastLoan();
     }, [user]);
 
     const RenderItem = ({item}) => {
+        if (!item) return null;
+
         return (
             <View style={styles.card}>
                 <View style={styles.textContainer}>
@@ -74,12 +55,8 @@ export default function Reservar({ onPress }: Props) {
                     <Pressable onPress={() => onPress(item)}>
                         <Image 
                             style={styles.Image} 
-                            source={
-                                item.image 
-                                    ? { uri: item.image } 
-                                    : require('../../../assets/book2.png')
-                            } 
-                            alt="Último Livro Emprestado" 
+                            source={{ uri: item.image }} 
+                            alt={item.titulo} 
                         />
                     </Pressable>
                 </View>
@@ -87,47 +64,25 @@ export default function Reservar({ onPress }: Props) {
         );
     };
 
-    // Renderização condicional baseada no estado
-    if (loading) {
-        return (
-            <View style={styles.card}>
-                <Text style={styles.title}>Carregando...</Text>
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.card}>
-                <Text style={styles.title}>Erro ao buscar empréstimo</Text>
-                <Text>{error}</Text>
-            </View>
-        );
-    }
-
-    if (!latestLoanBook) {
-        return (
-            <View style={styles.card}>
-                <Text style={styles.title}>Nenhum empréstimo encontrado</Text>
-            </View>
-        );
-    }
-
     return (
         <SafeAreaView>
             <FlatList
-                data={[latestLoanBook]} 
+                data={lastLoan ? [lastLoan] : []} 
                 renderItem={RenderItem}
-                keyExtractor={(item) => item.emprestimo_id?.toString() || 'default'}
+                keyExtractor={(item) => item.emprestimo_id.toString()}
                 ListEmptyComponent={() => (
-                    <View style={styles.card}>
-                        <Text style={styles.title}>Nenhum empréstimo encontrado</Text>
+                    <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyText}>
+                            Você ainda não realizou nenhum empréstimo
+                        </Text>
                     </View>
                 )}
             />
         </SafeAreaView>
     );
 }
+
+
 const styles = StyleSheet.create({
     card: {
         width: screenWidth - 40,
@@ -138,8 +93,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 15,
         right: 8,
-        justifyContent: 'center',
-        alignItems: 'center'
+        
     },
     textContainer: {
         width: 240,
@@ -171,5 +125,20 @@ const styles = StyleSheet.create({
         width: 110,
         height: 160,
         borderRadius: 10,
+    },
+    subtitle: {
+        fontSize: 18,
+        color: 'black',
+        marginTop: 10,
+        fontWeight: '600'
+    },
+    emptyContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    },
+    emptyText: {
+        fontSize: 16,
+        color: 'gray',
     },
 });

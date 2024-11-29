@@ -794,7 +794,7 @@ const useModel = {
       throw error;
     }
   },
-  
+
   getAllEmprestimos: async () => {
     try {
       const [rows] = await connection.query(`

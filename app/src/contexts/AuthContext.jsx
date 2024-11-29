@@ -35,6 +35,22 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
 
+    const fetchUserLoans = async () => {
+        if (!authData?.user?.rm) {
+            console.log('Usuário não autenticado');
+            return [];
+        }
+    
+        try {
+            const response = await api.get(`/emprestimo/listEmprestimo/${authData.user.rm}`);
+            return response.data;
+        } catch (err) {
+            console.error('Erro ao buscar empréstimos do usuário:', err);
+            return [];
+        }
+    };
+    
+
     const realizarEmprestimo = async (livrosIds, prazo_dias) => {
         console.log('Iniciando realizarEmprestimo');
         console.log('IDs dos livros:', livrosIds);
@@ -273,56 +289,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const buscarUltimoEmprestimoLivro = async (userRm) => {
-        setLoading(true);
-        try {
-            console.log('Buscando empréstimos para RM:', userRm);
-            
-            const response = await api.get(`/emprestimo/listEmprestimo/${userRm}`);
-            
-            console.log('Resposta da API de empréstimos:', response.data);
-            
-            // A API já retorna um array vazio se não encontrar empréstimos
-            if (response.data && response.data.length > 0) {
-                // Ordena por data de empréstimo em ordem decrescente
-                const latestLoan = response.data.sort((a, b) => 
-                    new Date(b.data_emprestimo) - new Date(a.data_emprestimo)
-                )[0];
-                
-                console.log('Último empréstimo encontrado:', latestLoan);
-                return latestLoan;
-            }
-            
-            console.log('Nenhum empréstimo encontrado');
-            return null;
-        } catch (err) {
-            console.error('Erro ao buscar empréstimos:', err);
-            
-            // Log detalhes do erro
-            if (err.response) {
-                console.error('Detalhes do erro:', {
-                    status: err.response.status,
-                    data: err.response.data,
-                    message: err.message
-                });
-            }
-    
-            // Trata especificamente o caso de nenhum empréstimo encontrado
-            if (err.response?.status === 404) {
-                console.log('Nenhum empréstimo encontrado para o usuário');
-                return null;
-            }
-    
-            setError(
-                err.response?.data?.msg ||
-                err.message ||
-                'Erro ao buscar empréstimos'
-            );
-            return null;
-        } finally {
-            setLoading(false);
-        }
-    };
 
 
     const loadFavorites = async () => {
@@ -526,7 +492,6 @@ export const AuthProvider = ({ children }) => {
                 selectUserForEdit,
                 updateStudent,
                 deleteStudent,
-                buscarUltimoEmprestimoLivro,
                 // loading,
                 error,
                 searchLivros,
@@ -539,6 +504,7 @@ export const AuthProvider = ({ children }) => {
                 clearSelectedLoanBooks,
                 removeSelectedLoanBook,
                 realizarEmprestimo,
+                fetchUserLoans,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,

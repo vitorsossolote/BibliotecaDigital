@@ -13,12 +13,12 @@ import {
     AlertDialogFooter,
     Text
 } from "@gluestack-ui/themed";
-import { ScrollView, StyleSheet, Pressable, SafeAreaView,View,ToastAndroid} from "react-native"
+import { ScrollView, StyleSheet, Pressable, SafeAreaView, View, ToastAndroid } from "react-native"
 import { MoveLeft } from "lucide-react-native"
 import { AirbnbRating } from 'react-native-ratings';
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { MotiView } from "moti";
-import {Ionicons} from 'react-native-vector-icons/Ionicons'
+import MotiView from "moti";
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import axios from 'axios';
 import Heart from "../../../assets/Heart.png";
 import { useAuth } from "../../contexts/AuthContext";
@@ -29,7 +29,7 @@ export default function AuthorsScreen({ route, navigation }) {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
-    const { author,data } = route.params;
+    const { author, data } = route.params;
 
     // State to store author's books
     const [authorBooks, setAuthorBooks] = useState([]);
@@ -119,77 +119,102 @@ export default function AuthorsScreen({ route, navigation }) {
         setIsDeleteDialogVisible(true);
     };
 
+    const handleContinueToLoan = () => {
+        // Verifica se o usuário está logado
+        if (!user) {
+            ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
+            return;
+        }
+    
+        // Verifica se o livro está disponível
+        if (selectedBook.estado.toLowerCase() !== 'd') {
+            ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
+            return;
+        }
+    
+        // Seleciona o livro para empréstimo no contexto
+        selectBookForLoan(selectedBook);
+    };
+    
+
     return (
         <GluestackUIProvider config={config}>
-        <SafeAreaView style={{flex: 1, backgroundColor: "#fafafa"}}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Pressable onPress={() => navigation.goBack()}>
-                            <MoveLeft color={"#000"} size={35} />
-                        </Pressable>
-                        <Text style={styles.headerText}>Autores</Text>
-                    </View>
-                    <View style={styles.authorContentContainer}>
-                        <Image 
-                            source={{ uri: author.image }} 
-                            alt="autor" 
-                            resizeMode="cover" 
-                            style={styles.authorImage} 
-                        />
-                        <Text style={styles.authorGenderText}>{author.genero}</Text>
-                        <Text style={styles.authorNameText}>{author.nome_autor}</Text>
-                    </View>
-                    <View style={styles.aboutContainer}>
-                        <Text style={styles.aboutHeader}>Sobre</Text>
-                        <Text style={styles.desc}>{author.sobre || 'Biografia não disponível'}</Text>
-                    </View>
-                    <View style={styles.bookContainer}>
-                        <Text style={styles.bookHeader}>Livros</Text>
-                        <View style={{ flexDirection: "column", gap: 30 }}>
-                            {authorBooks.length > 0 ? (
-                                <View style={styles.bookGaleryContainer}>
-                                    {authorBooks.map((book, index) => (
-                                        <View key={index} style={styles.bookContent}>
-                                            <Pressable onPress={() => handleOpenPress(book)}>
-                                                <Image 
-                                                    source={{ uri: book.image }} 
-                                                    alt="livro" 
-                                                    resizeMode="contain" 
-                                                    style={styles.bookImage} 
-                                                />
-                                            </Pressable>
-                                            <Text style={styles.bookName}>{book.titulo}</Text>
-                                            <Text style={styles.bookStatus}>
-                                                {book.status ? 'D' : 'Indisponível'}
-                                            </Text>
-                                        </View>
-                                    ))}
-                                </View>
-                            ) : (
-                                <Text style={styles.desc}>Nenhum livro encontrado para este autor.</Text>
-                            )}
+            <SafeAreaView style={{ flex: 1, backgroundColor: "#fafafa" }}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <Pressable onPress={() => navigation.goBack()}>
+                                <MoveLeft color={"#000"} size={35} />
+                            </Pressable>
+                            <Text style={styles.headerText}>Autores</Text>
+                        </View>
+                        <View style={styles.authorContentContainer}>
+                            <Image
+                                source={{ uri: author.image }}
+                                alt="autor"
+                                resizeMode="cover"
+                                style={styles.authorImage}
+                            />
+                            <Text style={styles.authorGenderText}>{author.genero}</Text>
+                            <Text style={styles.authorNameText}>{author.nome_autor}</Text>
+                        </View>
+                        <View style={styles.aboutContainer}>
+                            <Text style={styles.aboutHeader}>Sobre</Text>
+                            <Text style={styles.desc}>{author.sobre || 'Biografia não disponível'}</Text>
+                        </View>
+                        <View style={styles.bookContainer}>
+                            <Text style={styles.bookHeader}>Livros</Text>
+                            <View style={{ flexDirection: "column", gap: 30 }}>
+                                {authorBooks.length > 0 ? (
+                                    <View style={styles.bookGaleryContainer}>
+                                        {authorBooks.map((book, index) => (
+                                            <View key={index} style={styles.bookContent}>
+                                                <Pressable onPress={() => handleOpenPress(book)}>
+                                                    <Image
+                                                        source={{ uri: book.image }}
+                                                        alt="livro"
+                                                        resizeMode="contain"
+                                                        style={styles.bookImage}
+                                                    />
+                                                </Pressable>
+                                                <Text style={styles.bookName}>{book.titulo}</Text>
+                                                <Text style={styles.bookStatus}>
+                                                    {book.status ? 'D' : 'Indisponível'}
+                                                </Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                ) : (
+                                    <Text style={styles.desc}>Nenhum livro encontrado para este autor.</Text>
+                                )}
+                            </View>
                         </View>
                     </View>
-                </View>
-            </ScrollView>
-            {/* BottomSheet for Book Details */}
-            <BottomSheet
+                </ScrollView>
+                {/* BottomSheet for Book Details */}
+                <BottomSheet
                     ref={bottomSheetref}
                     snapPoints={snapPoints}
                     index={-1}
                     enablePanDownToClose={true}>
-                    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-                        {selectedBook && ( // Só renderiza se houver um livro selecionado
+                    <BottomSheetScrollView contentContainerStyle={bottomSheetStyles.contentContainer}>
+                        {selectedBook && (
                             <>
-                                <View style={styles.bookContainer}>
-                                    <Image source={selectedBook.image} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                                <View style={bottomSheetStyles.bookContainer}>
+                                    {selectedBook.image && (
+                                        <Image
+                                            source={{ uri: selectedBook.image }}
+                                            alt="livro"
+                                            style={bottomSheetStyles.bookStyle}
+                                            resizeMode="contain"
+                                        />
+                                    )}
                                 </View>
-                                <View style={styles.detailContainer}>
-                                    <View style={styles.headerContainer}>
-                                        <Text style={styles.title}>{selectedBook.titulo}</Text>
+                                <View style={bottomSheetStyles.detailContainer}>
+                                    <View style={bottomSheetStyles.headerContainer}>
+                                        <Text style={bottomSheetStyles.title}>{selectedBook.titulo}</Text>
                                         {isLibrarianAuthenticated() ? (
-                                            <></>
+                                            <>a</>
                                         ) : (<Pressable
                                             size="md"
                                             bg="transparent"
@@ -197,38 +222,34 @@ export default function AuthorsScreen({ route, navigation }) {
                                             onPress={handleFavoritePress}
                                         >
                                             {isFavorited ? (
-                                                <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
                                                     <Ionicons name="heart" size={26} color={"#ee2d32"} />
-                                                </MotiView>
                                             ) : (
-                                                <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
                                                     <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
-                                                </MotiView>
                                             )}
                                         </Pressable>)}
                                     </View>
-                                    <View style={styles.genderContainer}>
-                                        <Text style={styles.genderText}>{selectedBook.nome_genero}</Text>
+                                    <View style={bottomSheetStyles.genderContainer}>
+                                        <Text style={bottomSheetStyles.genderText}>{selectedBook.nome_genero}</Text>
                                     </View>
-                                    <Text style={styles.description}>{selectedBook.descricao}</Text>
+                                    <Text style={bottomSheetStyles.description}>{selectedBook.descricao}</Text>
                                 </View>
-                                <View style={styles.ratingContainer}>
-                                    <Text style={styles.ratingTitle}>Avaliação</Text>
+                                <View style={bottomSheetStyles.ratingContainer}>
+                                    <Text style={bottomSheetStyles.ratingTitle}>Avaliação</Text>
                                     <AirbnbRating
                                         count={5}
                                         defaultRating={selectedBook.rating || 1}
                                         size={20}
                                         showRating={false}
                                         unSelectedColor="#000"
-                                        starContainerStyle={styles.starRating}
+                                        starContainerStyle={bottomSheetStyles.starRating}
                                         isDisabled={true}
                                     />
-                                    <Text style={[styles.status,
+                                    <Text style={[bottomSheetStyles.status,
                                     { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
                                         {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                     </Text>
                                 </View>
-                                <View style={styles.buttonContainer}>
+                                <View style={bottomSheetStyles.buttonContainer}>
                                     {isLibrarianAuthenticated() ? (
                                         <Button
                                             size="md"
@@ -236,10 +257,10 @@ export default function AuthorsScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={false}
                                             isFocusVisible={false}
-                                            style={styles.buttonPrincipal}
+                                            style={bottomSheetStyles.buttonPrincipal}
                                             onPress={confirmDeleteBook}
                                         >
-                                            <ButtonText style={styles.buttonPrincipalText}>
+                                            <ButtonText style={bottomSheetStyles.buttonPrincipalText}>
                                                 Excluir Livro
                                             </ButtonText>
                                         </Button>
@@ -248,12 +269,11 @@ export default function AuthorsScreen({ route, navigation }) {
                                             size="md"
                                             variant="solid"
                                             action="primary"
-                                            isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
                                             isFocusVisible={false}
-                                            style={styles.buttonPrincipal}
+                                            style={bottomSheetStyles.buttonPrincipal}
                                             onPress={() => navigation.navigate("EditBooks")}
                                         >
-                                            <ButtonText style={styles.buttonPrincipalText}>
+                                            <ButtonText style={bottomSheetStyles.buttonPrincipalText}>
                                                 Continuar com Empréstimo
                                             </ButtonText>
                                         </Button>
@@ -265,12 +285,10 @@ export default function AuthorsScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={false}
                                             isFocusVisible={false}
-                                            style={styles.buttonSecondary}
-                                            onPress={() => navigation.navigate("EditBooks", {
-                                                bookData: selectedBook
-                                            })}
+                                            style={bottomSheetStyles.buttonSecondary}
+                                            onPress={handleContinueToLoan}
                                         >
-                                            <ButtonText style={styles.buttonSecondaryText}>
+                                            <ButtonText style={bottomSheetStyles.buttonSecondaryText}>
                                                 Editar Livro
                                             </ButtonText>
                                         </Button>
@@ -281,10 +299,10 @@ export default function AuthorsScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={false}
                                             isFocusVisible={false}
-                                            style={styles.buttonSecondary}
+                                            style={bottomSheetStyles.buttonSecondary}
                                             onPress={() => navigation.navigate("SearchScreen")}
                                         >
-                                            <ButtonText style={styles.buttonSecondaryText}>
+                                            <ButtonText style={bottomSheetStyles.buttonSecondaryText}>
                                                 Ver Livros
                                             </ButtonText>
                                         </Button>
@@ -329,7 +347,7 @@ export default function AuthorsScreen({ route, navigation }) {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
-        </SafeAreaView>
+            </SafeAreaView>
         </GluestackUIProvider>
     );
 }
@@ -475,7 +493,7 @@ const bottomSheetStyles = StyleSheet.create({
     },
     starRating: {
         justifyContent: "flex-start",
-        marginLeft: 28,
+        right:120
     },
     status: {
         fontSize: 18,

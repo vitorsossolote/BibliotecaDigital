@@ -29,7 +29,7 @@ import MainHeader from "../../components/MainHeader";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function SearchGenderScreen({ route, navigation }) {
-    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, isLibrarianAuthenticated, selectBookForLoan} = useAuth();
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, isLibrarianAuthenticated, selectBookForLoan } = useAuth();
     const [genres, setGenres] = useState([]);
     const [books, setBooks] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState(null);
@@ -52,20 +52,20 @@ export default function SearchGenderScreen({ route, navigation }) {
             ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
             return;
         }
-    
+
         // Verifica se o livro está disponível
         if (selectedBook.quantidade <= 0) {
             ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
             return;
         }
-    
+
         // Seleciona o livro para empréstimo no contexto
         selectBookForLoan(selectedBook);
-    
+
         // Navega para a próxima tela de empréstimo
         navigation.navigate("LoanScreen");
     };
-    
+
     const handleDeleteBook = async () => {
         if (!selectedBook) return;
 
@@ -98,7 +98,7 @@ export default function SearchGenderScreen({ route, navigation }) {
         async function loadGenres() {
             try {
                 const response = await axios.get("http://10.0.2.2:8085/api/generos");
-                
+
                 // Adiciona a opção "Todos" no início da lista
                 const updatedGenres = [
                     { id_genero: null, nome_genero: "Todos" },
@@ -115,7 +115,7 @@ export default function SearchGenderScreen({ route, navigation }) {
                 } else {
                     initialGenre = updatedGenres[0]; // "Todos" por padrão
                 }
-                
+
                 // Força a atualização do estado do gênero selecionado
                 setSelectedGenre(initialGenre);
                 setLoading(false);
@@ -133,7 +133,6 @@ export default function SearchGenderScreen({ route, navigation }) {
         setSelectedGenre(genre);
     };
 
-    // Carregar livros quando o gênero é alterado
     useEffect(() => {
         // Evita carregamento duplicado durante a inicialização
         if (isInitialLoad) return;
@@ -146,10 +145,10 @@ export default function SearchGenderScreen({ route, navigation }) {
                 if (!selectedGenre || selectedGenre.id_genero === null) {
                     response = await axios.get("http://10.0.2.2:8085/api/listBooks");
                 } else {
-                    // Busca livros de um gênero específico
-                    response = await axios.get(`http://10.0.2.2:8085/api/ListBooks/genero/${selectedGenre.id_genero}`);
+                    // Busca livros de um gênero específico usando o nome do gênero
+                    response = await axios.get(`http://10.0.2.2:8085/api/ListBooksByGender/${selectedGenre.nome_genero}`);
                 }
-                
+
                 setBooks(response.data);
                 setLoading(false);
             } catch (error) {
@@ -158,7 +157,7 @@ export default function SearchGenderScreen({ route, navigation }) {
             }
         }
         loadBooks();
-    }, [selectedGenre, isInitialLoad]); 
+    }, [selectedGenre, isInitialLoad]);
 
     const handleOpenPress = (book) => {
         setSelectedBook(book);
@@ -209,11 +208,11 @@ export default function SearchGenderScreen({ route, navigation }) {
             <SafeAreaView style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.headerContainer}>
-                        <MainHeader 
-                            title="Gêneros" 
-                            icon1={MoveLeft} 
-                            icon2={Search} 
-                            onPress={() => navigation.navigate("Home")} 
+                        <MainHeader
+                            title="Gêneros"
+                            icon1={MoveLeft}
+                            icon2={Search}
+                            onPress={() => navigation.navigate("Home")}
                             onPress2={() => navigation.navigate("SearchScreen")}
                         />
                     </View>
@@ -223,19 +222,19 @@ export default function SearchGenderScreen({ route, navigation }) {
                             <ScrollView horizontal={true} style={styles.genderContainer} showsHorizontalScrollIndicator={false}>
                                 <View style={{ flexDirection: "row", gap: 15 }}>
                                     {genres.map((genre) => (
-                                        <TouchableOpacity 
-                                            key={genre.id_genero} 
+                                        <TouchableOpacity
+                                            key={genre.id_genero}
                                             style={
-                                                selectedGenre?.id_genero === genre.id_genero 
-                                                    ? styles.selectedGenderContainer 
+                                                selectedGenre?.id_genero === genre.id_genero
+                                                    ? styles.selectedGenderContainer
                                                     : styles.genderTextContainer
                                             }
                                             onPress={() => handleGenreSelect(genre)}
                                         >
-                                            <Text 
+                                            <Text
                                                 style={
-                                                    selectedGenre?.id_genero === genre.id_genero 
-                                                        ? styles.selectedGenderText 
+                                                    selectedGenre?.id_genero === genre.id_genero
+                                                        ? styles.selectedGenderText
                                                         : styles.unselectedGenderText
                                                 }
                                             >
@@ -256,17 +255,17 @@ export default function SearchGenderScreen({ route, navigation }) {
                                 <ActivityIndicator size="large" color="#ee2d32" />
                             ) : (
                                 <ScrollView>
-                                    <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                                         {books.map((book) => (
-                                            <TouchableOpacity 
-                                                key={book.id_livro} 
+                                            <TouchableOpacity
+                                                key={book.id_livro}
                                                 style={styles.bookVerticalContainer}
                                                 onPress={() => handleOpenPress(book)}
                                             >
                                                 <View style={styles.bookContainer}>
-                                                    <Image 
-                                                        source={{ uri: book.image }} 
-                                                        style={styles.bookImage} 
+                                                    <Image
+                                                        source={{ uri: book.image }}
+                                                        style={styles.bookImage}
                                                         resizeMode="cover"
                                                     />
                                                     <Text style={styles.bookTitle} numberOfLines={2}>
@@ -286,127 +285,127 @@ export default function SearchGenderScreen({ route, navigation }) {
                 </ScrollView>
 
                 <BottomSheet
-    ref={bottomSheetref}
-    snapPoints={snapPoints}
-    index={-1}
-    enablePanDownToClose={true}>
-    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-        {selectedBook && ( // Só renderiza se houver um livro selecionado
-            <>
-                <View style={styles.bookContainer}>
-                    <Image source={{ uri: selectedBook.image }} alt="livro" style={styles.bookStyle} resizeMode="contain" />
-                </View>
-                <View style={styles.detailContainer}>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.title}>{selectedBook.titulo}</Text>
-                        {isLibrarianAuthenticated() ? (
-                            <></>
-                        ) : (
-                            <Pressable
-                                size="md"
-                                bg="transparent"
-                                style={{ top: 7 }}
-                                onPress={handleFavoritePress}
-                            >
-                                {isFavorited ? (
-                                    <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
-                                        <Ionicons name="heart" size={26} color={"#ee2d32"} />
-                                    </MotiView>
-                                ) : (
-                                    <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
-                                        <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
-                                    </MotiView>
-                                )}
-                            </Pressable>
+                    ref={bottomSheetref}
+                    snapPoints={snapPoints}
+                    index={-1}
+                    enablePanDownToClose={true}>
+                    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
+                        {selectedBook && ( // Só renderiza se houver um livro selecionado
+                            <>
+                                <View style={styles.bookContainer}>
+                                    <Image source={{ uri: selectedBook.image }} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                                </View>
+                                <View style={styles.detailContainer}>
+                                    <View style={styles.headerContainer}>
+                                        <Text style={styles.title}>{selectedBook.titulo}</Text>
+                                        {isLibrarianAuthenticated() ? (
+                                            <></>
+                                        ) : (
+                                            <Pressable
+                                                size="md"
+                                                bg="transparent"
+                                                style={{ top: 7 }}
+                                                onPress={handleFavoritePress}
+                                            >
+                                                {isFavorited ? (
+                                                    <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
+                                                        <Ionicons name="heart" size={26} color={"#ee2d32"} />
+                                                    </MotiView>
+                                                ) : (
+                                                    <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
+                                                        <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
+                                                    </MotiView>
+                                                )}
+                                            </Pressable>
+                                        )}
+                                    </View>
+                                    <View style={styles.genderContainer}>
+                                        <Text style={styles.genderText}>{selectedBook.nome_genero}</Text>
+                                    </View>
+                                    <Text style={styles.description}>{selectedBook.descricao}</Text>
+                                </View>
+                                <View style={styles.ratingContainer}>
+                                    <Text style={styles.ratingTitle}>Avaliação</Text>
+                                    <AirbnbRating
+                                        count={5}
+                                        defaultRating={selectedBook.rating || 1}
+                                        size={20}
+                                        showRating={false}
+                                        unSelectedColor="#000"
+                                        starContainerStyle={styles.starRating}
+                                        isDisabled={true}
+                                    />
+                                    <Text style={[styles.status,
+                                    { color: selectedBook.quantidade > 0 ? '#34A853' : '#ee2d32' }]}>
+                                        {selectedBook.quantidade > 0 ? 'Disponível' : 'Indisponível'}
+                                    </Text>
+                                </View>
+                                <View style={styles.buttonContainer}>
+                                    {isLibrarianAuthenticated() ? (
+                                        <Button
+                                            size="md"
+                                            variant="solid"
+                                            action="primary"
+                                            isDisabled={false}
+                                            isFocusVisible={false}
+                                            style={styles.buttonPrincipal}
+                                            onPress={confirmDeleteBook}
+                                        >
+                                            <ButtonText style={styles.buttonPrincipalText}>
+                                                Excluir Livro
+                                            </ButtonText>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            size="md"
+                                            variant="solid"
+                                            action="primary"
+                                            isDisabled={selectedBook.quantidade <= 0}
+                                            isFocusVisible={false}
+                                            style={styles.buttonPrincipal}
+                                            onPress={handleContinueToLoan}
+                                        >
+                                            <ButtonText style={styles.buttonPrincipalText}>
+                                                Continuar com Empréstimo
+                                            </ButtonText>
+                                        </Button>
+                                    )}
+                                    {isLibrarianAuthenticated() ? (
+                                        <Button
+                                            size="md"
+                                            variant="solid"
+                                            action="primary"
+                                            isDisabled={false}
+                                            isFocusVisible={false}
+                                            style={styles.buttonSecondary}
+                                            onPress={() => navigation.navigate("EditBooks", {
+                                                bookData: selectedBook
+                                            })}
+                                        >
+                                            <ButtonText style={styles.buttonSecondaryText}>
+                                                Editar Livro
+                                            </ButtonText>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            size="md"
+                                            variant="solid"
+                                            action="primary"
+                                            isDisabled={false}
+                                            isFocusVisible={false}
+                                            style={styles.buttonSecondary}
+                                            onPress={() => navigation.navigate("SearchScreen")}
+                                        >
+                                            <ButtonText style={styles.buttonSecondaryText}>
+                                                Ver Livros
+                                            </ButtonText>
+                                        </Button>
+                                    )}
+                                </View>
+                            </>
                         )}
-                    </View>
-                    <View style={styles.genderContainer}>
-                        <Text style={styles.genderText}>{selectedBook.nome_genero}</Text>
-                    </View>
-                    <Text style={styles.description}>{selectedBook.descricao}</Text>
-                </View>
-                <View style={styles.ratingContainer}>
-                    <Text style={styles.ratingTitle}>Avaliação</Text>
-                    <AirbnbRating
-                        count={5}
-                        defaultRating={selectedBook.rating || 1}
-                        size={20}
-                        showRating={false}
-                        unSelectedColor="#000"
-                        starContainerStyle={styles.starRating}
-                        isDisabled={true}
-                    />
-                    <Text style={[styles.status,
-                    { color: selectedBook.quantidade > 0 ? '#34A853' : '#ee2d32' }]}>
-                        {selectedBook.quantidade > 0 ? 'Disponível' : 'Indisponível'}
-                    </Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    {isLibrarianAuthenticated() ? (
-                        <Button
-                            size="md"
-                            variant="solid"
-                            action="primary"
-                            isDisabled={false}
-                            isFocusVisible={false}
-                            style={styles.buttonPrincipal}
-                            onPress={confirmDeleteBook}
-                        >
-                            <ButtonText style={styles.buttonPrincipalText}>
-                                Excluir Livro
-                            </ButtonText>
-                        </Button>
-                    ) : (
-                        <Button
-                            size="md"
-                            variant="solid"
-                            action="primary"
-                            isDisabled={selectedBook.quantidade <= 0}
-                            isFocusVisible={false}
-                            style={styles.buttonPrincipal}
-                            onPress={handleContinueToLoan}
-                        >
-                            <ButtonText style={styles.buttonPrincipalText}>
-                                Continuar com Empréstimo
-                            </ButtonText>
-                        </Button>
-                    )}
-                    {isLibrarianAuthenticated() ? (
-                        <Button
-                            size="md"
-                            variant="solid"
-                            action="primary"
-                            isDisabled={false}
-                            isFocusVisible={false}
-                            style={styles.buttonSecondary}
-                            onPress={() => navigation.navigate("EditBooks", {
-                                bookData: selectedBook
-                            })}
-                        >
-                            <ButtonText style={styles.buttonSecondaryText}>
-                                Editar Livro
-                            </ButtonText>
-                        </Button>
-                    ) : (
-                        <Button
-                            size="md"
-                            variant="solid"
-                            action="primary"
-                            isDisabled={false}
-                            isFocusVisible={false}
-                            style={styles.buttonSecondary}
-                            onPress={() => navigation.navigate("SearchScreen")}
-                        >
-                            <ButtonText style={styles.buttonSecondaryText}>
-                                Ver Livros
-                            </ButtonText>
-                        </Button>
-                    )}
-                </View>
-            </>
-        )}
-    </BottomSheetScrollView>
-</BottomSheet>
+                    </BottomSheetScrollView>
+                </BottomSheet>
                 <AlertDialog
                     isOpen={isDeleteDialogVisible}
                     onClose={() => setIsDeleteDialogVisible(false)}
@@ -463,7 +462,7 @@ const styles = StyleSheet.create({
     },
     genderSection: {
         marginTop: 40,
-        width:"100%",
+        width: "100%",
     },
     genderContainer: {
         height: 30,
@@ -543,7 +542,7 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 16,
     },
-    
+
     genderText: {
         fontSize: 22,
         fontWeight: 'bold',

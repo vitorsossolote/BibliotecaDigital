@@ -87,7 +87,6 @@ router.get('/api/ListBooks/autor/:id_autor', clientController.listarLivrosPorAut
 router.get('/api/ListBooks/autor/name/:nome_autor', clientController.listarLivrosPorNomeAutor);
 
 // EMPRÉSTIMO ---------------------------------------------------------------------------
-
 // // Criar um novo empréstimo
 router.post("/api/emprestimo", clientController.createEmprestimo);
 // // Atualizar o estado de um empréstimo (apenas bibliotecário)
