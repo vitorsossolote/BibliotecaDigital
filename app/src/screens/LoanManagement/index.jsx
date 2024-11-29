@@ -8,151 +8,173 @@ import {
     ActivityIndicator, 
     Alert,
     Modal,
-    RefreshControl
+    TextInput
 } from 'react-native';
 import axios from 'axios';
-import { useAuth } from '../../contexts/AuthContext'; // Adjust path as needed
+import { useAuth } from '../../contexts/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function LoanManagement() {
     const [loans, setLoans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [sortModalVisible, setSortModalVisible] = useState(false);
-    const [sortCriteria, setSortCriteria] = useState({
-        field: 'data_emprestimo', // default sort
-        direction: 'desc' // default descending
-    });
+    const [selectedLoan, setSelectedLoan] = useState(null);
+    const [stateUpdateModalVisible, setStateUpdateModalVisible] = useState(false);
+    const [ratingModalVisible, setRatingModalVisible] = useState(false);
 
     const { authLibrarianData } = useAuth();
 
-    const fetchLoans = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get('http://10.0.2.2:8085/api/emprestimo/listEmprestimo', {
-                headers: {
-                    Authorization: `Bearer ${authLibrarianData?.librarianToken}`
-                }
-            });
-            
-            // Sort loans based on current criteria
-            const sortedLoans = sortLoans(response.data, sortCriteria);
+    // Update loan state and rating
+    const updateLoanStateAndRating = async (novoEstado, avaliacao = null) => {
+        if (!selectedLoan) {
+            Alert.alert('Erro', 'Nenhum empréstimo selecionado');
+            return;
+        }
 
-            setLoans(sortedLoans);
-            setError(null);
+        // Validation for rating when concluding loan
+        if (novoEstado === 'concluído' && (!avaliacao || avaliacao < 1 || avaliacao > 5)) {
+            Alert.alert('Erro', 'Por favor, insira uma avaliação válida entre 1 e 5');
+            return;
+        }
+
+        try {
+            const response = await axios.put(
+                `http://10.0.2.2:8085/api/emprestimo/${selectedLoan.emprestimo_id}/atualizarEstado`, 
+                { 
+                    novo_estado: novoEstado,
+                    avaliacao: novoEstado === 'concluído' ? avaliacao : undefined
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${authLibrarianData?.librarianToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            // Update local state
+            const updatedLoans = loans.map(loan => 
+                loan.emprestimo_id === selectedLoan.emprestimo_id 
+                    ? { ...loan, estado: novoEstado } 
+                    : loan
+            );
+            
+            setLoans(updatedLoans);
+            
+            // Close modals and reset
+            setStateUpdateModalVisible(false);
+            setRatingModalVisible(false);
+            setSelectedLoan(null);
+
+            Alert.alert('Sucesso', response.data.msg);
         } catch (err) {
-            console.error('Erro ao buscar empréstimos:', err);
-            setError('Não foi possível carregar os empréstimos');
-            Alert.alert('Erro', 'Não foi possível carregar os empréstimos');
-        } finally {
-            setLoading(false);
+            console.error('Erro ao atualizar estado:', err.response?.data || err);
+            Alert.alert(
+                'Erro', 
+                err.response?.data?.msg || 'Não foi possível atualizar o estado do empréstimo'
+            );
         }
     };
 
-    // Sorting function
-    const sortLoans = (loansToSort, criteria) => {
-        return [...loansToSort].sort((a, b) => {
-            const valueA = new Date(a[criteria.field]);
-            const valueB = new Date(b[criteria.field]);
-            
-            return criteria.direction === 'asc' 
-                ? valueA - valueB 
-                : valueB - valueA;
-        });
-    };
-
-    // Update sorting and re-fetch
-    const handleSorting = (field) => {
-        const newDirection = 
-            sortCriteria.field === field && sortCriteria.direction === 'desc' 
-                ? 'asc' 
-                : 'desc';
-
-        const newSortCriteria = { field, direction: newDirection };
-        
-        setSortCriteria(newSortCriteria);
-        
-        // Re-sort existing loans
-        const sortedLoans = sortLoans(loans, newSortCriteria);
-        setLoans(sortedLoans);
-        
-        // Close modal
-        setSortModalVisible(false);
-    };
-
-    useEffect(() => {
-        fetchLoans();
-    }, []);
-
-    const renderSortModal = () => (
+    const renderStateUpdateModal = () => (
         <Modal
             animationType="slide"
             transparent={true}
-            visible={sortModalVisible}
-            onRequestClose={() => setSortModalVisible(false)}
+            visible={stateUpdateModalVisible}
+            onRequestClose={() => setStateUpdateModalVisible(false)}
         >
             <View style={styles.modalOverlay}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Ordenar por</Text>
+                    <Text style={styles.modalTitle}>Atualizar Estado do Empréstimo</Text>
                     
-                    {/* Sort by Loan Date */}
-                    <TouchableOpacity 
-                        style={styles.sortOption}
-                        onPress={() => handleSorting('data_emprestimo')}
-                    >
-                        <Text style={styles.sortOptionText}>Data de Empréstimo</Text>
-                        {sortCriteria.field === 'data_emprestimo' && (
-                            <Icon 
-                                name={sortCriteria.direction === 'asc' 
-                                    ? 'arrow-upward' 
-                                    : 'arrow-downward'
-                                } 
-                                size={20} 
-                                color="#2196F3" 
-                            />
-                        )}
-                    </TouchableOpacity>
-
-                    {/* Sort by Return Date */}
-                    <TouchableOpacity 
-                        style={styles.sortOption}
-                        onPress={() => handleSorting('data_devolucao')}
-                    >
-                        <Text style={styles.sortOptionText}>Data de Devolução</Text>
-                        {sortCriteria.field === 'data_devolucao' && (
-                            <Icon 
-                                name={sortCriteria.direction === 'asc' 
-                                    ? 'arrow-upward' 
-                                    : 'arrow-downward'
-                                } 
-                                size={20} 
-                                color="#2196F3" 
-                            />
-                        )}
-                    </TouchableOpacity>
+                    {['ativo', 'concluído', 'atrasado'].map(estado => (
+                        <TouchableOpacity 
+                            key={estado}
+                            style={styles.sortOption}
+                            onPress={() => {
+                                // If concluding loan, show rating modal
+                                if (estado === 'concluído') {
+                                    setStateUpdateModalVisible(false);
+                                    setRatingModalVisible(true);
+                                } else {
+                                    updateLoanStateAndRating(estado);
+                                }
+                            }}
+                        >
+                            <Text style={styles.sortOptionText}>{estado}</Text>
+                        </TouchableOpacity>
+                    ))}
 
                     <TouchableOpacity 
                         style={styles.modalCloseButton}
-                        onPress={() => setSortModalVisible(false)}
+                        onPress={() => setStateUpdateModalVisible(false)}
                     >
-                        <Text style={styles.modalCloseButtonText}>Fechar</Text>
+                        <Text style={styles.modalCloseButtonText}>Cancelar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </Modal>
     );
+
+    const renderRatingModal = () => {
+        const [rating, setRating] = useState('');
+
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={ratingModalVisible}
+                onRequestClose={() => setRatingModalVisible(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalTitle}>Avaliar Empréstimo</Text>
+                        
+                        <TextInput 
+                            style={styles.ratingInput}
+                            placeholder="Insira a avaliação (1-5)"
+                            keyboardType="numeric"
+                            value={rating}
+                            onChangeText={setRating}
+                            maxLength={1}
+                        />
+
+                        <TouchableOpacity 
+                            style={styles.modalSubmitButton}
+                            onPress={() => {
+                                const ratingValue = parseInt(rating);
+                                if (ratingValue >= 1 && ratingValue <= 5) {
+                                    updateLoanStateAndRating('concluído', ratingValue);
+                                } else {
+                                    Alert.alert('Erro', 'Por favor, insira uma avaliação entre 1 e 5');
+                                }
+                            }}
+                        >
+                            <Text style={styles.modalCloseButtonText}>Adicionar Avaliação</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style={styles.modalCloseButton}
+                            onPress={() => setRatingModalVisible(false)}
+                        >
+                            <Text style={styles.modalCloseButtonText}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        );
+    };
+
     const renderLoanItem = ({ item }) => {
-        // Determine color based on loan state
         const getStateColor = (state) => {
             switch(state) {
-                case 'ativo': return '#2196F3'; // Blue
-                case 'concluído': return '#4CAF50'; // Green
-                case 'atrasado': return '#F44336'; // Red
-                default: return '#9E9E9E'; // Grey
+                case 'ativo': return '#2196F3';
+                case 'concluído': return '#4CAF50';
+                case 'atrasado': return '#F44336';
+                default: return '#9E9E9E';
             }
         };
 
-        // Format date to Brazilian format
         const formatDate = (dateString) => {
             return new Date(dateString).toLocaleDateString('pt-BR');
         };
@@ -161,14 +183,17 @@ export default function LoanManagement() {
             <TouchableOpacity 
                 style={styles.loanItem}
                 onPress={() => {
-                    // Optional: Navigate to loan details if needed
-                    Alert.alert('Detalhes do Empréstimo', 
-                        `ID: ${item.emprestimo_id}\n` +
-                        `Livro ID: ${item.livro_id}\n` +
-                        `Aluno RM: ${item.user_rm}\n` +
-                        `Data Empréstimo: ${formatDate(item.data_emprestimo)}\n` +
-                        `Data Devolução: ${formatDate(item.data_devolucao)}\n` +
-                        `Estado: ${item.estado}`
+                    setSelectedLoan(item);
+                    Alert.alert(
+                        'Opções do Empréstimo',
+                        'Escolha uma ação:',
+                        [
+                            {
+                                text: 'Atualizar Estado',
+                                onPress: () => setStateUpdateModalVisible(true)
+                            },
+                            { text: 'Cancelar', style: 'cancel' }
+                        ]
                     );
                 }}
             >
@@ -193,20 +218,35 @@ export default function LoanManagement() {
         );
     };
 
+    // Fetch loans on component mount
+    useEffect(() => {
+        const fetchLoans = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get('http://10.0.2.2:8085/api/emprestimo/listEmprestimo', {
+                    headers: {
+                        Authorization: `Bearer ${authLibrarianData?.librarianToken}`
+                    }
+                });
+                
+                setLoans(response.data);
+                setError(null);
+            } catch (err) {
+                console.error('Erro ao buscar empréstimos:', err);
+                setError('Não foi possível carregar os empréstimos');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLoans();
+    }, []);
+
+    // Rendering logic
     return (
         <View style={styles.container}>
-            {/* Sorting Header */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Empréstimos Registrados</Text>
-                <TouchableOpacity 
-                    style={styles.sortButton}
-                    onPress={() => setSortModalVisible(true)}
-                >
-                    <Icon name="sort" size={24} color="#000" />
-                </TouchableOpacity>
-            </View>
+            <Text style={styles.title}>Empréstimos Registrados</Text>
 
-            {/* Rest of the previous implementation */}
             {loading ? (
                 <View style={styles.centered}>
                     <ActivityIndicator size="large" color="#0000ff" />
@@ -215,37 +255,21 @@ export default function LoanManagement() {
             ) : error ? (
                 <View style={styles.centered}>
                     <Text style={styles.errorText}>{error}</Text>
-                    <TouchableOpacity onPress={fetchLoans} style={styles.retryButton}>
-                        <Text style={styles.retryButtonText}>Tentar Novamente</Text>
-                    </TouchableOpacity>
                 </View>
             ) : (
-                <View style={styles.listContainer}>
-                    {loans.length === 0 ? (
-                        <View style={styles.centered}>
-                            <Text>Nenhum empréstimo encontrado</Text>
-                        </View>
-                    ) : (
-                        <FlatList
-                            data={loans}
-                            keyExtractor={(item) => item.emprestimo_id.toString()}
-                            renderItem={renderLoanItem}
-                            contentContainerStyle={styles.listContent}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={loading}
-                                    onRefresh={fetchLoans}
-                                />
-                            }
-                        />
-                    )}
-                </View>
+                <FlatList
+                    data={loans}
+                    keyExtractor={(item) => item.emprestimo_id.toString()}
+                    renderItem={renderLoanItem}
+                    contentContainerStyle={styles.listContent}
+                />
             )}
 
-            {renderSortModal()}
+            {renderStateUpdateModal()}
+            {renderRatingModal()}
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -306,7 +330,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     retryButton: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#ee2d32',
         padding: 10,
         borderRadius: 5,
     },
@@ -360,7 +384,22 @@ const styles = StyleSheet.create({
     },
     modalCloseButtonText: {
         textAlign: 'center',
-        color: '#2196F3',
+        color: '#ee2d32',
         fontWeight: 'bold',
+    },
+    ratingInput: {
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        borderRadius: 5,
+        padding: 10,
+        marginVertical: 15,
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    modalSubmitButton: {
+        backgroundColor: '#ee2d32',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
     },
 });
