@@ -1,3 +1,4 @@
+const client = require("../config/db");
 const connection = require("../config/db");
 const bcrypt = require("bcrypt");
 
@@ -758,17 +759,16 @@ const useModel = {
       const query = `
         SELECT e.*, l.titulo 
         FROM emprestimos e
-        JOIN livros l ON e.livro_id = l.livro_id
+        JOIN livros l ON e.livro_id = l.id
         WHERE e.user_rm = ? AND e.estado = 'ativo'
       `;
-      const activeLoans = await database.query(query, [user_rm]);
+      const activeLoans = await connection.query(query, [user_rm]);
       return activeLoans;
     } catch (error) {
       console.error('Erro ao verificar empréstimos ativos:', error);
       throw error;
     }
   },
-
   getEmprestimosByUserRm: async (user_rm) => {
     try {
       const query = `
@@ -991,21 +991,16 @@ const useModel = {
       throw new Error('O ID do gênero é obrigatório');
     }
 
-    const connection = await client.getConnection();
-
     try {
       // Primeiro, verificar se o gênero está sendo usado em algum livro
       const [existingBooks] = await connection.query(
-        "SELECT * FROM livros WHERE id_genero = ?",
+        "SELECT * FROM livros WHERE nome_genero = ?",
         [id_genero]
       );
 
       // Se existem livros usando este gênero, impedir a deleção
       if (existingBooks.length > 0) {
-        console.log("Este gênero está sendo usado por um livro")
-        const error = new Error('Erro interno do servidor');
-        error.status = 500;
-        throw error;
+        throw new Error('Este gênero não pode ser deletado pois está em uso em livros existentes');
       }
 
       // Se não estiver em uso, realizar a deleção
@@ -1017,11 +1012,8 @@ const useModel = {
       return result;
     } catch (error) {
       throw error;
-    } finally {
-      // Liberar a conexão
-      connection.release();
     }
-},
+  },
 
   deleteAutorFromDB: async (id_autor) => {
     if (!id_autor) {

@@ -14,7 +14,7 @@ import {
     Text
 } from "@gluestack-ui/themed";
 import { ScrollView, StyleSheet, Pressable, SafeAreaView, View, ToastAndroid } from "react-native"
-import { MoveLeft,Pencil,Trash2} from "lucide-react-native"
+import { MoveLeft,Pencil,Trash2 } from "lucide-react-native"
 import { AirbnbRating } from 'react-native-ratings';
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import MotiView from "moti";
@@ -25,28 +25,24 @@ import { useAuth } from "../../contexts/AuthContext";
 import { config } from "@gluestack-ui/config";
 import anonimo from "../../../assets/anonimo.png"
 
-
 export default function AuthorsScreen({ route, navigation }) {
-    const { 
-        user, 
-        addToFavorites, 
-        removeFromFavorites, 
-        checkFavoriteStatus, 
-        livros, 
-        librarian, 
-        isLibrarianAuthenticated, 
-        buscarLivros, 
-        buscarAutor 
-    } = useAuth();
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, livros, librarian, isLibrarianAuthenticated, buscarLivros, fetchAuthorBooks } = useAuth();
     const [isFavorited, setIsFavorited] = useState(false);
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
-    const [isDeleteAuthorDialogVisible, setIsDeleteAuthorDialogVisible] = useState(false);
     const { author, data } = route.params;
-
+    
+    const handleEditAuthor = () => {
+        // Navigate to edit author screen, passing the current author data
+        navigation.navigate("EditAuthor", { author });
+    };
     // State to store author's books
     const [authorBooks, setAuthorBooks] = useState([]);
 
+    const confirmDeleteAuthor = () => {
+        setIsDeleteAuthorDialogVisible(true);
+    };
+    
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], [])
 
@@ -63,37 +59,6 @@ export default function AuthorsScreen({ route, navigation }) {
       
         loadAuthorBooks();
     }, [author.id_autor, livros]);
-
-    const handleDeleteAuthor = async () => {
-        try {
-            // Close the delete dialog
-            setIsDeleteAuthorDialogVisible(false);
-
-            // Make API call to delete the author
-            const response = await axios.delete(`http://10.0.2.2:8085/api/deleteAutor/${author.id_autor}`);
-
-            // Navigate back after deletion
-            navigation.goBack();
-
-            // Show success toast
-            ToastAndroid.show("Autor excluído com sucesso", ToastAndroid.SHORT);
-
-            // Refresh authors list
-            await buscarAutor();
-        } catch (error) {
-            console.error("Erro ao excluir autor:", error);
-            ToastAndroid.show("Erro ao excluir autor", ToastAndroid.SHORT);
-        }
-    };
-
-    const confirmDeleteAuthor = () => {
-        setIsDeleteAuthorDialogVisible(true);
-    };
-
-    const handleEditAuthor = () => {
-        // Navigate to edit author screen, passing the current author data
-        navigation.navigate("EditAuthor", { author });
-    };
 
     const handleCloseAction = () => bottomSheetref.current?.close()
 
@@ -181,15 +146,25 @@ export default function AuthorsScreen({ route, navigation }) {
 
     return (
         <GluestackUIProvider config={config}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fafafa" }}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Pressable onPress={() => navigation.goBack()}>
-                            <MoveLeft color={"#000"} size={35} />
-                        </Pressable>
-                        <Text style={styles.headerText}>Autores</Text>
-                        {isLibrarianAuthenticated() && (
+            <SafeAreaView style={{ flex: 1, backgroundColor: "#fafafa" }}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <Pressable onPress={() => navigation.goBack()}>
+                                <MoveLeft color={"#000"} size={35} />
+                            </Pressable>
+                            <Text style={styles.headerText}>Autores</Text>
+                        </View>
+                        <View style={styles.authorContentContainer}>
+                            <Image
+                                source={author.image ? { uri: author.image } : anonimo}
+                                alt="autor"
+                                resizeMode="cover"
+                                style={styles.authorImage}
+                            />
+                            <Text style={styles.authorGenderText}>{author.genero}</Text>
+                            <Text style={styles.authorNameText}>{author.nome_autor}</Text>
+                            {isLibrarianAuthenticated() && (
                             <View style={styles.headerActions}>
                                 <Pressable onPress={handleEditAuthor} style={styles.headerActionButton}>
                                     <Pencil color={"#000"} size={24} />
@@ -199,17 +174,7 @@ export default function AuthorsScreen({ route, navigation }) {
                                 </Pressable>
                             </View>
                         )}
-                    </View>
-                    <View style={styles.authorContentContainer}>
-                        <Image
-                            source={author.image ? { uri: author.image } : anonimo}
-                            alt="autor"
-                            resizeMode="cover"
-                            style={styles.authorImage}
-                        />
-                        <Text style={styles.authorGenderText}>{author.genero}</Text>
-                        <Text style={styles.authorNameText}>{author.nome_autor}</Text>
-                    </View>
+                        </View>
                         <View style={styles.aboutContainer}>
                             <Text style={styles.aboutHeader}>Sobre</Text>
                             <Text style={styles.desc}>{author.sobre || 'Biografia não disponível'}</Text>
@@ -367,41 +332,6 @@ export default function AuthorsScreen({ route, navigation }) {
                     </BottomSheetScrollView>
                 </BottomSheet>
                 <AlertDialog
-                    isOpen={isDeleteAuthorDialogVisible}
-                    onClose={() => setIsDeleteAuthorDialogVisible(false)}
-                >
-                    <AlertDialogBackdrop />
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <Text style={styles.alertTitle}>Excluir Autor</Text>
-                        </AlertDialogHeader>
-                        <AlertDialogBody>
-                            <Text style={styles.alertText}>
-                                Tem certeza que deseja excluir o autor "{author.nome_autor}"?
-                                Esta ação não pode ser desfeita e todos os livros associados serão removidos.
-                            </Text>
-                        </AlertDialogBody>
-                        <AlertDialogFooter>
-                            <Button
-                                variant="outline"
-                                action="secondary"
-                                onPress={() => setIsDeleteAuthorDialogVisible(false)}
-                                style={styles.alertCancelButton}
-                            >
-                                <ButtonText style={styles.alertCancelButtonText}>Cancelar</ButtonText>
-                            </Button>
-                            <Button
-                                variant="solid"
-                                action="negative"
-                                onPress={handleDeleteAuthor}
-                                style={styles.alertDeleteButton}
-                            >
-                                <ButtonText style={styles.alertDeleteButtonText}>Excluir</ButtonText>
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-                <AlertDialog
                     isOpen={isDeleteDialogVisible}
                     onClose={() => setIsDeleteDialogVisible(false)}
                 >
@@ -535,7 +465,7 @@ const styles = StyleSheet.create({
         color: "#34A853",
         fontWeight: "bold",
     },
-    header: {
+     header: {
         alignSelf: "flex-start",
         flexDirection: "row",
         width: "100%",

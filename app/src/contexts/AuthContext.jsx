@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
             // Criar promises para cada empréstimo
             const emprestimosPromises = livrosIds.map(livroId => {
                 console.log(`Preparando empréstimo para livro ${livroId}`);
-                return api.post('/emprestimo', {
+                return axios.post('http://10.0.2.2:8085/api/emprestimo', {
                     user_rm: authData.user.rm,
                     livro_id: livroId,
                     prazo_dias: prazo_dias

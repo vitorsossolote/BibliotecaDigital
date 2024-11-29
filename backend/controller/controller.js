@@ -989,29 +989,29 @@ const useController = {
 
     try {
       // Verificar se o usuário possui empréstimos ativos primeiro
-      const emprestimosAtivos = await clientController.checkActiveLoans(user_rm);
+      // const emprestimosAtivos = await clientController.checkActiveLoans(user_rm);
       
-      // Se tiver qualquer empréstimo ativo, bloquear novo empréstimo
-      if (emprestimosAtivos.length > 0) {
-        return res.status(400).json({
-          msg: "Você possui um empréstimo ativo. Devolva o livro antes de fazer um novo empréstimo.",
-          emprestimosAtivos: emprestimosAtivos
-        });
-      }
+      // // Se tiver qualquer empréstimo ativo, bloquear novo empréstimo
+      // if (emprestimosAtivos.length > 0) {
+      //   return res.status(400).json({
+      //     msg: "Você possui um empréstimo ativo. Devolva o livro antes de fazer um novo empréstimo.",
+      //     emprestimosAtivos: emprestimosAtivos
+      //   });
+      // }
 
       const student = await clientController.getStudentByRm(user_rm);
       if (student.length === 0) {
         return res.status(404).json({ msg: "Estudante não encontrado" });
       }
 
-      // Manter a lógica existente para contagem de empréstimos ativos
-      const totalEmprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
+      // // Manter a lógica existente para contagem de empréstimos ativos
+      // const totalEmprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
 
-      if (totalEmprestimosAtivos >= 2) {
-        return res.status(400).json({
-          msg: "Você já possui 2 empréstimos ativos. Por favor, devolva um dos livros antes de fazer um novo empréstimo."
-        });
-      }
+      // if (totalEmprestimosAtivos >= 2) {
+      //   return res.status(400).json({
+      //     msg: "Você já possui 2 empréstimos ativos. Por favor, devolva um dos livros antes de fazer um novo empréstimo."
+      //   });
+      // }
 
       // Restante do código permanece igual
       const livro = await clientController.getQntLivrosById(livro_id);
