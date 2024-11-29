@@ -34,6 +34,16 @@ export const AuthProvider = ({ children }) => {
         });
     }, []);
 
+    
+    const fetchAuthorBooks = async (authorId) => {
+        try {
+          const response = await axios.get(`http://10.0.2.2:8085/api/ListBooks/autor/${authorId}`);
+          return response.data;
+        } catch (error) {
+          console.error("Erro ao buscar livros do autor:", error);
+          return [];
+        }
+    };
 
     const fetchUserLoans = async () => {
         if (!authData?.user?.rm) {
@@ -216,6 +226,7 @@ export const AuthProvider = ({ children }) => {
             const response = await api.get('/listBooks');
             console.log('Resposta da API:', response.data); // Debug
             setLivros(response.data);
+            return response.data;
             setError(null);
         } catch (err) {
             console.error('Erro completo:', err); // Debug
@@ -505,6 +516,7 @@ export const AuthProvider = ({ children }) => {
                 removeSelectedLoanBook,
                 realizarEmprestimo,
                 fetchUserLoans,
+                fetchAuthorBooks,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,

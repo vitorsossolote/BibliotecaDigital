@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, ScrollView, Pressable, Image,View} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
+import anonimo from "../../../assets/anonimo.png"
 const TrendingAuthors = () => {
   const [authors, setAuthors] = useState([]);
   const navigation = useNavigation();
@@ -57,7 +57,7 @@ const TrendingAuthors = () => {
             >
               <View style={styles.authorContainer}>
                 <Image 
-                  source={{ uri: author.image }} 
+                  source={author.image ? { uri: author.image } : anonimo}
                   style={styles.image} 
                   resizeMode="cover"
                 />
@@ -69,6 +69,7 @@ const TrendingAuthors = () => {
                 >
                   {author.nome_autor}
                 </Text>
+                
               </View>
             </Pressable>
           );

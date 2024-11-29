@@ -17,7 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import MainHeader from "../../components/MainHeader";
 //Imagens Utilizadas
 import authorImage from "../../../assets/autor1.png";
-import book from "../../../assets/book.png"
+import anonimo from "../../../assets/anonimo.png";
 //Inicio Do Codigo
 
 export default function SearchAuthorScreen({ navigation }) {
@@ -43,7 +43,7 @@ export default function SearchAuthorScreen({ navigation }) {
         >
             <View style={styles.authorsContainer}>
                 <View styles={styles.authorsImageContainer}>
-                    <Image style={styles.authorsImage} source={data.image ? { uri: data.image } : book} />
+                    <Image style={styles.authorsImage} source={data.image ? { uri: data.image } : anonimo} />
                 </View>
                 <View style={styles.authorTextContainer}>
                     <Text style={styles.authorsTitle}>{data.nome_autor}</Text>
