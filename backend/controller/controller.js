@@ -758,8 +758,6 @@ const useController = {
     }
   },
 
-
-
   registerAutor: async (req, res) => {
     const {
       nome_autor,
