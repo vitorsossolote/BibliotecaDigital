@@ -13,7 +13,7 @@ import LibrarianScreen from '../screens/LibrarianScreen/index';
 import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
 import LoginStudent from '../screens/Login/LoginStudent/index';
 import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/index';
-import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
+import CreateLibrarianAccount from '../screens/CreateAccount/CreateLibrarianAccount/index';
 import ForgotPassword from '../screens/ForgotPassword/index';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
 

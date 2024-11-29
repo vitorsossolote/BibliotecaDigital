@@ -758,39 +758,25 @@ const useController = {
     }
   },
 
-
-
   registerAutor: async (req, res) => {
     const {
       nome_autor,
-      data_nascimento,
-      image,
-      sobre
+      data_nascimento = null,
+      image = null,
+      sobre = null
     } = req.body;
 
     console.log("Dados recebidos no controller:", {
       nome_autor, data_nascimento, image, sobre
     });
 
+    // Validação do nome do autor (única validação obrigatória)
     if (!nome_autor) {
-      return res.status(400).json({ msg: "O nome é obrigatório" });
+      return res.status(400).json({ msg: "O nome do autor é obrigatório" });
     }
-
-    // Validação e formatação da data de nascimento
-    if (!data_nascimento) {
-      return res.status(400).json({ msg: "A data de nascimento é obrigatória" });
-    }
-
-    const parsedDate = parse(data_nascimento, "yyyy-MM-dd", new Date());
-
-    if (!isValid(parsedDate)) {
-      return res.status(400).json({ msg: "A data de nascimento está em um formato inválido" });
-    }
-
-    // Formatando a data para o padrão do banco (yyyy-MM-dd)
-    const formattedDate = format(parsedDate, "yyyy-MM-dd");
 
     try {
+      // Verificar se já existe um autor com esse nome
       const sqlAutorName = await clientController.getAutorByName(nome_autor);
 
       if (sqlAutorName.length > 0) {
@@ -799,12 +785,26 @@ const useController = {
           .json({ msg: "O nome deste autor já está cadastrado no Banco de Dados" });
       }
 
+      // Se data_nascimento foi fornecida, validar o formato
+      let formattedDate = null;
+      if (data_nascimento) {
+        const parsedDate = parse(data_nascimento, "yyyy-MM-dd", new Date());
+
+        if (!isValid(parsedDate)) {
+          return res.status(400).json({ msg: "A data de nascimento está em um formato inválido" });
+        }
+
+        formattedDate = format(parsedDate, "yyyy-MM-dd");
+      }
+
+      // Registrar autor com campos opcionais
       const result = await clientController.registerAutor(
         nome_autor,
-        formattedDate, // Use a data formatada aqui
+        formattedDate,
         image,
         sobre
       );
+
       return res.status(201).json({ msg: "Autor cadastrado com sucesso" });
     } catch (error) {
       console.error("Erro ao cadastrar Autor:", error);
