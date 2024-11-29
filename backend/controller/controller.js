@@ -988,20 +988,32 @@ const useController = {
     }
 
     try {
+      // Verificar se o usuário possui empréstimos ativos primeiro
+      const emprestimosAtivos = await clientController.checkActiveLoans(user_rm);
+      
+      // Se tiver qualquer empréstimo ativo, bloquear novo empréstimo
+      if (emprestimosAtivos.length > 0) {
+        return res.status(400).json({
+          msg: "Você possui um empréstimo ativo. Devolva o livro antes de fazer um novo empréstimo.",
+          emprestimosAtivos: emprestimosAtivos
+        });
+      }
+
       const student = await clientController.getStudentByRm(user_rm);
       if (student.length === 0) {
         return res.status(404).json({ msg: "Estudante não encontrado" });
       }
-      // Verificar quantidade de empréstimos ativos
-      const emprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
 
-      if (emprestimosAtivos >= 2) {
+      // Manter a lógica existente para contagem de empréstimos ativos
+      const totalEmprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
+
+      if (totalEmprestimosAtivos >= 2) {
         return res.status(400).json({
           msg: "Você já possui 2 empréstimos ativos. Por favor, devolva um dos livros antes de fazer um novo empréstimo."
         });
       }
 
-      // Obter livro pelo ID e verificar quantidade
+      // Restante do código permanece igual
       const livro = await clientController.getQntLivrosById(livro_id);
       if (!livro) {
         return res.status(404).json({ msg: `Livro não encontrado: ID ${livro_id}` });
@@ -1011,7 +1023,6 @@ const useController = {
         return res.status(400).json({ msg: "Nenhum exemplar disponível para empréstimo" });
       }
 
-      // Criar data de empréstimo e devolução no formato ISO (YYYY-MM-DD)
       const dataAtual = new Date();
       const dataDevolucao = new Date();
       dataDevolucao.setDate(dataDevolucao.getDate() + prazo_dias);
@@ -1019,7 +1030,6 @@ const useController = {
       const dataEmprestimoFormatada = dataAtual.toISOString().split('T')[0];
       const dataDevolucaoFormatada = dataDevolucao.toISOString().split('T')[0];
 
-      // Criar o empréstimo
       await clientController.criarEmprestimo(
         user_rm,
         livro_id,
@@ -1027,10 +1037,8 @@ const useController = {
         dataDevolucaoFormatada
       );
 
-      // Subtrair a quantidade de livros disponíveis
       await clientController.subtrairQuantidadeLivro(livro_id);
 
-      // Verificar se a quantidade restante é 0 e alterar o estado para "E" se necessário
       if (livro.quantidade - 1 === 0) {
         await clientController.updateLivroEstado(livro_id, 'E');
       }

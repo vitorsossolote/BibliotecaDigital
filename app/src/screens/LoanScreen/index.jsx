@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState, useCallback } from "react"
 import { Center, View, Text, StatusBar, GluestackUIProvider, Button, ButtonText, Image, Pressable } from "@gluestack-ui/themed"
 import { config } from "@gluestack-ui/config"
-import { StyleSheet, SafeAreaView, Dimensions, Alert} from "react-native"
+import { StyleSheet, SafeAreaView, Dimensions, Alert } from "react-native"
 import { Bell, ChevronRight, MoveLeft } from "lucide-react-native"
 import BottomSheet, { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -27,12 +27,10 @@ export default function LoanScreen({ navigation }) {
     const [error, setError] = useState(null);
 
     const handleDurationSelect = (days) => {
-        // Calculate new delivery date based on selected duration
         const today = new Date();
         const newDeliveryDate = new Date(today);
         newDeliveryDate.setDate(today.getDate() + days);
 
-        // Format the date
         const formattedDate = newDeliveryDate.toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: 'short'
@@ -46,52 +44,82 @@ export default function LoanScreen({ navigation }) {
     };
 
     const handleConfirmLoan = async () => {
-        console.log('Iniciando confirmação de empréstimo');
+        cconsole.log('Iniciando confirmação de empréstimo');
         console.log('Livros selecionados:', selectedLoanBooks);
         console.log('Duração selecionada:', selectedDuration);
-    
+
+        // Check if user has active loans
+        if (emprestimosAtivos.data.length > 0) {
+            Alert.alert(
+                'Empréstimo Pendente',
+                'Você já tem um livro emprestado. Por favor, devolva o livro antes de fazer um novo empréstimo.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            // Optionally navigate to active loans screen or do nothing
+                            // navigation.navigate('ActiveLoansScreen');
+                        }
+                    }
+                ]
+            );
+            return;
+        }
+
+        // Rest of the existing validation and loan process...
+        if (!selectedDuration) {
+            console.log('Erro: Nenhum prazo selecionado');
+            Alert.alert('Erro', 'Por favor, selecione um prazo de empréstimo');
+            return;
+        }
+
+        if (selectedLoanBooks.length === 0) {
+            console.log('Erro: Nenhum livro selecionado');
+            Alert.alert('Erro', 'Nenhum livro selecionado para empréstimo');
+            return;
+        }
         // Já existente
         if (!selectedDuration) {
             console.log('Erro: Nenhum prazo selecionado');
             Alert.alert('Erro', 'Por favor, selecione um prazo de empréstimo');
             return;
         }
-    
+
         if (selectedLoanBooks.length === 0) {
             console.log('Erro: Nenhum livro selecionado');
             Alert.alert('Erro', 'Nenhum livro selecionado para empréstimo');
             return;
         }
-    
+
         // Nova validação: Verificar prazo
         if (![7, 14].includes(selectedDuration)) {
             console.log('Erro: Prazo inválido');
             Alert.alert('Erro', 'O prazo deve ser de 7 ou 14 dias');
             return;
         }
-    
+
         try {
             setLoading(true);
             console.log('Iniciando realizarEmprestimo');
-            
+
             // Extrair IDs dos livros selecionados
             const bookIds = selectedLoanBooks.map(book => book.id);
             console.log('IDs dos livros:', bookIds);
-    
+
             await realizarEmprestimo(bookIds, selectedDuration);
-            
+
             console.log('Empréstimo realizado com sucesso');
             Alert.alert('Sucesso', 'Empréstimo realizado com sucesso');
-            
+
             // Navegar para outra tela ou atualizar estado
             // navigation.navigate('SuccessScreen'); // Exemplo de navegação
         } catch (error) {
             console.error('Erro completo durante o empréstimo:', error);
-            console.error('Detalhes do erro:', 
+            console.error('Detalhes do erro:',
                 error.response ? error.response.data : 'Sem resposta do servidor',
                 error.message
             );
-            
+
             Alert.alert('Erro', error.message || 'Não foi possível realizar o empréstimo');
         } finally {
             setLoading(false);

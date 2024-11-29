@@ -147,7 +147,7 @@ export default function Home({ navigation }) {
                         <Reservar onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
-                        <Section title="Melhores da Semana" onPress={() => navigation.navigate("SearchScreen")} />
+                        <Section title="Novidades" onPress={() => navigation.navigate("SearchScreen")} />
                         <TrendingBooks onPress={handleOpenPress} />
                     </MotiView>
                     <Section title="Generos" onPress={() => navigation.navigate("SearchGenderScreen")} />

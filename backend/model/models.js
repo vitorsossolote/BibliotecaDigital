@@ -753,6 +753,22 @@ const useModel = {
     }
   },
 
+  checkActiveLoans: async (user_rm) => {
+    try {
+      const query = `
+        SELECT e.*, l.titulo 
+        FROM emprestimos e
+        JOIN livros l ON e.livro_id = l.livro_id
+        WHERE e.user_rm = ? AND e.estado = 'ativo'
+      `;
+      const activeLoans = await database.query(query, [user_rm]);
+      return activeLoans;
+    } catch (error) {
+      console.error('Erro ao verificar empréstimos ativos:', error);
+      throw error;
+    }
+  },
+
   getEmprestimosByUserRm: async (user_rm) => {
     try {
       const query = `
