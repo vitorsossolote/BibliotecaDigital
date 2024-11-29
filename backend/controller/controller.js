@@ -4,10 +4,14 @@ const jwt = require('jsonwebtoken');
 // Chave secreta para assinar os tokens - em produção, use variáveis de ambiente
 const JWT_SECRET = "sua_chave_secreta_aqui"; // Idealmente em process.env.JWT_SECRET
 
+const { parse, isValid, format } = require("date-fns");
+
 const useController = {
   getRoot: async (req, res) => {
-    res.status(200).json({ msg: "The API is running!!!" });
-  },
+    res.status(200).json({
+        message: "The API is running!!!" 
+    });
+},
 
   //Criar novo estudante
   createNewStudent: async (req, res) => {
@@ -25,15 +29,27 @@ const useController = {
       return res.status(400).json({ msg: "Senha é obrigatória" });
     }
 
-    if (!email.includes('@') && !email.includes('.com')) {
-      return res.status(400).json({ msg: "Email inválido" })
+    // Verificação de email (usando regex)
+    // ^[^\s@]+ : Garante que o email não comece com espaços ou caracteres inválidos antes do @.
+    // @[^\s@]+ : Garante que o domínio após o @ seja válido e não contenha espaços ou caracteres inválidos.
+    // \.[^\s@]+$ : Garante que após o ponto exista um domínio válido, que não contenha espaços ou caracteres inválidos.
+    //Dessa forma ele pode abrangir emails de diversos provedores como: nome@dominio.org mas nao deixara que sejam aceitos emails invalidos como: exemplo@com, email@dominio, email.com
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ msg: "Email inválido" });
     }
-
     try {
-      const sql = await clientController.getByEmail(email);
-      const sqlConfirmRm = await clientController.getByRm(rm);
+      const sqlConfirmEmailLibrarian = await clientController.getLibrarianByEmail(email);
+      const sqlConfirmEmailStudent = await clientController.getStudentByEmail(email);
+      const sqlConfirmRm = await clientController.getStudentByRm(rm);
 
-      if (sql.length > 0) {
+      if (sqlConfirmEmailLibrarian.length > 0) {
+        return res
+          .status(401)
+          .json({ msg: "O email já está cadastrado como Bibliotecário no Banco de Dados" });
+      }
+
+      if (sqlConfirmEmailStudent.length > 0) {
         return res
           .status(401)
           .json({ msg: "O email já está cadastrado no Banco de Dados" });
@@ -125,7 +141,7 @@ const useController = {
     const { id } = req.params;
 
     try {
-      const Students = await clientController.getByID(id);
+      const Students = await clientController.getStudentByID(id);
 
       // Verifica se o array está vazio
       if (!Students || Students.length === 0) {
@@ -148,7 +164,7 @@ const useController = {
     const { rm } = req.params;
 
     try {
-      const Students = await clientController.getByRm(rm);
+      const Students = await clientController.getStudentByRm(rm);
 
       // Verifica se o array está vazio
       if (!Students || Students.length === 0) {
@@ -171,7 +187,7 @@ const useController = {
     const { email } = req.params;
 
     try {
-      const Students = await clientController.getByEmail(email);
+      const Students = await clientController.getByStudentEmail(email);
 
       // Verifica se o array está vazio
       if (!Students || Students.length === 0) {
@@ -190,10 +206,12 @@ const useController = {
     }
   },
 
-  //Atualizar os Estudantes
+  // Atualizar os Estudantes
+  // Atualizar os Estudantes
   updateStudent: async (req, res) => {
     const { rm } = req.params;
     const updateData = req.body;
+    const { email } = updateData;  // Extrair o email do corpo da requisição
 
     if (!rm) {
       return res.status(400).json({ msg: "O RM é obrigatório" });
@@ -201,9 +219,17 @@ const useController = {
 
     try {
       // Verifica se o estudante existe
-      const student = await clientController.getByRm(rm);
+      const student = await clientController.getStudentByRm(rm);
       if (student.length === 0) {
         return res.status(404).json({ msg: "Estudante não encontrado" });
+      }
+
+      // Verifica se o email foi alterado e se já existe como email de bibliotecário
+      if (email) {
+        const sqlConfirmEmailLibrarian = await clientController.getLibrarianByEmail(email);
+        if (sqlConfirmEmailLibrarian.length > 0) {
+          return res.status(401).json({ msg: "O email já está cadastrado como Bibliotecário no Banco de Dados" });
+        }
       }
 
       // Atualiza o estudante
@@ -215,6 +241,7 @@ const useController = {
     }
   },
 
+
   //Deletar os Estudantes
   deleteStudent: async (req, res) => {
     const { rm } = req.params;
@@ -225,7 +252,7 @@ const useController = {
 
     try {
       // Verifica se o estudante existe
-      const student = await clientController.getByRm(rm);
+      const student = await clientController.getStudentByRm(rm);
       if (student.length === 0) {
         return res.status(404).json({ msg: "Estudante não encontrado" });
       }
@@ -266,7 +293,7 @@ const useController = {
   createNewLibrarian: async (req, res) => {
     const { nome, email, cfb, senha, confirmSenha } = req.body;
 
-    //Debug - verificar os dados recebidos
+    // Debug - verificar os dados recebidos
     console.log("Dados recebidos no controller", {
       nome,
       email,
@@ -275,40 +302,48 @@ const useController = {
       confirmSenha,
     });
 
+    // Verificação de senha
     if (!senha) {
       return res.status(400).json({ msg: "Senha é obrigatória" });
     }
 
-    if (!email.includes("@" && ".com")) {
-      return res.status(400).json({ msg: "O email Não é valido (@)" });
+    // Verificação de email (usando regex)
+    // ^[^\s@]+ : Garante que o email não comece com espaços ou caracteres inválidos antes do @.
+    // @[^\s@]+ : Garante que o domínio após o @ seja válido e não contenha espaços ou caracteres inválidos.
+    // \.[^\s@]+$ : Garante que após o ponto exista um domínio válido, que não contenha espaços ou caracteres inválidos.
+    //Dessa forma ele pode abrangir emails de diversos provedores como: nome@dominio.org mas nao deixara que sejam aceitos emails invalidos como: exemplo@com, email@dominio, email.com
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ msg: "Email inválido" });
     }
 
-    if (senha != confirmSenha) {
+    // Verificação se as senhas coincidem
+    if (senha !== confirmSenha) {
       return res.status(400).json({ msg: "As senhas não coincidem" });
     }
 
     try {
+      // Verificando se o email ou o CFB já estão cadastrados
       const sql = await clientController.getLibrarianByEmail(email);
+      const sqlConfirmEmailStudent = await clientController.getStudentByEmail(email);
       const sqlConfirmCfb = await clientController.getByCfb(cfb);
 
-      if (sql.length > 0) {
+      if (sqlConfirmEmailStudent.length > 0) {
         return res
           .status(401)
-          .json({ msg: "O email já esta cadastrado no Banco de Dados" });
+          .json({ msg: "O email já está cadastrado no Banco de Dados" });
+      }
+
+      if (sql.length > 0) {
+        return res.status(401).json({ msg: "O email já está cadastrado no Banco de Dados" });
       }
 
       if (sqlConfirmCfb.length > 0) {
-        return res
-          .status(401)
-          .json({ msg: "O CFB já esta cadastrado no Banco de Dados" });
+        return res.status(401).json({ msg: "O CFB já está cadastrado no Banco de Dados" });
       }
 
-      const result = await clientController.registerLibrarian(
-        nome,
-        email,
-        cfb,
-        senha
-      );
+      // Registrando o novo bibliotecário
+      const result = await clientController.registerLibrarian(nome, email, cfb, senha);
       return res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
     } catch (error) {
       console.log("Erro ao cadastrar usuário", error);
@@ -355,6 +390,7 @@ const useController = {
   updateLibrarian: async (req, res) => {
     const { cfb } = req.params;
     const updateData = req.body;
+    const { email } = updateData;
 
     // Validações básicas
     if (!cfb) {
@@ -367,6 +403,15 @@ const useController = {
       if (librarian.length === 0) {
         return res.status(404).json({ msg: "Bibliotecário não encontrado" });
       }
+
+      // Verifica se o email foi alterado e se já existe como email de bibliotecário
+      if (email) {
+        const sqlConfirmEmailStudent = await clientController.getStudentByEmail(email);
+        if (sqlConfirmEmailStudent.length > 0) {
+          return res.status(401).json({ msg: "O email já está cadastrado como Aluno no Banco de Dados" });
+        }
+      }
+
       // Atualiza o estudante
       const result = await clientController.updateLibrarianInDB(cfb, updateData);
       return res.status(200).json({ msg: "Bibliotecario atualizado com sucesso" });
@@ -374,7 +419,7 @@ const useController = {
       console.error("Erro ao atualizar o Bibliotecario:", error);
       return res.status(500).json({ msg: "Erro interno do servidor" });
     }
-      
+
   },
 
   // Deletar o cadastro do bibliotecário
@@ -525,7 +570,7 @@ const useController = {
 
   ListarLivrosByID: async (req, res) => {
     const { id } = req.params;
-
+    
     try {
       const livro = await clientController.getLivroById(id);
 
@@ -576,21 +621,21 @@ const useController = {
   //Criar novo livro
 
   registerBook: async (req, res) => {
-    const { 
-      image, 
-      titulo, 
-      descricao, 
-      nome_autor, 
-      editora, 
-      nome_genero, 
-      quantidade, 
+    const {
+      image,
+      titulo,
+      descricao,
+      nome_autor,
+      editora,
+      nome_genero,
+      quantidade,
       codigo,
       avaliacao = 0,
       estado = "D"
     } = req.body;
 
     console.log("Dados recebidos no controller:", {
-      image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo
+      image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, estado, avaliacao
     });
 
     if (!codigo) {
@@ -627,15 +672,15 @@ const useController = {
         estado
       );
 
-      return res.status(201).json({ 
+      return res.status(201).json({
         msg: "Livro cadastrado com sucesso",
-        result: result 
+        result: result
       });
     } catch (error) {
       console.error("Erro ao cadastrar livro:", error);
-      return res.status(500).json({ 
+      return res.status(500).json({
         msg: "Erro interno do servidor",
-        error: error.message 
+        error: error.message
       });
     }
   },
@@ -700,9 +745,8 @@ const useController = {
       if (sqlGenderName.length > 0) {
         return res
           .status(401)
-          .json({ msg: "O código deste livro já está cadastrado no Banco de Dados" });
+          .json({ msg: "Este genero já está cadastrado no Banco de Dados" });
       }
-
 
       const result = await clientController.registerGender(
         nome_genero
@@ -714,22 +758,37 @@ const useController = {
     }
   },
 
+
+
   registerAutor: async (req, res) => {
     const {
       nome_autor,
       data_nascimento,
       image,
-      avaliacao,
       sobre
     } = req.body;
 
     console.log("Dados recebidos no controller:", {
-      nome_autor, data_nascimento, image, avaliacao, sobre
+      nome_autor, data_nascimento, image, sobre
     });
 
     if (!nome_autor) {
       return res.status(400).json({ msg: "O nome é obrigatório" });
     }
+
+    // Validação e formatação da data de nascimento
+    if (!data_nascimento) {
+      return res.status(400).json({ msg: "A data de nascimento é obrigatória" });
+    }
+
+    const parsedDate = parse(data_nascimento, "yyyy-MM-dd", new Date());
+
+    if (!isValid(parsedDate)) {
+      return res.status(400).json({ msg: "A data de nascimento está em um formato inválido" });
+    }
+
+    // Formatando a data para o padrão do banco (yyyy-MM-dd)
+    const formattedDate = format(parsedDate, "yyyy-MM-dd");
 
     try {
       const sqlAutorName = await clientController.getAutorByName(nome_autor);
@@ -740,12 +799,10 @@ const useController = {
           .json({ msg: "O nome deste autor já está cadastrado no Banco de Dados" });
       }
 
-
       const result = await clientController.registerAutor(
         nome_autor,
-        data_nascimento,
+        formattedDate, // Use a data formatada aqui
         image,
-        avaliacao,
         sobre
       );
       return res.status(201).json({ msg: "Autor cadastrado com sucesso" });
@@ -823,26 +880,38 @@ const useController = {
   },
 
   listarLivrosPorNomeGenero: async (req, res) => {
-    const { nome_genero } = req.params;
+    const { nome_genero } = req.params; // Obtém o parâmetro 'nome_genero' da rota
 
     try {
+      console.log(`Buscando livros para o gênero: ${nome_genero}`); // Log para debug
+
+      // Chama o método que busca os livros por gênero no banco
       const livros = await clientController.getLivrosByGeneroNome(nome_genero);
 
+      // Caso não encontre livros, retorna 404
       if (!livros || livros.length === 0) {
         return res.status(404).json({
           msg: "Nenhum livro encontrado para este gênero"
         });
       }
 
+      // Log dos livros encontrados (para depuração)
+      console.log(`Livros encontrados: ${JSON.stringify(livros)}`);
+
+      // Retorna os livros encontrados
       res.status(200).json(livros);
     } catch (error) {
-      console.error("Erro ao buscar livros do gênero:", error);
+      // Captura e registra o erro
+      console.error("Erro ao buscar livros por gênero:", error);
+
+      // Retorna erro 500 ao cliente com uma mensagem detalhada
       res.status(500).json({
-        msg: "Erro ao buscar livros do gênero",
+        msg: "Erro ao buscar livros por gênero",
         error: error.message
       });
     }
   },
+
 
 
   ListarAutores: async (req, res) => {
@@ -857,6 +926,8 @@ const useController = {
       });
     }
   },
+
+  //Listar generos
   ListarGeneros: async (req, res) => {
     try {
       const generos = await clientController.getAllGeneros();
@@ -912,7 +983,15 @@ const useController = {
       return res.status(400).json({ msg: "O prazo deve ser de 7 ou 14 dias" });
     }
 
+    if (!user_rm) {
+      return res.status(400).json({ msg: "O RM é obrigatório" });
+    }
+
     try {
+      const student = await clientController.getStudentByRm(user_rm);
+      if (student.length === 0) {
+        return res.status(404).json({ msg: "Estudante não encontrado" });
+      }
       // Verificar quantidade de empréstimos ativos
       const emprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
 
@@ -977,7 +1056,7 @@ const useController = {
     }
 
     // Validação da avaliação
-    if (novo_estado === "concluído" && (!avaliacao === 1 || avaliacao === 2 || avaliacao === 3 || avaliacao === 4  || avaliacao === 5 )) {
+    if (novo_estado === "concluído" && (!avaliacao === 1 || avaliacao === 2 || avaliacao === 3 || avaliacao === 4 || avaliacao === 5)) {
       return res.status(400).json({ msg: "Avaliação inválida. Deve ser um número entre 1 e 5" });
     }
 
@@ -1063,45 +1142,18 @@ const useController = {
     try {
       // Obter empréstimos cuja data_devolucao expirou
       const emprestimosAtrasados = await clientController.getEmprestimosAtrasados();
-
+  
       if (emprestimosAtrasados.length === 0) {
         return res.status(200).json({ msg: "Nenhum empréstimo atrasado encontrado." });
       }
-
-      // Array para armazenar detalhes dos empréstimos atrasados
-      const detalhesAtrasados = [];
-
+  
       // Atualizar o estado de cada empréstimo para "atrasado"
       for (const emprestimo of emprestimosAtrasados) {
-        await clientController.atualizarEstadoEmprestimo(emprestimo.emprestimo_id, "atrasado");
-
-        // Formatar datas
-        const dataEmprestimo = new Date(emprestimo.data_emprestimo);
-        const dataDevolucao = new Date(emprestimo.data_devolucao);
-
-        // Opções de formatação de data
-        const opcoesData = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        };
-        const opcoesHora = {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
-        };
-
-        // Adicionar detalhes do empréstimo atrasado
-        detalhesAtrasados.push({
-          mensagem_formatada: `O aluno ${emprestimo.aluno_nome} que possui o RM ${emprestimo.aluno_rm} emprestou o livro ${emprestimo.livro_titulo}. 
-        O empréstimo foi realizado no dia ${dataEmprestimo.toLocaleDateString('pt-BR', opcoesData)} às ${dataEmprestimo.toLocaleTimeString('pt-BR', opcoesHora)} horas. 
-        A data prevista para devolução era ${dataDevolucao.toLocaleDateString('pt-BR', opcoesData)} às ${dataDevolucao.toLocaleTimeString('pt-BR', opcoesHora)} horas.`
-        });
+        await clientController.updateEmprestimoEstado(emprestimo.emprestimo_id, "atrasado");
       }
-
+  
       return res.status(200).json({
         msg: `${emprestimosAtrasados.length} empréstimo(s) atualizado(s) para 'atrasado'.`,
-        emprestimos_atrasados: detalhesAtrasados
       });
     } catch (error) {
       console.error("Erro ao atualizar empréstimos atrasados:", error);
@@ -1110,7 +1162,159 @@ const useController = {
   },
 
 
+  getEmprestimosAtivos: async (req, res) => {
+    try {
+      const emprestimos = await clientController.getEmprestimosByEstado('ativo');
+      return res.status(200).json(emprestimos);
+    } catch (error) {
+      console.error('Erro ao obter empréstimos ativos:', error);
+      return res.status(500).json({ msg: 'Erro interno do servidor' });
+    }
+  },
 
+  getEmprestimosAtrasados: async (req, res) => {
+    try {
+      const emprestimos = await clientController.getEmprestimosByEstado('atrasado');
+      return res.status(200).json(emprestimos);
+    } catch (error) {
+      console.error('Erro ao obter empréstimos atrasados:', error);
+      return res.status(500).json({ msg: 'Erro interno do servidor' });
+    }
+  },
+
+  //Atualizar oo autor
+  updateAutor: async (req, res) => {
+    const { id_autor } = req.params;
+    const { nome_autor, data_nascimento, image, sobre } = req.body;
+
+    if (!id_autor) {
+      return res.status(400).json({ msg: "O ID é obrigatório" });
+    }
+
+    try {
+      // Verifica se o autor existe
+      const [existingAutor] = await clientController.getAutorById(id_autor);
+      if (!existingAutor) {
+        return res.status(404).json({ msg: "Autor não encontrado" });
+      }
+
+      // Validação da data de nascimento (se fornecida)
+      let formattedDate = existingAutor.data_nascimento;
+      if (data_nascimento) {
+        const parsedDate = parse(data_nascimento, "yyyy-MM-dd", new Date());
+        if (!isValid(parsedDate)) {
+          return res.status(400).json({ msg: "A data de nascimento está em um formato inválido" });
+        }
+        formattedDate = format(parsedDate, "yyyy-MM-dd");
+      }
+
+      // Preparar dados para atualização
+      const updateData = {
+        nome_autor: nome_autor || existingAutor.nome_autor,
+        data_nascimento: formattedDate,
+        image: image || existingAutor.image,
+        sobre: sobre || existingAutor.sobre
+      };
+
+      // Verificar se o novo nome já existe (se diferente do atual)
+      if (nome_autor && nome_autor !== existingAutor.nome_autor) {
+        const [existingName] = await clientController.getAutorByName(nome_autor);
+        if (existingName) {
+          return res.status(401).json({ msg: "O nome deste autor já está cadastrado no Banco de Dados" });
+        }
+      }
+
+      // Atualizar o autor
+      const result = await clientController.updateAutorInDB(id_autor, updateData);
+      return res.status(200).json({ msg: "Autor atualizado com sucesso" });
+
+    } catch (error) {
+      console.error("Erro ao atualizar o Autor:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  //Atualizar os generos
+  updateGender: async (req, res) => {
+    const { id_genero } = req.params;
+    const updateData = req.body;
+
+    if (!id_genero) {
+      return res.status(400).json({ msg: "O ID é obrigatório" });
+    }
+
+    try {
+      // Verifica se o genero existe
+      const gender = await clientController.getGenderById(id_genero);
+      if (gender.length === 0) {
+        return res.status(404).json({ msg: "Gênero não encontrado" });
+      }
+
+      // Extrai o nome do gênero
+      const nome_genero = gender[0].nome_genero;
+
+      // Atualiza o genero
+      const result = await clientController.updateGenderInDB(id_genero, updateData);
+      return res.status(200).json({ msg: "Gênero atualizado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao atualizar o Gênero:", error);
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  deleteGender: async (req, res) => {
+    const { id_genero } = req.params;
+
+    if (!id_genero) {
+      return res.status(400).json({ msg: "O ID do gênero é obrigatório" });
+    }
+
+    try {
+      // Verifica se o gênero existe
+      const gender = await clientController.getGenderById(id_genero);
+      if (gender.length === 0) {
+        return res.status(404).json({ msg: "Gênero não encontrado" });
+      }
+
+      // Deleta o gênero
+      const result = await clientController.deleteGenderFromDB(id_genero);
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ msg: "Gênero não encontrado" });
+      }
+      return res.status(200).json({ msg: "Gênero deletado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao deletar gênero:", error);
+
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
+
+  deleteAutor: async (req, res) => {
+    const { id_autor } = req.params;
+
+    if (!id_autor) {
+      return res.status(400).json({ msg: "O ID do Autor é obrigatório" });
+    }
+
+    try {
+      // Verifica se o Autor existe
+      const autor = await clientController.getAutorById(id_autor);
+      if (autor.length === 0) {
+        return res.status(404).json({ msg: "Autor não encontrado" });
+      }
+
+      // Deleta o Autor
+      const result = await clientController.deleteAutorFromDB(id_autor);
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ msg: "Autor não encontrado" });
+      }
+      return res.status(200).json({ msg: "Autor deletado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao deletar Autor:", error);
+
+      return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
 }
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {

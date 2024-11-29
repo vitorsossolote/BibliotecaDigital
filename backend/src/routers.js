@@ -62,17 +62,23 @@ router.get('/api/searchLivros/:searchTerm', clientController.searchLivros);
 
 // Criar um Genero
 router.post("/api/registerGender", clientController.registerGender);
+// Atualizar um Genero
+router.put("/api/updateGender/:id_genero", clientController.updateGender)
+// Deletar um Genero
+router.delete("/api/deleteGender/:id_genero", clientController.deleteGender);
 //Listar todos os generos
 router.get('/api/generos', clientController.ListarGeneros);
-//Listar Livros por genero id
-router.get('/api/ListBooks/genero/:id_genero', clientController.listarLivrosPorGenero);
 //Listar Livros por genero nome
-router.get('/api/ListBooks/genero/name/:nome_genero', clientController.listarLivrosPorNomeGenero);
+router.get('/api/ListBooksByGender/:nome_genero', clientController.listarLivrosPorNomeGenero);
 
 // AUTOR --------------------------------------------------------------------------------
 
 // Criar um Autor
 router.post("/api/registerAutor", clientController.registerAutor);
+// Atualizar um Autor
+router.put("/api/updateAutor/:id_autor", clientController.updateAutor)
+// Deletar um Autor
+router.delete("/api/deleteAutor/:id_autor", clientController.deleteAutor);
 //Listar todos os autores
 router.get('/api/autores', clientController.ListarAutores);
 // Listar Livros por Autor ID 
@@ -88,6 +94,10 @@ router.post("/api/emprestimo", clientController.createEmprestimo);
 router.put("/api/emprestimo/:id/atualizarEstado", clientController.atualizarEstadoEmprestimo);
 // // Rota para listar todos os empréstimos
 router.get('/api/emprestimo/listEmprestimo', clientController.getAllEmprestimos);
+// // Rota para listar todos os ativos
+router.get('/api/emprestimo/listEmprestimosAtivos', clientController.getEmprestimosAtivos);
+// // Rota para listar todos os atrasados
+router.get('/api/emprestimo/listEmprestimoAtrasados', clientController.getEmprestimosAtrasados);
 // // Rota para listar os empréstimos de um usuário específico
 router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmprestimosByUserRm);
 // // Endpoint para verificar e atualizar empréstimos atrasados manualmente

@@ -8,10 +8,9 @@ import { MoveLeft } from 'lucide-react-native'
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { AirbnbRating } from "react-native-ratings";
 import { useAuth } from "../../contexts/AuthContext";
-import book1 from "../../../assets/book7.png";
 
 export default function FavoritesScreen({ navigation }) {
-    const { user, favorites, removeFromFavorites, addToFavorites } = useAuth();
+    const { user, favorites, removeFromFavorites, addToFavorites, selectBookForLoan } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
     const [selectedBook, setSelectedBook] = useState(null);
@@ -20,10 +19,11 @@ export default function FavoritesScreen({ navigation }) {
     const checkFavoriteStatus = (bookId) => {
         return favorites.some(book => book.id === bookId);
     };
-    
+
     const handleOpenPress = (book) => {
         setSelectedBook(book);
-        setIsFavorited(checkFavoriteStatus(book.id));
+        const isBookFavorited = checkFavoriteStatus(book.id);
+        setIsFavorited(isBookFavorited);
         bottomSheetref.current?.expand();
     };
 
@@ -57,20 +57,31 @@ export default function FavoritesScreen({ navigation }) {
         }
     };
 
+    const handleContinueToLoan = () => {
+        if (!user) {
+            ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
+            return;
+        }
+
+        if (selectedBook.estado.toLowerCase() !== 'd') {
+            ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
+            return;
+        }
+
+        selectBookForLoan(selectedBook);
+    };
+
     const renderFavoriteBooks = () => {
         return favorites.map((book) => (
             <View key={book.id} style={styles.contentContainer}>
                 <View style={styles.favoriteBookContainer}>
                     <Pressable onPress={() => handleOpenPress(book)}>
                         <View style={styles.imageContainer}>
-                            <Image source={{uri: book.image}} style={styles.bookImage}/>
+                            <Image source={{ uri: book.image }} style={styles.bookImage} />
                         </View>
                     </Pressable>
                     <View style={styles.textContainer}>
                         <Text style={styles.bookTitle}>{book.titulo}</Text>
-                        {/* <Text style={[styles.bookStatus, 
-                            { color: book.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
-                            ]}>{book.estado}{book.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}</Text> */}
                     </View>
                     <View>
                         <Pressable
@@ -117,11 +128,11 @@ export default function FavoritesScreen({ navigation }) {
                     {selectedBook && (
                         <>
                             <View style={bottomSheetStyles.bookContainer}>
-                                <Image 
-                                    source={selectedBook.image ? { uri: selectedBook.image } : book1} 
-                                    alt="livro" 
-                                    style={bottomSheetStyles.bookStyle} 
-                                    resizeMode="contain" 
+                                <Image
+                                    source={{ uri: selectedBook.image }}
+                                    alt="livro"
+                                    style={bottomSheetStyles.bookStyle}
+                                    resizeMode="contain"
                                 />
                             </View>
                             <View style={bottomSheetStyles.detailContainer}>
@@ -145,7 +156,7 @@ export default function FavoritesScreen({ navigation }) {
                                     </Pressable>
                                 </View>
                                 <View style={bottomSheetStyles.genderContainer}>
-                                    <Text style={bottomSheetStyles.genderText}>Suspense</Text>
+                                    <Text style={bottomSheetStyles.genderText}>{selectedBook.nome_genero}</Text>
                                 </View>
                                 <Text style={bottomSheetStyles.description}>{selectedBook.descricao}</Text>
                             </View>
@@ -153,27 +164,28 @@ export default function FavoritesScreen({ navigation }) {
                                 <Text style={bottomSheetStyles.ratingTitle}>Avaliação</Text>
                                 <AirbnbRating
                                     count={5}
-                                    defaultRating={selectedBook.avaliacao || 0}
+                                    defaultRating={selectedBook.rating || 0}
                                     size={20}
                                     showRating={false}
                                     unSelectedColor="#000"
                                     starContainerStyle={bottomSheetStyles.starRating}
                                     isDisabled={true}
                                 />
-                                {/* <Text style={[bottomSheetStyles.status,
-                                    { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
+                                <Text style={[bottomSheetStyles.status,
+                                { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }
                                 ]}>
-                                    {selectedBook.estado}
-                                </Text> */}
+                                    {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
+                                </Text>
                             </View>
                             <View style={bottomSheetStyles.buttonContainer}>
                                 <Button
                                     size="md"
                                     variant="solid"
                                     action="primary"
-                                    // isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
+                                    isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
                                     isFocusVisible={false}
                                     style={bottomSheetStyles.buttonPrincipal}
+                                    onPress={handleContinueToLoan}
                                 >
                                     <ButtonText style={bottomSheetStyles.buttonPrincipalText}>
                                         Continuar com Empréstimo
@@ -186,6 +198,7 @@ export default function FavoritesScreen({ navigation }) {
                                     isDisabled={false}
                                     isFocusVisible={false}
                                     style={bottomSheetStyles.buttonSecondary}
+                                    onPress={() => navigation.navigate("SearchScreen")}
                                 >
                                     <ButtonText style={bottomSheetStyles.buttonSecondaryText}>
                                         Ver Livros
@@ -257,7 +270,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#888',
     }
-  
+
 });
 
 const bottomSheetStyles = StyleSheet.create({

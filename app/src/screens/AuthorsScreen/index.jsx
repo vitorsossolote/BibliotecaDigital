@@ -17,6 +17,8 @@ import { ScrollView, StyleSheet, Pressable, SafeAreaView,View,ToastAndroid} from
 import { MoveLeft } from "lucide-react-native"
 import { AirbnbRating } from 'react-native-ratings';
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { MotiView } from "moti";
+import {Ionicons} from 'react-native-vector-icons/Ionicons'
 import axios from 'axios';
 import Heart from "../../../assets/Heart.png";
 import { useAuth } from "../../contexts/AuthContext";

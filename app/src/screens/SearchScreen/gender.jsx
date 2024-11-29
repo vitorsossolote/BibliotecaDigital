@@ -29,7 +29,7 @@ import MainHeader from "../../components/MainHeader";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function SearchGenderScreen({ route, navigation }) {
-    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, isLibrarianAuthenticated} = useAuth();
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, isLibrarianAuthenticated, selectBookForLoan} = useAuth();
     const [genres, setGenres] = useState([]);
     const [books, setBooks] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState(null);
@@ -45,6 +45,26 @@ export default function SearchGenderScreen({ route, navigation }) {
 
     // Recupera o gênero inicial passado pela navegação
     const initialSelectedGenre = route.params?.initialSelectedGenre;
+
+    const handleContinueToLoan = () => {
+        // Verifica se o usuário está logado
+        if (!user) {
+            ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
+            return;
+        }
+    
+        // Verifica se o livro está disponível
+        if (selectedBook.quantidade <= 0) {
+            ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
+            return;
+        }
+    
+        // Seleciona o livro para empréstimo no contexto
+        selectBookForLoan(selectedBook);
+    
+        // Navega para a próxima tela de empréstimo
+        navigation.navigate("LoanScreen");
+    };
     
     const handleDeleteBook = async () => {
         if (!selectedBook) return;
@@ -266,125 +286,127 @@ export default function SearchGenderScreen({ route, navigation }) {
                 </ScrollView>
 
                 <BottomSheet
-                    ref={bottomSheetref}
-                    snapPoints={snapPoints}
-                    index={-1}
-                    enablePanDownToClose={true}>
-                    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-                        {selectedBook && ( // Só renderiza se houver um livro selecionado
-                            <>
-                                <View style={styles.bookContainer}>
-                                    <Image source={selectedBook.image} alt="livro" style={styles.bookStyle} resizeMode="contain" />
-                                </View>
-                                <View style={styles.detailContainer}>
-                                    <View style={styles.headerContainer}>
-                                        <Text style={styles.title}>{selectedBook.titulo}</Text>
-                                        {isLibrarianAuthenticated() ? (
-                                            <></>
-                                        ) : (<Pressable
-                                            size="md"
-                                            bg="transparent"
-                                            style={{ top: 7 }}
-                                            onPress={handleFavoritePress}
-                                        >
-                                            {isFavorited ? (
-                                                <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
-                                                    <Ionicons name="heart" size={26} color={"#ee2d32"} />
-                                                </MotiView>
-                                            ) : (
-                                                <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
-                                                    <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
-                                                </MotiView>
-                                            )}
-                                        </Pressable>)}
-                                    </View>
-                                    <View style={styles.genderContainer}>
-                                        <Text style={styles.genderText}>{selectedBook.nome_genero}</Text>
-                                    </View>
-                                    <Text style={styles.description}>{selectedBook.descricao}</Text>
-                                </View>
-                                <View style={styles.ratingContainer}>
-                                    <Text style={styles.ratingTitle}>Avaliação</Text>
-                                    <AirbnbRating
-                                        count={5}
-                                        defaultRating={selectedBook.rating || 1}
-                                        size={20}
-                                        showRating={false}
-                                        unSelectedColor="#000"
-                                        starContainerStyle={styles.starRating}
-                                        isDisabled={true}
-                                    />
-                                    <Text style={[styles.status,
-                                    { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
-                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
-                                    </Text>
-                                </View>
-                                <View style={styles.buttonContainer}>
-                                    {isLibrarianAuthenticated() ? (
-                                        <Button
-                                            size="md"
-                                            variant="solid"
-                                            action="primary"
-                                            isDisabled={false}
-                                            isFocusVisible={false}
-                                            style={styles.buttonPrincipal}
-                                            onPress={confirmDeleteBook}
-                                        >
-                                            <ButtonText style={styles.buttonPrincipalText}>
-                                                Excluir Livro
-                                            </ButtonText>
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            size="md"
-                                            variant="solid"
-                                            action="primary"
-                                            isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
-                                            isFocusVisible={false}
-                                            style={styles.buttonPrincipal}
-                                            onPress={() => navigation.navigate("EditBooks")}
-                                        >
-                                            <ButtonText style={styles.buttonPrincipalText}>
-                                                Continuar com Empréstimo
-                                            </ButtonText>
-                                        </Button>
-                                    )}
-                                    {isLibrarianAuthenticated() ? (
-                                        <Button
-                                            size="md"
-                                            variant="solid"
-                                            action="primary"
-                                            isDisabled={false}
-                                            isFocusVisible={false}
-                                            style={styles.buttonSecondary}
-                                            onPress={() => navigation.navigate("EditBooks", {
-                                                bookData: selectedBook
-                                            })}
-                                        >
-                                            <ButtonText style={styles.buttonSecondaryText}>
-                                                Editar Livro
-                                            </ButtonText>
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            size="md"
-                                            variant="solid"
-                                            action="primary"
-                                            isDisabled={false}
-                                            isFocusVisible={false}
-                                            style={styles.buttonSecondary}
-                                            onPress={() => navigation.navigate("SearchScreen")}
-                                        >
-                                            <ButtonText style={styles.buttonSecondaryText}>
-                                                Ver Livros
-                                            </ButtonText>
-                                        </Button>
-                                    )}
-                                </View>
-                            </>
+    ref={bottomSheetref}
+    snapPoints={snapPoints}
+    index={-1}
+    enablePanDownToClose={true}>
+    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
+        {selectedBook && ( // Só renderiza se houver um livro selecionado
+            <>
+                <View style={styles.bookContainer}>
+                    <Image source={{ uri: selectedBook.image }} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                </View>
+                <View style={styles.detailContainer}>
+                    <View style={styles.headerContainer}>
+                        <Text style={styles.title}>{selectedBook.titulo}</Text>
+                        {isLibrarianAuthenticated() ? (
+                            <></>
+                        ) : (
+                            <Pressable
+                                size="md"
+                                bg="transparent"
+                                style={{ top: 7 }}
+                                onPress={handleFavoritePress}
+                            >
+                                {isFavorited ? (
+                                    <MotiView from={{ rotateY: "0deg" }} animate={{ rotateY: "360deg" }}>
+                                        <Ionicons name="heart" size={26} color={"#ee2d32"} />
+                                    </MotiView>
+                                ) : (
+                                    <MotiView from={{ rotateY: "360deg" }} animate={{ rotateY: "0deg" }}>
+                                        <Ionicons name="heart-outline" size={26} color={"#ee2d32"} />
+                                    </MotiView>
+                                )}
+                            </Pressable>
                         )}
-                    </BottomSheetScrollView>
-                </BottomSheet>
+                    </View>
+                    <View style={styles.genderContainer}>
+                        <Text style={styles.genderText}>{selectedBook.nome_genero}</Text>
+                    </View>
+                    <Text style={styles.description}>{selectedBook.descricao}</Text>
+                </View>
+                <View style={styles.ratingContainer}>
+                    <Text style={styles.ratingTitle}>Avaliação</Text>
+                    <AirbnbRating
+                        count={5}
+                        defaultRating={selectedBook.rating || 1}
+                        size={20}
+                        showRating={false}
+                        unSelectedColor="#000"
+                        starContainerStyle={styles.starRating}
+                        isDisabled={true}
+                    />
+                    <Text style={[styles.status,
+                    { color: selectedBook.quantidade > 0 ? '#34A853' : '#ee2d32' }]}>
+                        {selectedBook.quantidade > 0 ? 'Disponível' : 'Indisponível'}
+                    </Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    {isLibrarianAuthenticated() ? (
+                        <Button
+                            size="md"
+                            variant="solid"
+                            action="primary"
+                            isDisabled={false}
+                            isFocusVisible={false}
+                            style={styles.buttonPrincipal}
+                            onPress={confirmDeleteBook}
+                        >
+                            <ButtonText style={styles.buttonPrincipalText}>
+                                Excluir Livro
+                            </ButtonText>
+                        </Button>
+                    ) : (
+                        <Button
+                            size="md"
+                            variant="solid"
+                            action="primary"
+                            isDisabled={selectedBook.quantidade <= 0}
+                            isFocusVisible={false}
+                            style={styles.buttonPrincipal}
+                            onPress={handleContinueToLoan}
+                        >
+                            <ButtonText style={styles.buttonPrincipalText}>
+                                Continuar com Empréstimo
+                            </ButtonText>
+                        </Button>
+                    )}
+                    {isLibrarianAuthenticated() ? (
+                        <Button
+                            size="md"
+                            variant="solid"
+                            action="primary"
+                            isDisabled={false}
+                            isFocusVisible={false}
+                            style={styles.buttonSecondary}
+                            onPress={() => navigation.navigate("EditBooks", {
+                                bookData: selectedBook
+                            })}
+                        >
+                            <ButtonText style={styles.buttonSecondaryText}>
+                                Editar Livro
+                            </ButtonText>
+                        </Button>
+                    ) : (
+                        <Button
+                            size="md"
+                            variant="solid"
+                            action="primary"
+                            isDisabled={false}
+                            isFocusVisible={false}
+                            style={styles.buttonSecondary}
+                            onPress={() => navigation.navigate("SearchScreen")}
+                        >
+                            <ButtonText style={styles.buttonSecondaryText}>
+                                Ver Livros
+                            </ButtonText>
+                        </Button>
+                    )}
+                </View>
+            </>
+        )}
+    </BottomSheetScrollView>
+</BottomSheet>
                 <AlertDialog
                     isOpen={isDeleteDialogVisible}
                     onClose={() => setIsDeleteDialogVisible(false)}
@@ -440,7 +462,8 @@ const styles = StyleSheet.create({
         bottom: 10
     },
     genderSection: {
-        marginTop: 40
+        marginTop: 40,
+        width:"100%",
     },
     genderContainer: {
         height: 30,
@@ -520,10 +543,7 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 16,
     },
-    genderContainer: {
-        height: 50,
-        width: 130,
-    },
+    
     genderText: {
         fontSize: 22,
         fontWeight: 'bold',

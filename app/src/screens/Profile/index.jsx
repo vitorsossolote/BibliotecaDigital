@@ -107,7 +107,7 @@ export default function Profile({ navigation }) {
             title: "Adicionar Generos"
         },
         {
-            onPress: () => navigation.navigate("ManageLoans"),
+            onPress: () => navigation.navigate("LoanManagement"),
             icon: FolderKanban,
             alt: "Gerenciar Empréstimos",
             title: "Gerenciar Empréstimos"
@@ -149,7 +149,6 @@ export default function Profile({ navigation }) {
                 </View>
                 <View style={styles.userInfoContainer}>
                     <Text style={styles.userNameText}>{userName}</Text>
-                    <Text style={styles.userNumberText}>(014) 981503657</Text>
                 </View>
                 <View style={styles.logoutButtonContainer}>
                     <Button onPress={handleLogout} variant="link">

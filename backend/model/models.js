@@ -2,7 +2,7 @@ const connection = require("../config/db");
 const bcrypt = require("bcrypt");
 
 const useModel = {
-  getByID: async (id) => {
+  getStudentByID: async (id) => {
     const [result] = await connection
       .query("SELECT * FROM students WHERE id =?", [id])
       .catch((erro) => console.log(erro));
@@ -25,7 +25,7 @@ const useModel = {
     return result;
   },
 
-  getByEmail: async (email) => {
+  getStudentByEmail: async (email) => {
     const [result] = await connection
       .query("SELECT * FROM students WHERE email=?", [email])
       .catch((erro) => console.log(erro));
@@ -46,9 +46,23 @@ const useModel = {
     return result;
   },
 
-  getByRm: async (rm) => {
+  getStudentByRm: async (rm) => {
     const [result] = await connection
       .query("SELECT * FROM students WHERE rm=?", [rm])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
+  getGenderById: async (id_genero) => {
+    const [result] = await connection
+      .query("SELECT * FROM gender WHERE id_genero=?", [id_genero])
+      .catch((erro) => console.log(erro));
+    return result;
+  },
+
+  getAutorById: async (id_autor) => {
+    const [result] = await connection
+      .query("SELECT * FROM autores WHERE id_autor=?", [id_autor])
       .catch((erro) => console.log(erro));
     return result;
   },
@@ -301,73 +315,73 @@ const useModel = {
 
 
 
-  registerBooks: async (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) => {  
+  registerBooks: async (image, titulo, descricao, nome_autor, editora, nome_genero, quantidade, codigo, avaliacao, estado) => {
     if (!codigo) {
       throw new Error('O código é obrigatório');
     }
-  
+
     try {
       // Primeiro, verifica se o autor existe e obtém seu ID
       let autorId;
       const [autores] = await connection.query(
-        "SELECT id_autor FROM autores WHERE nome_autor = ?", 
+        "SELECT id_autor FROM autores WHERE nome_autor = ?",
         [nome_autor]
       );
-  
+
       // Se o autor existir, use o ID existente
       if (autores.length > 0) {
         autorId = autores[0].id_autor;
       } else {
         // Se o autor não existir, crie um novo
         const [novoAutor] = await connection.query(
-          "INSERT INTO autores (nome_autor) VALUES (?)", 
+          "INSERT INTO autores (nome_autor) VALUES (?)",
           [nome_autor]
         );
         autorId = novoAutor.insertId;
       }
-  
+
       // Verifica se o gênero existe e obtém seu ID
       let generoId;
       const [generos] = await connection.query(
-        "SELECT id_genero FROM gender WHERE nome_genero = ?", 
+        "SELECT id_genero FROM gender WHERE nome_genero = ?",
         [nome_genero]
       );
-  
+
       // Se o gênero existir, use o ID existente
       if (generos.length > 0) {
         generoId = generos[0].id_genero;
       } else {
         // Se o gênero não existir, crie um novo
         const [novoGenero] = await connection.query(
-          "INSERT INTO gender (nome_genero) VALUES (?)", 
+          "INSERT INTO gender (nome_genero) VALUES (?)",
           [nome_genero]
         );
         generoId = novoGenero.insertId;
       }
-  
+
       // Insere o livro com os IDs de autor e gênero
       const [result] = await connection.query(
-        "INSERT INTO livros (image, titulo, descricao, id_autor, id_genero, editora, quantidade, codigo, avaliacao, estado, nome_autor, nome_genero) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
+        "INSERT INTO livros (image, titulo, descricao, nome_genero, editora, quantidade, codigo, avaliacao, estado, nome_autor, id_autor, id_genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
-          image, 
-          titulo, 
-          descricao, 
-          autorId,  // Usando o ID do autor 
-          generoId, // Usando o ID do gênero
-          editora, 
-          quantidade, 
-          codigo, 
-          avaliacao, 
+          image,
+          titulo,
+          descricao,
+          nome_genero,
+          editora,
+          quantidade,
+          codigo,
+          avaliacao,
           estado,
           nome_autor,
-          nome_genero
+          autorId,     // Add author ID
+          generoId     // Add genre ID
         ]
       );
-  
+
       return result;
     } catch (error) {
       throw error;
-    } 
+    }
   },
 
   deleteBook: async (id) => {
@@ -420,7 +434,7 @@ const useModel = {
     }
   },
 
-  registerAutor: async (nome_autor, data_nascimento, image, avaliacao, sobre) => {
+  registerAutor: async (nome_autor, data_nascimento, image, sobre) => {
 
     if (!nome_autor) {
       throw new Error('O nome é obrigatório');
@@ -428,11 +442,10 @@ const useModel = {
 
     try {
       const [result] = await connection
-        .query("INSERT INTO autores (nome_autor, data_nascimento, image, avaliacao,sobre) VALUES (?,?,?,?,?)", [
+        .query("INSERT INTO autores (nome_autor, data_nascimento, image, sobre) VALUES (?,?,?,?)", [
           nome_autor,
           data_nascimento,
           image,
-          avaliacao,
           sobre
         ]);
 
@@ -473,23 +486,58 @@ const useModel = {
       .query(`
         SELECT l.*, g.nome_genero
         FROM livros l
-        JOIN gender g ON l.id_genero = g.id_genero
-        WHERE l.id_genero = ?
+        JOIN gender g ON id_genero = id_genero
+        WHERE id_genero = ?
       `, [id_genero])
       .catch((erro) => console.log(erro));
     return result;
   },
+
   getLivrosByGeneroNome: async (nome_genero) => {
-    const [result] = await connection
-      .query(`
-        SELECT l.*, g.nome_genero
-        FROM livros l
-        JOIN gender g ON l.nome_genero = g.nome_genero
-        WHERE l.nome_genero = ?
-      `, [nome_genero])
-      .catch((erro) => console.log(erro));
-    return result;
+    try {
+      console.log('Nome do gênero buscado:', nome_genero);
+
+      // Primeiro, verifique se o gênero existe
+      const [generoCheck] = await connection.query(
+        'SELECT * FROM gender WHERE nome_genero = ?',
+        [nome_genero]
+      );
+      console.log('Gênero encontrado:', generoCheck);
+
+      // Depois, busque os livros
+      const [result] = await connection.query(
+        `
+            SELECT 
+                livros.id,
+                livros.titulo,
+                livros.editora,
+                livros.quantidade,
+                livros.codigo,
+                livros.image,
+                livros.descricao,
+                livros.avaliacao,
+                livros.estado,
+                livros.nome_autor,
+                livros.nome_genero,
+                livros.id_genero,
+                livros.id_autor,
+                gender.nome_genero AS genero_nome
+            FROM livros
+            JOIN gender ON livros.nome_genero = gender.nome_genero
+            WHERE livros.nome_genero = ?
+            `,
+        [nome_genero]
+      );
+
+      console.log('Livros encontrados:', result);
+      return result;
+    } catch (erro) {
+      console.error('Erro ao buscar livros por gênero:', erro);
+      throw erro;
+    }
   },
+
+
   getAllAutores: async () => {
     const [result] = await connection
       .query("SELECT * FROM autores")
@@ -778,29 +826,30 @@ const useModel = {
     }
   },
 
-  getEmprestimosAtrasados: async () => {
+  getEmprestimosByEstado: async (estado) => {
     try {
-      const [result] = await connection.query(
-        `SELECT DISTINCT
-                e.emprestimo_id, 
-                e.data_emprestimo, 
-                e.data_devolucao, 
-                e.livro_id,
-                e.user_rm AS aluno_rm,
-                s.nome AS aluno_nome,
-                l.titulo AS livro_titulo
-            FROM emprestimos e
-            JOIN students s ON e.user_rm = s.rm
-            JOIN livros l ON e.livro_id = l.id
-            WHERE e.data_devolucao < CURDATE() 
-            AND e.estado = 'ativo'`
-      );
-      return result;
+      const [rows] = await connection.query('SELECT * FROM emprestimos WHERE estado = ?', [estado]);
+      return rows;
     } catch (error) {
-      console.error("Erro ao obter empréstimos atrasados:", error);
+      console.error(`Erro ao obter empréstimos com estado ${estado}:`, error);
       throw error;
     }
   },
+
+  getEmprestimosAtrasados: async () => {
+    try {
+        const [result] = await connection.query(
+            `SELECT emprestimo_id FROM emprestimos 
+             WHERE data_devolucao < CURDATE() 
+             AND estado = 'ativo'` // Exclui 'concluído' ou outros estados
+        );
+        return result;
+    } catch (error) {
+        console.error("Erro ao obter empréstimos atrasados:", error);
+        throw error;
+    }
+},
+
 
   //Deletar os Estudantes
   deleteStudentFromDB: async (rm) => {
@@ -814,6 +863,19 @@ const useModel = {
 
       return result;
     } catch (error) {
+      throw error;
+    }
+  },
+
+  updateEmprestimoEstado: async (emprestimoId, novoEstado) => {
+    try {
+      const [result] = await connection.query(
+        "UPDATE emprestimos SET estado = ? WHERE emprestimo_id = ?",
+        [novoEstado, emprestimoId]
+      );
+      return result;
+    } catch (error) {
+      console.error(`Erro ao atualizar estado do empréstimo ${emprestimoId}:`, error);
       throw error;
     }
   },
@@ -845,6 +907,119 @@ const useModel = {
           senhaHash || updateData.senha, // Usa o hash ou o valor original
           rm
         ]
+      );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  updateGenderInDB: async (id_genero, updateData) => {
+    if (!id_genero) {
+      throw new Error('O ID é obrigatório');
+    }
+
+    try {
+      // Primeiro, verificar se o novo nome_genero já está em uso em algum livro
+      const [existingBooks] = await connection.query(
+        "SELECT * FROM LIVROS WHERE nome_genero = ?",
+        [updateData.nome_genero]
+      );
+
+      // Se já existem livros com esse nome_genero, impedir a atualização
+      if (existingBooks.length > 0) {
+        throw new Error('Este gênero não pode ser alterado pois está em uso em livros existentes');
+      }
+
+      // Se não estiver em uso, realizar a atualização
+      const [result] = await connection.query(
+        "UPDATE gender SET nome_genero = ? WHERE id_genero = ?",
+        [
+          updateData.nome_genero,
+          id_genero
+        ]
+      );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  updateAutorInDB: async (id_autor, updateData) => {
+    if (!id_autor) {
+      throw new Error('O ID é obrigatório');
+    }
+
+    try {
+      const [result] = await connection.query(
+        "UPDATE autores SET nome_autor = ?, data_nascimento = ?, image = ?, sobre = ? WHERE id_autor = ?",
+        [
+          updateData.nome_autor,
+          updateData.data_nascimento,
+          updateData.image,
+          updateData.sobre,
+          id_autor
+        ]
+      );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteGenderFromDB: async (id_genero) => {
+    if (!id_genero) {
+      throw new Error('O ID do gênero é obrigatório');
+    }
+
+    try {
+      // Primeiro, verificar se o gênero está sendo usado em algum livro
+      const [existingBooks] = await connection.query(
+        "SELECT * FROM livros WHERE nome_genero = ?",
+        [id_genero]
+      );
+
+      // Se existem livros usando este gênero, impedir a deleção
+      if (existingBooks.length > 0) {
+        throw new Error('Este gênero não pode ser deletado pois está em uso em livros existentes');
+      }
+
+      // Se não estiver em uso, realizar a deleção
+      const [result] = await connection.query(
+        "DELETE FROM gender WHERE id_genero = ?",
+        [id_genero]
+      );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteAutorFromDB: async (id_autor) => {
+    if (!id_autor) {
+      throw new Error('O ID do autor é obrigatório');
+    }
+
+    try {
+      // Primeiro, verificar se o autor está sendo usado em algum livro
+      const [existingBooks] = await connection.query(
+        "SELECT * FROM livros WHERE nome_autor = ?",
+        [id_autor]
+      );
+
+      // Se existem livros usando este autor, impedir a deleção
+      if (existingBooks.length > 0) {
+        throw new Error('Este autor não pode ser deletado pois está em uso em livros existentes');
+      }
+
+      // Se não estiver em uso, realizar a deleção
+      const [result] = await connection.query(
+        "DELETE FROM autores WHERE id_autor = ?",
+        [id_autor]
       );
 
       return result;

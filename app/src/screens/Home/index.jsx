@@ -144,7 +144,7 @@ export default function Home({ navigation }) {
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
-                        {/* <Reservar onPress={handleOpenPress} /> */}
+                        <Reservar onPress={handleOpenPress} />
                     </MotiView>
                     <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
                         <Section title="Melhores da Semana" onPress={() => navigation.navigate("SearchScreen")} />
