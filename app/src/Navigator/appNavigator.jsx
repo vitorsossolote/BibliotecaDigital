@@ -35,6 +35,7 @@ import RegisterAutor from '../screens/RegisterAutor';
 import RegisterGender from '../screens/RegisterGender';
 import StudentManagementScreen from '../screens/StudentManagement';
 import EditStudentScreen from '../screens/EditStudent';
+import LoanManagement from '../screens/LoanManagement';
 
 
 
@@ -192,8 +193,8 @@ function HomeTabLibrarianNavigator() {
         }}
       />
       <Tab.Screen
-        name="LoanScreen"
-        component={LoanScreen}
+        name="LoanManagement"
+        component={LoanManagement}
         options={{
           tabBarIcon: ({ focused, size }) => (
             <MotiView from={{ opacity: 0, }} animate={{ opacity: 1, }} transition={{ duration: 4000 }}>
