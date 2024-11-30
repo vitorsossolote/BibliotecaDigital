@@ -101,6 +101,8 @@ router.get('/api/emprestimo/listEmprestimoAtrasados', clientController.getEmpres
 router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmprestimosByUserRm);
 // // Endpoint para verificar e atualizar empréstimos atrasados manualmente
 router.post("/api/emprestimos/verificar-atrasos", clientController.atualizarAtrasos);
+// // Rota para encontrar empréstimo ativo de usuário
+router.get('/api/emprestimo/listEmprestimosAtivos/:user_rm', clientController.getEmprestimosAtivosByUserRm);
 
 //teste
 // router.post("/api/validade", clientController.loginBiblio);

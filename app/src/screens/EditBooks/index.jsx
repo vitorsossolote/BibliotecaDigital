@@ -22,6 +22,7 @@ import axios from "axios";
 import BackHeader from "../../components/BackHeader/index";
 import InputTest from "../../components/InputTest";
 import ModalComp from "../../components/Modal/1Modal";
+import { useAuth } from "../../contexts/AuthContext";
 
 const EditBooks = ({ navigation, route}) => {
     const [image, setImage] = useState('');
@@ -32,8 +33,8 @@ const EditBooks = ({ navigation, route}) => {
     const [quantidade, setQuantidade] = useState('');
     const [codigo, setCodigo] = useState('');
     const [descricao, setDescricao] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
-
+    const [isEditing, setIsEditing] = useState(false);  
+    const {buscarLivros} = useAuth()
     const [autores, setAutores] = useState([]);
     const [generos, setGeneros] = useState([]);
 
@@ -131,7 +132,8 @@ const EditBooks = ({ navigation, route}) => {
                 await axios.post('http://10.0.2.2:8085/api/registerBook', data);
                 Alert.alert('Cadastro do livro realizado com sucesso');
             }
-            navigation.navigate('HomeTabLibrarian');
+            await buscarLivros();
+            navigation.goBack();
         } catch (error) {
             console.error(error);
             Alert.alert('Ocorreu um erro ao salvar o livro.');

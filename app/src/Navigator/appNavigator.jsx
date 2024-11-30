@@ -13,7 +13,7 @@ import LibrarianScreen from '../screens/LibrarianScreen/index';
 import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
 import LoginStudent from '../screens/Login/LoginStudent/index';
 import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/index';
-import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
+import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount';
 import ForgotPassword from '../screens/ForgotPassword/index';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
 
@@ -36,7 +36,7 @@ import RegisterGender from '../screens/RegisterGender';
 import StudentManagementScreen from '../screens/StudentManagement';
 import EditStudentScreen from '../screens/EditStudent';
 import LoanManagement from '../screens/LoanManagement';
-
+import EditAuthor from '../screens/EditAutor';
 
 
 const Stack = createNativeStackNavigator();
@@ -270,6 +270,7 @@ export default function AppNavigator() {
             <Stack.Screen name="CreateStudent" component={CreateStudentAccount} />
             <Stack.Screen name="StudentManagement" component={StudentManagementScreen} />
             <Stack.Screen name="EditStudent" component={EditStudentScreen} />
+            <Stack.Screen name="EditAuthor" component={EditAuthor} />
           </>
         ) : authData ? (
           // Student Routes

@@ -758,39 +758,25 @@ const useController = {
     }
   },
 
-
-
   registerAutor: async (req, res) => {
     const {
       nome_autor,
-      data_nascimento,
-      image,
-      sobre
+      data_nascimento = null,
+      image = null,
+      sobre = null
     } = req.body;
 
     console.log("Dados recebidos no controller:", {
       nome_autor, data_nascimento, image, sobre
     });
 
+    // Validação do nome do autor (única validação obrigatória)
     if (!nome_autor) {
-      return res.status(400).json({ msg: "O nome é obrigatório" });
+      return res.status(400).json({ msg: "O nome do autor é obrigatório" });
     }
-
-    // Validação e formatação da data de nascimento
-    if (!data_nascimento) {
-      return res.status(400).json({ msg: "A data de nascimento é obrigatória" });
-    }
-
-    const parsedDate = parse(data_nascimento, "yyyy-MM-dd", new Date());
-
-    if (!isValid(parsedDate)) {
-      return res.status(400).json({ msg: "A data de nascimento está em um formato inválido" });
-    }
-
-    // Formatando a data para o padrão do banco (yyyy-MM-dd)
-    const formattedDate = format(parsedDate, "yyyy-MM-dd");
 
     try {
+      // Verificar se já existe um autor com esse nome
       const sqlAutorName = await clientController.getAutorByName(nome_autor);
 
       if (sqlAutorName.length > 0) {
@@ -799,12 +785,26 @@ const useController = {
           .json({ msg: "O nome deste autor já está cadastrado no Banco de Dados" });
       }
 
+      // Se data_nascimento foi fornecida, validar o formato
+      let formattedDate = null;
+      if (data_nascimento) {
+        const parsedDate = parse(data_nascimento, "yyyy-MM-dd", new Date());
+
+        if (!isValid(parsedDate)) {
+          return res.status(400).json({ msg: "A data de nascimento está em um formato inválido" });
+        }
+
+        formattedDate = format(parsedDate, "yyyy-MM-dd");
+      }
+
+      // Registrar autor com campos opcionais
       const result = await clientController.registerAutor(
         nome_autor,
-        formattedDate, // Use a data formatada aqui
+        formattedDate,
         image,
         sobre
       );
+
       return res.status(201).json({ msg: "Autor cadastrado com sucesso" });
     } catch (error) {
       console.error("Erro ao cadastrar Autor:", error);
@@ -971,225 +971,6 @@ const useController = {
     }
   },
 
-  // Método createEmprestimo
-  createEmprestimo: async (req, res) => {
-    const { user_rm, livro_id, prazo_dias } = req.body;
-
-    if (!user_rm || !livro_id || !prazo_dias) {
-      return res.status(400).json({ msg: "Todos os campos são obrigatórios" });
-    }
-
-    if (![7, 14].includes(prazo_dias)) {
-      return res.status(400).json({ msg: "O prazo deve ser de 7 ou 14 dias" });
-    }
-
-    if (!user_rm) {
-      return res.status(400).json({ msg: "O RM é obrigatório" });
-    }
-
-    try {
-      // Verificar se o usuário possui empréstimos ativos primeiro
-      const emprestimosAtivos = await clientController.checkActiveLoans(user_rm);
-      
-      // Se tiver qualquer empréstimo ativo, bloquear novo empréstimo
-      if (emprestimosAtivos.length > 0) {
-        return res.status(400).json({
-          msg: "Você possui um empréstimo ativo. Devolva o livro antes de fazer um novo empréstimo.",
-          emprestimosAtivos: emprestimosAtivos
-        });
-      }
-
-      const student = await clientController.getStudentByRm(user_rm);
-      if (student.length === 0) {
-        return res.status(404).json({ msg: "Estudante não encontrado" });
-      }
-
-      // Manter a lógica existente para contagem de empréstimos ativos
-      const totalEmprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
-
-      if (totalEmprestimosAtivos >= 2) {
-        return res.status(400).json({
-          msg: "Você já possui 2 empréstimos ativos. Por favor, devolva um dos livros antes de fazer um novo empréstimo."
-        });
-      }
-
-      // Restante do código permanece igual
-      const livro = await clientController.getQntLivrosById(livro_id);
-      if (!livro) {
-        return res.status(404).json({ msg: `Livro não encontrado: ID ${livro_id}` });
-      }
-
-      if (livro.quantidade <= 0) {
-        return res.status(400).json({ msg: "Nenhum exemplar disponível para empréstimo" });
-      }
-
-      const dataAtual = new Date();
-      const dataDevolucao = new Date();
-      dataDevolucao.setDate(dataDevolucao.getDate() + prazo_dias);
-
-      const dataEmprestimoFormatada = dataAtual.toISOString().split('T')[0];
-      const dataDevolucaoFormatada = dataDevolucao.toISOString().split('T')[0];
-
-      await clientController.criarEmprestimo(
-        user_rm,
-        livro_id,
-        dataEmprestimoFormatada,
-        dataDevolucaoFormatada
-      );
-
-      await clientController.subtrairQuantidadeLivro(livro_id);
-
-      if (livro.quantidade - 1 === 0) {
-        await clientController.updateLivroEstado(livro_id, 'E');
-      }
-
-      return res.status(201).json({ msg: "Empréstimo criado com sucesso" });
-    } catch (error) {
-      console.error("Erro ao criar empréstimo:", error);
-      return res.status(500).json({ msg: "Erro interno do servidor" });
-    }
-  },
-
-  atualizarEstadoEmprestimo: async (req, res) => {
-    const { id } = req.params;
-    const { novo_estado, avaliacao } = req.body;
-
-    // Validações
-    if (!id || !novo_estado) {
-      return res.status(400).json({ msg: "ID e novo estado são obrigatórios" });
-    }
-
-    if (!["ativo", "concluído", "atrasado"].includes(novo_estado)) {
-      return res.status(400).json({ msg: "Estado inválido" });
-    }
-
-    // Validação da avaliação
-    if (novo_estado === "concluído" && (!avaliacao === 1 || avaliacao === 2 || avaliacao === 3 || avaliacao === 4 || avaliacao === 5)) {
-      return res.status(400).json({ msg: "Avaliação inválida. Deve ser um número entre 1 e 5" });
-    }
-
-    try {
-      // Verificar se o empréstimo existe
-      const [emprestimo] = await clientController.getEmprestimoById(id);
-      if (!emprestimo) {
-        return res.status(404).json({ msg: "Empréstimo não encontrado" });
-      }
-
-      // Se for uma devolução (concluído), verificar a quantidade de empréstimos
-      if (novo_estado === "concluído") {
-        // Atualizar estado do livro para "Disponível"
-        await clientController.updateLivroEstado(emprestimo.livro_id, 'D');
-
-        // Atualizar avaliação do empréstimo
-        await clientController.atualizarAvaliacaoEmprestimo(id, avaliacao);
-
-        // Atualizar avaliação média do livro
-        await clientController.atualizarAvaliacaoLivro(emprestimo.livro_id, avaliacao);
-      }
-      // Se for uma nova solicitação de empréstimo (ativo), verificar limite
-      else if (novo_estado === "ativo") {
-        // Contar empréstimos ativos do usuário
-        const emprestimosAtivos = await clientController.countEmprestimosAtivos(emprestimo.user_rm);
-
-        if (emprestimosAtivos >= 2) {
-          return res.status(400).json({
-            msg: "Limite de empréstimos excedido. Devolva um livro antes de solicitar outro."
-          });
-        }
-      }
-
-      // Atualizar o estado do empréstimo
-      await clientController.atualizarEstadoEmprestimo(id, novo_estado);
-
-      return res.status(200).json({ msg: "Estado do empréstimo atualizado com sucesso" });
-    } catch (error) {
-      console.error("Erro ao atualizar estado do empréstimo:", error);
-      return res.status(500).json({ msg: "Erro interno do servidor" });
-    }
-  },
-
-  // Atualizar o estado de um empréstimo (bibliotecário)
-  getAllEmprestimos: async (req, res) => {
-    try {
-      const emprestimos = await clientController.getAllEmprestimos();
-      return res.status(200).json(emprestimos);
-    } catch (error) {
-      console.error('Erro ao obter todos os empréstimos:', error);
-      return res.status(500).json({ msg: 'Erro interno do servidor' });
-    }
-  },
-
-  getEmprestimosByUserRm: async (req, res) => {
-    const { user_rm } = req.params;
-  
-    console.log('Received RM:', user_rm);
-    console.log('RM Type:', typeof user_rm);
-  
-    try {
-      const emprestimos = await clientController.getEmprestimosByUserRm(user_rm);
-      
-      // Se nenhum empréstimo for encontrado, retorne um array vazio
-      if (emprestimos.length === 0) {
-        return res.status(404).json({ 
-          message: 'Nenhum empréstimo encontrado para este usuário',
-          user_rm: user_rm 
-        });
-      }
-  
-      return res.status(200).json(emprestimos);
-    } catch (error) {
-      console.error(`Erro ao obter empréstimos do usuário RM ${user_rm}:`, error);
-      return res.status(500).json({ 
-        msg: 'Erro interno do servidor',
-        error: error.message 
-      });
-    }
-  },
-  
-
-  atualizarAtrasos: async (req, res) => {
-    try {
-      // Obter empréstimos cuja data_devolucao expirou
-      const emprestimosAtrasados = await clientController.getEmprestimosAtrasados();
-  
-      if (emprestimosAtrasados.length === 0) {
-        return res.status(200).json({ msg: "Nenhum empréstimo atrasado encontrado." });
-      }
-  
-      // Atualizar o estado de cada empréstimo para "atrasado"
-      for (const emprestimo of emprestimosAtrasados) {
-        await clientController.updateEmprestimoEstado(emprestimo.emprestimo_id, "atrasado");
-      }
-  
-      return res.status(200).json({
-        msg: `${emprestimosAtrasados.length} empréstimo(s) atualizado(s) para 'atrasado'.`,
-      });
-    } catch (error) {
-      console.error("Erro ao atualizar empréstimos atrasados:", error);
-      return res.status(500).json({ msg: "Erro interno ao verificar atrasos." });
-    }
-  },
-
-
-  getEmprestimosAtivos: async (req, res) => {
-    try {
-      const emprestimos = await clientController.getEmprestimosByEstado('ativo');
-      return res.status(200).json(emprestimos);
-    } catch (error) {
-      console.error('Erro ao obter empréstimos ativos:', error);
-      return res.status(500).json({ msg: 'Erro interno do servidor' });
-    }
-  },
-
-  getEmprestimosAtrasados: async (req, res) => {
-    try {
-      const emprestimos = await clientController.getEmprestimosByEstado('atrasado');
-      return res.status(200).json(emprestimos);
-    } catch (error) {
-      console.error('Erro ao obter empréstimos atrasados:', error);
-      return res.status(500).json({ msg: 'Erro interno do servidor' });
-    }
-  },
 
   //Atualizar oo autor
   updateAutor: async (req, res) => {
@@ -1275,28 +1056,33 @@ const useController = {
     const { id_genero } = req.params;
 
     if (!id_genero) {
-      return res.status(400).json({ msg: "O ID do gênero é obrigatório" });
+        return res.status(400).json({ msg: "O ID do gênero é obrigatório" });
     }
 
     try {
-      // Verifica se o gênero existe
-      const gender = await clientController.getGenderById(id_genero);
-      if (gender.length === 0) {
-        return res.status(404).json({ msg: "Gênero não encontrado" });
-      }
+        // Verificar se o gênero existe primeiro
+        const gender = await clientController.getGenderById(id_genero);
+        if (gender.length === 0) {
+            return res.status(404).json({ msg: "Gênero não encontrado" });
+        }
 
-      // Deleta o gênero
-      const result = await clientController.deleteGenderFromDB(id_genero);
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ msg: "Gênero não encontrado" });
-      }
-      return res.status(200).json({ msg: "Gênero deletado com sucesso" });
+        // Tentar deletar o gênero
+        const result = await clientController.deleteGenderFromDB(id_genero);
+        
+        return res.status(200).json({ msg: "Gênero deletado com sucesso" });
     } catch (error) {
-      console.error("Erro ao deletar gênero:", error);
-
-      return res.status(500).json({ msg: "Erro interno do servidor" });
+        console.error("Erro ao deletar o Gênero:", error);
+        
+        // Tratar especificamente o erro de gênero em uso
+        if (error.message === 'Este gênero não pode ser deletado pois está em uso em livros existentes') {
+            return res.status(400).json({ 
+                msg: error.message 
+            });
+        }
+        
+        return res.status(500).json({ msg: "Erro interno do servidor" });
     }
-  },
+},
 
   deleteAutor: async (req, res) => {
     const { id_autor } = req.params;
@@ -1324,6 +1110,291 @@ const useController = {
       return res.status(500).json({ msg: "Erro interno do servidor" });
     }
   },
+
+  //Emprestimos:
+
+
+    // Método createEmprestimo
+createEmprestimo: async (req, res) => {
+  const { user_rm, livros_ids, prazo_dias } = req.body;
+
+  // Validações iniciais
+  if (!user_rm || !livros_ids || !Array.isArray(livros_ids) || livros_ids.length === 0 || !prazo_dias) {
+    return res.status(400).json({ msg: "Dados inválidos para empréstimo" });
+  }
+
+  if (![7, 14].includes(prazo_dias)) {
+    return res.status(400).json({ msg: "O prazo deve ser de 7 ou 14 dias" });
+  }
+
+  if (livros_ids.length > 2) {
+    return res.status(400).json({ msg: "Não é permitido emprestar mais de 2 livros" });
+  }
+
+  try {
+    // Verificar se o usuário existe
+    const student = await clientController.getStudentByRm(user_rm);
+    if (student.length === 0) {
+      return res.status(404).json({ msg: "Estudante não encontrado" });
+    }
+
+    // Verificar empréstimos ativos
+    const activeLoans = await clientController.checkActiveLoans(user_rm);
+    if (activeLoans.length > 0) {
+      const livrosEmprestados = [
+        activeLoans[0].titulo_livro1, 
+        activeLoans[0].titulo_livro2
+      ].filter(Boolean);
+
+      return res.status(400).json({
+        msg: "Você possui um empréstimo ativo. Devolva o livro antes de fazer um novo empréstimo.",
+        livros_emprestados: livrosEmprestados
+      });
+    }
+
+    // Verificar disponibilidade dos livros
+    const livrosInvalidos = [];
+    for (const livro_id of livros_ids) {
+      const livro = await clientController.getQntLivrosById(livro_id);
+      
+      if (!livro) {
+        livrosInvalidos.push(`Livro não encontrado: ID ${livro_id}`);
+      } else if (livro.quantidade <= 0) {
+        livrosInvalidos.push(`Livro indisponível: ID ${livro_id}`);
+      }
+    }
+
+    if (livrosInvalidos.length > 0) {
+      return res.status(400).json({ 
+        msg: "Existem problemas com os livros selecionados",
+        detalhes: livrosInvalidos 
+      });
+    }
+
+    // Preparar datas
+    const dataAtual = new Date();
+    const dataDevolucao = new Date();
+    dataDevolucao.setDate(dataDevolucao.getDate() + prazo_dias);
+
+    const dataEmprestimoFormatada = dataAtual.toISOString().split('T')[0];
+    const dataDevolucaoFormatada = dataDevolucao.toISOString().split('T')[0];
+
+    // Criar empréstimo
+    await clientController.criarEmprestimo(
+      user_rm,
+      livros_ids,
+      dataEmprestimoFormatada,
+      dataDevolucaoFormatada
+    );
+
+    // Atualizar quantidade de livros
+    for (const livro_id of livros_ids) {
+      await clientController.subtrairQuantidadeLivro(livro_id);
+      
+      // Verificar se o livro ficou sem exemplares
+      const livro = await clientController.getQntLivrosById(livro_id);
+      if (livro.quantidade === 0) {
+        await clientController.updateLivroEstado(livro_id, 'E');
+      }
+    }
+
+    return res.status(201).json({ msg: "Empréstimo criado com sucesso" });
+  } catch (error) {
+    console.error("Erro ao criar empréstimo:", error);
+    return res.status(500).json({ msg: "Erro interno do servidor" });
+  }
+},
+
+atualizarEstadoEmprestimo: async (req, res) => {
+  const { id } = req.params;
+  const { novo_estado, avaliacao } = req.body;
+
+  // Validações
+  if (!id || !novo_estado) {
+    return res.status(400).json({ msg: "ID e novo estado são obrigatórios" });
+  }
+
+  if (!["ativo", "concluído", "atrasado"].includes(novo_estado)) {
+    return res.status(400).json({ msg: "Estado inválido" });
+  }
+
+  // Validação da avaliação
+  if (novo_estado === "concluído" && (!avaliacao === 1 || avaliacao === 2 || avaliacao === 3 || avaliacao === 4 || avaliacao === 5)) {
+    return res.status(400).json({ msg: "Avaliação inválida. Deve ser um número entre 1 e 5" });
+  }
+
+  try {
+    // Verificar se o empréstimo existe
+    const [emprestimo] = await clientController.getEmprestimoById(id);
+    if (!emprestimo) {
+      return res.status(404).json({ msg: "Empréstimo não encontrado" });
+    }
+
+    // Se for uma devolução (concluído), verificar a quantidade de empréstimos
+    if (novo_estado === "concluído") {
+      // Atualizar estado do livro para "Disponível"
+      await clientController.updateLivroEstado(emprestimo.livro_id, 'D');
+
+      // Atualizar avaliação do empréstimo
+      await clientController.atualizarAvaliacaoEmprestimo(id, avaliacao);
+
+      // Atualizar avaliação média do livro
+      await clientController.atualizarAvaliacaoLivro(emprestimo.livro_id, avaliacao);
+    }
+    // Se for uma nova solicitação de empréstimo (ativo), verificar limite
+    else if (novo_estado === "ativo") {
+      // Contar empréstimos ativos do usuário
+      const emprestimosAtivos = await clientController.countEmprestimosAtivos(emprestimo.user_rm);
+
+      if (emprestimosAtivos >= 2) {
+        return res.status(400).json({
+          msg: "Limite de empréstimos excedido. Devolva um livro antes de solicitar outro."
+        });
+      }
+    }
+
+    // Atualizar o estado do empréstimo
+    await clientController.atualizarEstadoEmprestimo(id, novo_estado);
+
+    return res.status(200).json({ msg: "Estado do empréstimo atualizado com sucesso" });
+  } catch (error) {
+    console.error("Erro ao atualizar estado do empréstimo:", error);
+    return res.status(500).json({ msg: "Erro interno do servidor" });
+  }
+},
+
+// Atualizar o estado de um empréstimo (bibliotecário)
+getAllEmprestimos: async (req, res) => {
+  try {
+    const emprestimos = await clientController.getAllEmprestimos();
+    return res.status(200).json(emprestimos);
+  } catch (error) {
+    console.error('Erro ao obter todos os empréstimos:', error);
+    return res.status(500).json({ msg: 'Erro interno do servidor' });
+  }
+},
+
+getEmprestimosByUserRm: async (req, res) => {
+  const { user_rm } = req.params;
+
+  console.log('Received RM:', user_rm);
+  console.log('RM Type:', typeof user_rm);
+
+  try {
+    const emprestimos = await clientController.getEmprestimosByUserRm(user_rm);
+    
+    // Se nenhum empréstimo for encontrado, retorne um array vazio
+    if (emprestimos.length === 0) {
+      return res.status(404).json({ 
+        message: 'Nenhum empréstimo encontrado para este usuário',
+        user_rm: user_rm 
+      });
+    }
+
+    return res.status(200).json(emprestimos);
+  } catch (error) {
+    console.error(`Erro ao obter empréstimos do usuário RM ${user_rm}:`, error);
+    return res.status(500).json({ 
+      msg: 'Erro interno do servidor',
+      error: error.message 
+    });
+  }
+},
+getEmprestimosAtivosByUserRm: async (req, res) => {
+  const { user_rm } = req.params;
+
+  try {
+    const emprestimos = await clientController.getEmprestimosByUserRmAndEstado(user_rm, 'ativo');
+    
+    if (emprestimos.length === 0) {
+      return res.status(404).json({ 
+        message: 'Nenhum empréstimo ativo encontrado para este usuário',
+        user_rm: user_rm 
+      });
+    }
+
+    return res.status(200).json(emprestimos);
+  } catch (error) {
+    console.error(`Erro ao obter empréstimos ativos do usuário RM ${user_rm}:`, error);
+    return res.status(500).json({ 
+      msg: 'Erro interno do servidor',
+      error: error.message 
+    });
+  }
+},
+
+
+getEmprestimosAtivos: async (req, res) => {
+  try {
+    const emprestimos = await clientController.getEmprestimosByEstado('ativo');
+    return res.status(200).json(emprestimos);
+  } catch (error) {
+    console.error('Erro ao obter empréstimos ativos:', error);
+    return res.status(500).json({ msg: 'Erro interno do servidor' });
+  }
+},
+
+getEmprestimosAtivosByUserRm: async (req, res) => {
+  const { user_rm } = req.params;
+
+  console.log('Received RM:', user_rm);
+  console.log('RM Type:', typeof user_rm);
+
+  try {
+    const emprestimos = await clientController.getEmprestimosByUserRmAndEstado(user_rm, 'ativo');
+    
+    // Se nenhum empréstimo ativo for encontrado para este usuário, retorne um array vazio
+    if (emprestimos.length === 0) {
+      return res.status(404).json({ 
+        message: 'Nenhum empréstimo ativo encontrado para este usuário',
+        user_rm: user_rm 
+      });
+    }
+
+    return res.status(200).json(emprestimos);
+  } catch (error) {
+    console.error(`Erro ao obter empréstimos ativos do usuário RM ${user_rm}:`, error);
+    return res.status(500).json({ 
+      msg: 'Erro interno do servidor',
+      error: error.message 
+    });
+  }
+},
+
+atualizarAtrasos: async (req, res) => {
+  try {
+    // Obter empréstimos cuja data_devolucao expirou
+    const emprestimosAtrasados = await clientController.getEmprestimosAtrasados();
+
+    if (emprestimosAtrasados.length === 0) {
+      return res.status(200).json({ msg: "Nenhum empréstimo atrasado encontrado." });
+    }
+
+    // Atualizar o estado de cada empréstimo para "atrasado"
+    for (const emprestimo of emprestimosAtrasados) {
+      await clientController.updateEmprestimoEstado(emprestimo.emprestimo_id, "atrasado");
+    }
+
+    return res.status(200).json({
+      msg: `${emprestimosAtrasados.length} empréstimo(s) atualizado(s) para 'atrasado'.`,
+    });
+  } catch (error) {
+    console.error("Erro ao atualizar empréstimos atrasados:", error);
+    return res.status(500).json({ msg: "Erro interno ao verificar atrasos." });
+  }
+},
+
+
+
+getEmprestimosAtrasados: async (req, res) => {
+  try {
+    const emprestimos = await clientController.getEmprestimosByEstado('atrasado');
+    return res.status(200).json(emprestimos);
+  } catch (error) {
+    console.error('Erro ao obter empréstimos atrasados:', error);
+    return res.status(500).json({ msg: 'Erro interno do servidor' });
+  }
+},
 }
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {

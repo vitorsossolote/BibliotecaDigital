@@ -17,9 +17,12 @@ import DateOptionGroup from "./dateOptionGroup"
 export default function LoanScreen({ navigation }) {
     // Acessar o contexto
     const {
-        selectedLoanBooks,
         realizarEmprestimo,
-        clearSelectedLoanBooks
+        createLoan, 
+        selectedLoanBooks, 
+        clearSelectedLoanBooks,
+        checkActiveLoan,
+        activeLoan 
     } = useAuth();
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [deliveryDate, setDeliveryDate] = useState();
@@ -42,9 +45,18 @@ export default function LoanScreen({ navigation }) {
         // Close the bottom sheet
         handleCloseDateTimeSheet();
     };
+    const handleCreateLoan = async () => {
+        try {
+            const livrosIds = selectedLoanBooks.map(book => book.id);
+            await createLoan(livrosIds);
+            clearSelectedLoanBooks();
+        } catch (error) {
+            // O erro já será tratado na função createLoan
+        }
+    };
 
     const handleConfirmLoan = async () => {
-        cconsole.log('Iniciando confirmação de empréstimo');
+        console.log('Iniciando confirmação de empréstimo');
         console.log('Livros selecionados:', selectedLoanBooks);
         console.log('Duração selecionada:', selectedDuration);
 
@@ -294,7 +306,7 @@ export default function LoanScreen({ navigation }) {
                         </View>
                         <Button
                             style={styles.finishButton}
-                            onPress={handleConfirmLoan}
+                            onPress={handleCreateLoan}
                             isDisabled={loading}
                         >
                             <ButtonText style={styles.finishButtonText}>
