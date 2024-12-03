@@ -1,5 +1,6 @@
 const express = require("express");
 const clientController = require("../controller/controller");
+const { getMessageByRM } = require("../model/models");
 const router = express.Router();
 
 //Rota raiz do projeto
@@ -103,6 +104,20 @@ router.get('/api/emprestimo/listEmprestimo/:user_rm', clientController.getEmpres
 router.post("/api/emprestimos/verificar-atrasos", clientController.atualizarAtrasos);
 // // Rota para encontrar empréstimo ativo de usuário
 router.get('/api/emprestimo/listEmprestimosAtivos/:user_rm', clientController.getEmprestimosAtivosByUserRm);
+
+// SUPORTE ------------------------------------------------------------------------------
+// Criar uma nova mensagem
+router.post("/api/createMessage", clientController.criarMensagem);
+// Listar Mensagem por RM
+router.get("/api/listMessage/:student_rm", clientController.ListMessageByRM);
+//Listar todas as mensagens
+router.get("/api/listMessage", clientController.ListAllMessages);
+//Atualizar estado da Mensagem
+router.put("/api/statusMessage/:id", clientController.updateMessage )
+
+// Livros Mais emprestados
+router.get("/api/mostViewed", clientController.getLivrosMaisEmprestados)
+
 
 //teste
 // router.post("/api/validade", clientController.loginBiblio);

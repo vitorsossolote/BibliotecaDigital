@@ -1395,7 +1395,121 @@ getEmprestimosAtrasados: async (req, res) => {
     return res.status(500).json({ msg: 'Erro interno do servidor' });
   }
 },
+
+criarMensagem: async (req, res) => {
+  try {
+      const { student_rm, mensagem } = req.body;
+
+      if (!student_rm || !mensagem) {
+          return res.status(400).json({
+              error: 'Os campos student_rm e mensagem são obrigatórios.',
+          });
+      }
+
+      // Registrar a mensagem no banco de dados
+      const resultado = await clientController.registerMensagem(student_rm, mensagem);
+
+      // Retornar uma resposta bem-sucedida
+      return res.status(201).json({
+          message: 'Mensagem de suporte criada com sucesso!',
+          data: {
+              id: resultado.insertId,
+              student_rm,
+              mensagem,
+              status: 'Aberto', // Status padrão para novas mensagens
+              createdAt: new Date().toISOString(), // Aproximação, depende do fuso horário do servidor
+          },
+      });
+  } catch (error) {
+      console.error('Erro ao criar mensagem de suporte:', error);
+
+      // Resposta em caso de erro interno no servidor
+      return res.status(500).json({
+          error: 'Erro interno ao criar mensagem de suporte.',
+      });
+  }
+},
+
+ListMessageByRM: async (req, res) => {
+  const { student_rm } = req.params;
+
+  try {
+    const Message = await clientController.getMessageByRM(student_rm);
+
+    // Verifica se o array está vazio
+    if (!Message || Message.length === 0) {
+      return res.status(404).json({
+        msg: `Não existe nenhuma messagem para o aluno com o rm ${student_rm}`
+      });
+    }
+
+    res.status(200).json(Message);
+  } catch (error) {
+    console.error("Erro ao buscar Mensagem:", error);
+    res.status(500).json({
+      msg: "Erro ao buscar Mensagem",
+      error: error.message
+    });
+  }
+},
+
+ListAllMessages: async (req, res) => {
+  try {
+    const messages = await clientController.getMessage();
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Erro ao buscar todas as mensagens:", error);
+    res.status(500).json({
+      msg: "Erro ao buscar as mensagens",
+      error: error.message
+    });
+  }
+},
+
+updateMessage: async (req, res) => {
+  const { id } = req.params;
+  const { status} = req.body;
+
+  // Validações
+  if (!id || !status) {
+    return res.status(400).json({ msg: "ID e novo estado são obrigatórios" });
+  }
+
+  if (!["aberto", "em andamento", "resolvido"].includes(status)) {
+    return res.status(400).json({ msg: "Estado inválido" });
+  }
+  try {
+    // Verificar se o empréstimo existe
+    const [message] = await clientController.getMessageByID(id);
+    if (!message) {
+      return res.status(404).json({ msg: "Mensagem não encontrada" });
+    }
+
+
+    // Atualizar o estado do empréstimo
+    await clientController.updateMessage(id, status);
+
+    return res.status(200).json({ msg: "Estado da mensagem atualizada com sucesso" });
+  } catch (error) {
+    console.error("Erro ao atualizar estado da mensagem:", error);
+    return res.status(500).json({ msg: "Erro interno do servidor" });
+  }
+},
+
+getLivrosMaisEmprestados: async (req,res) => {
+    try {
+      const livrosMaisEmprestados = await clientController.getLivrosMaisEmprestados;
+      
+      return res.status(200).json(livrosMaisEmprestados);
+    } catch (error) {
+      return res.status(500).json({
+        status: 'erro',
+        mensagem: error.message
+      });
+    }
+  }
 }
+
 // //CONTATO NOVA MENSAGEM
 // createNewMensagem: async (req, res) => {
 //     const { id, nome, numero, email, mensagem } = req.body;

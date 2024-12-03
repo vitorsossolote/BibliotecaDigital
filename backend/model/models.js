@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const useModel = {
   getStudentByID: async (id) => {
     const [result] = await connection
-      .query("SELECT * FROM students WHERE id =?", [id])
+      .query("SELECT * FROM suporte WHERE id =?", [id])
       .catch((erro) => console.log(erro));
     return result;
   },
@@ -1129,11 +1129,61 @@ checkTotalActiveLoans: async (user_rm) => {
     }
   },
 
-  // registerMensagem: async (id, nome, numero, email, mensagem) =>{
-  //     const [result] = await connection.query("INSERT INTO contato values(?,?,?,?,?)", [id, nome, numero, email, mensagem])
-  //     .catch(erro => console.log(erro));
-  //     return result
-  // },
+  registerMensagem: async (student_rm, mensagem, status = 'Aberto') => {
+    try {
+        const query = `
+            INSERT INTO suporte (student_rm, mensagem, status, created_at)
+            VALUES (?, ?, ?, NOW())
+        `;
+        const [result] = await connection.query(query, [student_rm, mensagem, status]);
+        return result;
+    } catch (error) {
+        console.error('Erro ao registrar mensagem de suporte:', error);
+        throw error;
+    }
+},
+
+getMessageByRM: async (student_rm) => {
+  const [result] = await connection.query("SELECT * FROM suporte WHERE student_rm =?", [student_rm])
+    .catch((erro) => console.log(erro));
+  return result;
+},
+getMessageByID: async (id) => {
+  const [result] = await connection.query("SELECT * FROM suporte WHERE id =?", [id])
+    .catch((erro) => console.log(erro));
+  return result;
+},
+getMessage: async () => {
+  const [result] = await connection.query("SELECT * FROM suporte")
+    .catch((erro) => console.log(erro));
+  return result;
+},
+
+updateMessage: async (id, status) => {
+  try {
+      const [result] = await connection.query(
+        "UPDATE suporte SET status = ? WHERE id = ?",
+        [status, id]
+      );
+      return result;
+  } catch (error) {
+    console.error(`Erro ao atualizar estado da mensagem ${id}:`, error);
+    throw error;
+  }
+},
+
+getLivrosMaisEmprestados: async ()  => {
+  try{
+    const [result] = await connection.query(
+    "SELECT livros.id AS livro_id, livros.titulo, COUNT(emprestimos_union.livro_id) AS emprestimos_count FROM livros LEFT JOIN (SELECT livro_id FROM emprestimos WHERE estado = 'concluído' UNION ALL SELECT livro_id_2 AS livro_id FROM emprestimos WHERE estado = 'concluído' AS emprestimos_union ON livros.id = emprestimos_union.livro_id GROUP BY livros.id ORDER BY emprestimos_count DESC LIMIT 0, 25");
+  return result;
+    }
+    catch (error) {
+    throw new Error(`Erro ao buscar livros mais emprestados: ${error.message}`);
+  }
+},
+
+
 
   // //RESET SENHA
   // getByEmailClients : async(email)=>{
