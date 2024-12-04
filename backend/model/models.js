@@ -1178,6 +1178,10 @@ getLivrosMaisEmprestados: async(req,res) => {
       livros.id AS livro_id, 
       livros.titulo,
       livros.image, 
+      livros.avaliacao,
+      livros.quantidade,
+      livros.nome_genero,
+      livros.descricao,
       COUNT(emprestimos_union.livro_id) AS emprestimos_count 
     FROM 
       livros 

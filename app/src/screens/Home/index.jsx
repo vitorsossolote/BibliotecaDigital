@@ -206,8 +206,7 @@ export default function Home({ navigation }) {
                                         starContainerStyle={styles.starRating}
                                         isDisabled={true}
                                     />
-                                    <Text style={[styles.status,
-                                    { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                    <Text style={[styles.status,{ color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
                                         {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel': 'mprestado'}
                                     </Text>
                                 </View>
