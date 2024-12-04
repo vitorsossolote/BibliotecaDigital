@@ -1496,18 +1496,18 @@ updateMessage: async (req, res) => {
   }
 },
 
-getLivrosMaisEmprestados: async (req,res) => {
-    try {
-      const livrosMaisEmprestados = await clientController.getLivrosMaisEmprestados;
-      
-      return res.status(200).json(livrosMaisEmprestados);
-    } catch (error) {
-      return res.status(500).json({
-        status: 'erro',
-        mensagem: error.message
-      });
-    }
+getLivrosMaisEmprestados: async (req, res) => {
+  try {
+    const livrosMaisEmprestados = await clientController.getLivrosMaisEmprestados();
+    res.status(200).json(livrosMaisEmprestados);
+  } catch (error) {
+    console.error("Erro ao buscar os livros mais emprestados:", error);
+    res.status(500).json({
+      msg: "Erro ao buscar os Livros",
+      error: error.message
+    });
   }
+},
 }
 
 // //CONTATO NOVA MENSAGEM

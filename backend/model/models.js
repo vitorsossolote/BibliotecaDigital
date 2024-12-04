@@ -1172,16 +1172,41 @@ updateMessage: async (id, status) => {
   }
 },
 
-getLivrosMaisEmprestados: async ()  => {
-  try{
-    const [result] = await connection.query(
-    "SELECT livros.id AS livro_id, livros.titulo, COUNT(emprestimos_union.livro_id) AS emprestimos_count FROM livros LEFT JOIN (SELECT livro_id FROM emprestimos WHERE estado = 'concluído' UNION ALL SELECT livro_id_2 AS livro_id FROM emprestimos WHERE estado = 'concluído' AS emprestimos_union ON livros.id = emprestimos_union.livro_id GROUP BY livros.id ORDER BY emprestimos_count DESC LIMIT 0, 25");
-  return result;
-    }
-    catch (error) {
-    throw new Error(`Erro ao buscar livros mais emprestados: ${error.message}`);
+getLivrosMaisEmprestados: async(req,res) => {
+  const query = `
+    SELECT 
+      livros.id AS livro_id, 
+      livros.titulo,
+      livros.image, 
+      COUNT(emprestimos_union.livro_id) AS emprestimos_count 
+    FROM 
+      livros 
+    LEFT JOIN 
+      (
+        SELECT livro_id 
+        FROM emprestimos 
+        WHERE estado = 'concluído' 
+        UNION ALL 
+        SELECT livro_id_2 AS livro_id 
+        FROM emprestimos 
+        WHERE estado = 'concluído'
+      ) AS emprestimos_union ON livros.id = emprestimos_union.livro_id 
+    GROUP BY 
+      livros.id, 
+      livros.titulo 
+    ORDER BY 
+      emprestimos_count DESC 
+    LIMIT 0, 25
+  `;
+
+  try {
+    const [result] = await connection.query(query);
+    return result;
+  } catch (error) {
+    console.error('Erro na consulta de livros mais emprestados:', error);
+    throw error;
   }
-},
+}
 
 
 

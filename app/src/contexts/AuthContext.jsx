@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native'
 const AuthContext = createContext({});
@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     const [selectedLoanBooks, setSelectedLoanBooks] = useState([]);
     const [activeLoan, setActiveLoan] = useState(null);
     const [loanError, setLoanError] = useState(null);
+    const [LivrosMaisEmprestados, setLivrosMaisEmprestados] = useState([])
 
     useEffect(() => {
         Promise.all([
@@ -31,11 +32,39 @@ export const AuthProvider = ({ children }) => {
             loadFavorites(),
             buscarLivros(),
             buscarAutor(),
+            fetchLivrosMaisEmprestados(),
         ]).finally(() => {
             setLoading(false);
         });
     }, []);
 
+
+    const fetchLivrosMaisEmprestados = useCallback(async () => {
+        // Se já tem dados, não recarregar
+        if (LivrosMaisEmprestados.length > 0) {
+            return LivrosMaisEmprestados;
+        }
+    
+        setLoading(true);
+        setError(null);
+    
+        try {
+            const response = await axios.get('http://10.0.2.2:8085/api/mostViewed');
+            
+            // Só atualiza se receber dados válidos
+            if (response.data && response.data.length > 0) {
+                setLivrosMaisEmprestados(response.data);
+            }
+            
+            return response.data;
+        } catch (err) {
+            setError(err.response?.data?.message || 'Erro ao buscar livros mais emprestados');
+            console.error(err);
+            return [];
+        } finally {
+            setLoading(false);
+        }
+    }, [LivrosMaisEmprestados]);
 
     const fetchAuthorBooks = async (authorId) => {
         try {
@@ -629,6 +658,8 @@ export const AuthProvider = ({ children }) => {
                 selectUserForEdit,
                 updateStudent,
                 deleteStudent,
+                LivrosMaisEmprestados,
+                fetchLivrosMaisEmprestados,
                 // loading,
                 error,
                 searchLivros,

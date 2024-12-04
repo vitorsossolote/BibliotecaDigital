@@ -37,6 +37,7 @@ import StudentManagementScreen from '../screens/StudentManagement';
 import EditStudentScreen from '../screens/EditStudent';
 import LoanManagement from '../screens/LoanManagement';
 import EditAuthor from '../screens/EditAutor';
+import MostViewedBooks from '../screens/MostViewed';
 
 
 const Stack = createNativeStackNavigator();
@@ -283,7 +284,7 @@ export default function AppNavigator() {
             <Stack.Screen name="SearchScreen" component={SearchScreen}/>
             <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
             <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
-            <Stack.Screen name="RegisterBooks" component={RegisterBooks} />
+            <Stack.Screen name="MostViewed" component={MostViewedBooks} />
           </>
         ) : (
           // Authentication Routes

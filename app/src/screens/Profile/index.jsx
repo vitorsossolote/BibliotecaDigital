@@ -63,7 +63,7 @@ export default function Profile({ navigation }) {
             title: "Minha Conta"
         },
         {
-            onPress: () => console.log("Mais Lidos"),
+            onPress: () => navigation.navigate("MostViewed"),
             icon: TrendingUp,
             alt: "Mais Lidos",
             title: "Mais Lidos"
