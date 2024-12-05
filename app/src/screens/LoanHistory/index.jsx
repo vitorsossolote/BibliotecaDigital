@@ -28,10 +28,10 @@ export default function LoanHistory({ navigation }) {
             }
 
             try {
-                // First, fetch the loan history
+                // Buscar todos os empréstimos pelo rm
                 const loansResponse = await axios.get(`http://10.0.2.2:8085/api/emprestimo/listEmprestimo/${authData.user.rm}`);
 
-                // Fetch book details for each loan
+                // Detalhes de cada livro emprestado
                 const loansWithBookDetails = await Promise.all(
                     loansResponse.data.map(async (loan) => {
                         if (loan.livro_id) {
@@ -51,7 +51,7 @@ export default function LoanHistory({ navigation }) {
                     })
                 );
 
-                // Sort loans by date (most recent first)
+                // Ordenar empréstimos por data (menor primeiro)
                 const sortedLoans = loansWithBookDetails.sort((a, b) =>
                     new Date(b.data_emprestimo) - new Date(a.data_emprestimo)
                 );
@@ -68,18 +68,18 @@ export default function LoanHistory({ navigation }) {
         fetchLoanHistory();
     }, [authData]);
 
-    // Helper function to format date
+    // Função para formatar a data
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
     };
 
-    // Helper function to determine status color
+    // Função para determinar a cor dos status
     const getStatusColor = (status) => {
         switch (status) {
-            case 'CONCLUIDO': return '#4CAF50'; // Green
-            case 'ATRASADO': return '#ee2d32'; // Red
-            case 'PENDENTE': return '#FFC107'; // Yellow
+            case 'CONCLUIDO': return '#4CAF50';
+            case 'ATRASADO': return '#ee2d32'; 
+            case 'PENDENTE': return '#FFC107'; 
             default: return '#000';
         }
     };
@@ -117,7 +117,7 @@ export default function LoanHistory({ navigation }) {
                     </View>
                 ) : (
                     <View style={styles.contentContainer}>
-                        {/* Group loans by month */}
+                        {/* Empréstimo por meses */}
                         {Object.entries(
                             loans.reduce((acc, loan) => {
                                 const monthYear = new Date(loan.data_emprestimo).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
@@ -149,7 +149,6 @@ export default function LoanHistory({ navigation }) {
                                                         >
                                                             {loan.estado}
                                                         </Text>
-                                                        {/* Assuming each loan is for a single book, but you might want to adjust this */}
                                                         <Text style={styles.loanItems}> • 1 item</Text>
                                                         
                                                     </View>

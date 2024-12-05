@@ -81,7 +81,7 @@ export default function Profile({ navigation }) {
             title: "Histórico de Empréstimo"
         },
         {
-            onPress: () => console.log("Clicou em suporte"),
+            onPress: () => navigation.navigate("Suport"),
             icon: MessageCircleMore,
             alt: "Suporte",
             title: "Suporte"

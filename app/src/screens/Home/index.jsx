@@ -108,16 +108,12 @@ export default function Home({ navigation }) {
         if (!selectedBook) return;
 
         try {
-            // Close the delete dialog
             setIsDeleteDialogVisible(false);
 
-            // Make API call to delete the book
             const response = await axios.delete(`http://10.0.2.2:8085/api/deleteBook/${selectedBook.id}`);
 
-            // Close bottom sheet
             bottomSheetref.current?.close();
 
-            // Show success toast
             ToastAndroid.show("Livro excluído com sucesso", ToastAndroid.SHORT);
 
             await buscarLivros();

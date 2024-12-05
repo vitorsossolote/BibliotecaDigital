@@ -33,10 +33,10 @@ export default function AuthorsScreen({ route, navigation }) {
     const { author, data } = route.params;
     
     const handleEditAuthor = () => {
-        // Navigate to edit author screen, passing the current author data
+        // Navegar para tela de edição de autor
         navigation.navigate("EditAuthor", { author });
     };
-    // State to store author's books
+    // Estado para buscar livros de determinado autor
     const [authorBooks, setAuthorBooks] = useState([]);
 
     const confirmDeleteAuthor = () => {
@@ -46,7 +46,7 @@ export default function AuthorsScreen({ route, navigation }) {
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], [])
 
-    // Fetch books for the specific author
+    //Função para carregar livros do autor
     useEffect(() => {
         const loadAuthorBooks = async () => {
           try {
@@ -62,7 +62,7 @@ export default function AuthorsScreen({ route, navigation }) {
 
     const handleCloseAction = () => bottomSheetref.current?.close()
 
-    // State for selected book in bottom sheet
+    // Estado para livro selecionado
     const [selectedBook, setSelectedBook] = useState(null);
 
     const handleOpenPress = (livros) => {
@@ -104,16 +104,15 @@ export default function AuthorsScreen({ route, navigation }) {
         if (!selectedBook) return;
 
         try {
-            // Close the delete dialog
             setIsDeleteDialogVisible(false);
 
-            // Make API call to delete the book
+            // Call da api para deletar livro
             const response = await axios.delete(`http://10.0.2.2:8085/api/deleteBook/${selectedBook.id}`);
 
-            // Close bottom sheet
+            // Fechar bottomSheet
             bottomSheetref.current?.close();
 
-            // Show success toast
+            // Toast de sucesso
             ToastAndroid.show("Livro excluído com sucesso", ToastAndroid.SHORT);
 
             await buscarLivros();
@@ -208,7 +207,7 @@ export default function AuthorsScreen({ route, navigation }) {
                         </View>
                     </View>
                 </ScrollView>
-                {/* BottomSheet for Book Details */}
+                {/* BottomSheet */}
                 <BottomSheet
                     ref={bottomSheetref}
                     snapPoints={snapPoints}

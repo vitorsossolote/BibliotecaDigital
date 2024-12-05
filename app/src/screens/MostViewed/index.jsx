@@ -119,7 +119,6 @@ export default function MostViewedBooks({ navigation }) {
     );
 
     const confirmDeleteBook = () => {
-        // Implementar lógica de exclusão de livro
         ToastAndroid.show("Funcionalidade de exclusão em desenvolvimento", ToastAndroid.SHORT);
     };
 
