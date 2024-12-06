@@ -21,6 +21,26 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-ja\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "117",
+                        "endOffsets": "312"
+                    },
+                    "to": {
+                        "startLines": "49",
+                        "startColumns": "4",
+                        "startOffsets": "4460",
+                        "endColumns": "121",
+                        "endOffsets": "4577"
+                    }
+                },
+                {
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-ja\\values-ja.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
@@ -74,6 +94,7 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-ja\\values.xml",
                     "from": {
                         "startLines": "4",
@@ -91,6 +112,8 @@
                     }
                 },
                 {
+=======
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\e9d9528de909ac86dfea495538bbea9c\\transformed\\appcompat-1.6.1\\res\\values-ja\\values-ja.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",

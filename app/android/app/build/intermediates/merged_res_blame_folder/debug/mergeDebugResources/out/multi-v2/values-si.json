@@ -5,6 +5,7 @@
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\54e47014ad813f368c5d20639dda24d8\\transformed\\credentials-1.2.0-rc01\\res\\values-si\\values-si.xml",
+<<<<<<< HEAD
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -22,19 +23,21 @@
                 },
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-si\\values.xml",
+=======
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "134",
-                        "endOffsets": "329"
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,165",
+                        "endColumns": "109,113",
+                        "endOffsets": "160,274"
                     },
                     "to": {
-                        "startLines": "49",
-                        "startColumns": "4",
-                        "startOffsets": "4722",
-                        "endColumns": "138",
-                        "endOffsets": "4856"
+                        "startLines": "34,35",
+                        "startColumns": "4,4",
+                        "startOffsets": "3059,3169",
+                        "endColumns": "109,113",
+                        "endOffsets": "3164,3278"
                     }
                 },
                 {
@@ -72,6 +75,26 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-si\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "134",
+                        "endOffsets": "329"
+                    },
+                    "to": {
+                        "startLines": "49",
+                        "startColumns": "4",
+                        "startOffsets": "4722",
+                        "endColumns": "138",
+                        "endOffsets": "4856"
+                    }
+                },
+                {
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\5824d8be0c93a6d745b2b6e1c925266c\\transformed\\browser-1.4.0\\res\\values-si\\values-si.xml",
                     "from": {
                         "startLines": "2,3,4,5",

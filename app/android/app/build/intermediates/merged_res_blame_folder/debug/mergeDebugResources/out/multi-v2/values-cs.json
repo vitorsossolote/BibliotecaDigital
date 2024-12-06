@@ -21,6 +21,26 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-cs\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "138",
+                        "endOffsets": "333"
+                    },
+                    "to": {
+                        "startLines": "51",
+                        "startColumns": "4",
+                        "startOffsets": "4823",
+                        "endColumns": "142",
+                        "endOffsets": "4961"
+                    }
+                },
+                {
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\352c8906a1838b768052b17e8b9604bd\\transformed\\play-services-base-18.3.0\\res\\values-cs\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
@@ -122,6 +142,7 @@
                         "startOffsets": "3067,3746,6665,6812,6883,7031,7978,8048,8127,10955,11041,11127,11197,11356,11433,11515,11596,11678,11753,11824,11894,12079,12152,12230,12301",
                         "endColumns": "71,82,70,70,86,67,69,78,81,85,85,69,75,76,81,80,81,74,70,69,83,72,77,70,79",
                         "endOffsets": "3134,3824,6731,6878,6965,7094,8043,8122,8204,11036,11122,11192,11268,11428,11510,11591,11673,11748,11819,11889,11973,12147,12225,12296,12376"
+<<<<<<< HEAD
                     }
                 },
                 {
@@ -139,6 +160,8 @@
                         "startOffsets": "4823",
                         "endColumns": "142",
                         "endOffsets": "4961"
+=======
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     }
                 }
             ]

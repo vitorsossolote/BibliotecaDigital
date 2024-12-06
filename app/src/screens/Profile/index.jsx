@@ -123,7 +123,13 @@ export default function Profile({ navigation }) {
             icon: UserPlus,
             alt: "Suporte",
             title: "Criar Bibliotecário"
-        }
+        },
+        {
+            onPress: () => navigation.navigate("Suport"),
+            icon: MessageCircleMore,
+            alt: "Suporte",
+            title: "Suporte"
+        },
     ]
     : [];
 

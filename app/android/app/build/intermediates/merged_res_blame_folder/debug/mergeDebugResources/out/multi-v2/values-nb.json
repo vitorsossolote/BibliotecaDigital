@@ -23,6 +23,7 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\8518926d18513c220d3093a04b83b5cb\\transformed\\core-1.9.0\\res\\values-nb\\values-nb.xml",
                     "from": {
                         "startLines": "2",
@@ -58,6 +59,9 @@
                 },
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-nb\\values.xml",
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-nb\\values.xml",
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -74,6 +78,43 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\8518926d18513c220d3093a04b83b5cb\\transformed\\core-1.9.0\\res\\values-nb\\values-nb.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "112",
+                        "startColumns": "4",
+                        "startOffsets": "10069",
+                        "endColumns": "100",
+                        "endOffsets": "10165"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\5824d8be0c93a6d745b2b6e1c925266c\\transformed\\browser-1.4.0\\res\\values-nb\\values-nb.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,165,266,378",
+                        "endColumns": "109,100,111,96",
+                        "endOffsets": "160,261,373,470"
+                    },
+                    "to": {
+                        "startLines": "57,60,61,62",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "5731,5997,6098,6210",
+                        "endColumns": "109,100,111,96",
+                        "endOffsets": "5836,6093,6205,6302"
+                    }
+                },
+                {
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\54e47014ad813f368c5d20639dda24d8\\transformed\\credentials-1.2.0-rc01\\res\\values-nb\\values-nb.xml",
                     "from": {
                         "startLines": "2,3",

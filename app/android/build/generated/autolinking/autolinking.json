@@ -9,7 +9,11 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app\\RNFBApp.podspec",
+<<<<<<< HEAD
           "version": "21.6.1",
+=======
+          "version": "21.2.0",
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
           "configurations": [],
           "scriptPhases": [
             {
@@ -53,6 +57,7 @@
           "buildTypes": [],
           "componentDescriptors": [],
           "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/auth/android/build/generated/source/codegen/jni/CMakeLists.txt",
+<<<<<<< HEAD
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -77,6 +82,8 @@
           "buildTypes": [],
           "componentDescriptors": [],
           "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/messaging/android/build/generated/source/codegen/jni/CMakeLists.txt",
+=======
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,

@@ -40,6 +40,26 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-mk\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "132",
+                        "endOffsets": "327"
+                    },
+                    "to": {
+                        "startLines": "49",
+                        "startColumns": "4",
+                        "startOffsets": "4796",
+                        "endColumns": "136",
+                        "endOffsets": "4928"
+                    }
+                },
+                {
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\8518926d18513c220d3093a04b83b5cb\\transformed\\core-1.9.0\\res\\values-mk\\values-mk.xml",
                     "from": {
                         "startLines": "2",
@@ -123,6 +143,7 @@
                         "endColumns": "112,104,114,100",
                         "endOffsets": "6128,6390,6505,6606"
                     }
+<<<<<<< HEAD
                 },
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-mk\\values.xml",
@@ -140,6 +161,8 @@
                         "endColumns": "136",
                         "endOffsets": "4928"
                     }
+=======
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                 }
             ]
         }

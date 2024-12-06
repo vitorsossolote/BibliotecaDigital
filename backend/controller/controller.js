@@ -1774,8 +1774,42 @@ const useController = {
       return res.status(500).json({
         error: 'Erro interno ao criar mensagem de suporte.',
       });
-    }
-  },
+  }
+},
+
+responderChamado: async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { resposta } = req.body;
+
+      if (!id || !resposta) {
+          return res.status(400).json({
+              error: 'O ID do chamado e a resposta são obrigatórios.',
+          });
+      }
+
+      // Registrar a resposta no banco de dados
+      const resultado = await clientController.responderMensagemSuporte(id, resposta);
+
+      // Retornar uma resposta bem-sucedida
+      return res.status(200).json({
+          message: 'Chamado respondido com sucesso!',
+          data: {
+              id,
+              resposta,
+              status: 'Resolvido',
+              answered_at: new Date().toISOString(),
+          },
+      });
+  } catch (error) {
+      console.error('Erro ao responder chamado de suporte:', error);
+
+      // Resposta em caso de erro interno no servidor
+      return res.status(500).json({
+          error: 'Erro interno ao responder chamado de suporte.',
+      });
+  }
+},
 
   ListMessageByRM: async (req, res) => {
     const { student_rm } = req.params;

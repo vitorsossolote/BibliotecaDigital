@@ -125,6 +125,7 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-sk\\values.xml",
                     "from": {
                         "startLines": "4",
@@ -151,11 +152,42 @@
                         "endOffsets": "157,260,375,477"
                     },
                     "to": {
+=======
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\5824d8be0c93a6d745b2b6e1c925266c\\transformed\\browser-1.4.0\\res\\values-sk\\values-sk.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,162,265,380",
+                        "endColumns": "106,102,114,101",
+                        "endOffsets": "157,260,375,477"
+                    },
+                    "to": {
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                         "startLines": "61,64,65,66",
                         "startColumns": "4,4,4,4",
                         "startOffsets": "6130,6401,6504,6619",
                         "endColumns": "106,102,114,101",
                         "endOffsets": "6232,6499,6614,6716"
+<<<<<<< HEAD
+=======
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-sk\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "134",
+                        "endOffsets": "329"
+                    },
+                    "to": {
+                        "startLines": "51",
+                        "startColumns": "4",
+                        "startOffsets": "4862",
+                        "endColumns": "138",
+                        "endOffsets": "4996"
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
                     }
                 }
             ]

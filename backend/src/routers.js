@@ -121,7 +121,9 @@ router.get("/api/listMessage/:student_rm", clientController.ListMessageByRM);
 //Listar todas as mensagens
 router.get("/api/listMessage", clientController.ListAllMessages);
 //Atualizar estado da Mensagem
-router.put("/api/statusMessage/:id", clientController.updateMessage )
+router.put("/api/statusMessage/:id", clientController.updateMessage );  
+//Criar resposta
+router.put('/suporte/:id/responder', clientController.responderChamado);
 
 // Livros Mais emprestados
 router.get("/api/mostViewed", clientController.getLivrosMaisEmprestados)

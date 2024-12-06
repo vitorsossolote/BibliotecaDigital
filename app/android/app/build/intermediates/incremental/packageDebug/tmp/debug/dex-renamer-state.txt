@@ -1,13 +1,23 @@
+<<<<<<< HEAD
 #Fri Dec 06 08:20:21 BRT 2024
+=======
+#Fri Dec 06 07:28:24 BRT 2024
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
 path.4=7/classes.dex
 path.3=14/classes.dex
 path.2=0/classes.dex
 path.1=0/classes.dex
 path.5=classes2.dex
 path.0=classes.dex
+<<<<<<< HEAD
 base.4=C\:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
 base.3=C\:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
 base.2=C\:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+=======
+base.4=C\:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
+base.3=C\:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
+base.2=C\:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+>>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
 base.1=C\:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.0=C\:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 renamed.3=classes4.dex
