@@ -1143,6 +1143,29 @@ checkTotalActiveLoans: async (user_rm) => {
     }
 },
 
+responderMensagemSuporte: async (id, resposta) => {
+  try {
+      const query = `
+          UPDATE suporte 
+          SET resposta = ?, 
+              status = 'Resolvido', 
+              answered_at = NOW()
+          WHERE id = ?
+      `;
+      const [result] = await connection.query(query, [resposta, id]);
+      
+      // Verificar se algum registro foi atualizado
+      if (result.affectedRows === 0) {
+          throw new Error('Chamado não encontrado');
+      }
+      
+      return result;
+  } catch (error) {
+      console.error('Erro ao responder mensagem de suporte:', error);
+      throw error;
+  }
+},
+
 getMessageByRM: async (student_rm) => {
   const [result] = await connection.query("SELECT * FROM suporte WHERE student_rm =?", [student_rm])
     .catch((erro) => console.log(erro));
