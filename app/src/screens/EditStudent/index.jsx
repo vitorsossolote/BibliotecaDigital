@@ -30,7 +30,7 @@ const EditStudentScreen = ({ navigation }) => {
     const [confirmSenha, setConfirmSenha] = useState("");
 
     useEffect(() => {
-        // Pre-fill form if a user is selected
+        // deixar preenchido com as infos do usuário que for selecionado
         if (selectedUser) {
             setNome(selectedUser.nome);
             setEmail(selectedUser.email);
@@ -39,18 +39,17 @@ const EditStudentScreen = ({ navigation }) => {
     }, [selectedUser]);
 
     const handleUpdateStudent = async () => {
-        // Validation
+
         if (!nome || !email || !rm) {
             Alert.alert('Todos os campos são obrigatórios');
             return;
         }
 
-        // Optional password update
         const updateData = {
             nome,
             email,
             rm,
-            ...(senha && { senha, confirmSenha }) // Only include if password is provided
+            ...(senha && { senha, confirmSenha })
         };
 
         try {

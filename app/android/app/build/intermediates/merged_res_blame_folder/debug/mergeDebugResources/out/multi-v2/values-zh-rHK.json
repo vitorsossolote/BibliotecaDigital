@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-48:/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "com.app-mergeDebugResources-50:/values-zh-rHK/values-zh-rHK.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\7a10f1cf6b11de846454d60bb446ea16\\transformed\\react-android-0.75.3-debug\\res\\values-zh-rHK\\values-zh-rHK.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "2813,3431,5838,5964,6030,6163,7002,7067,7136,9609,9682,9757,9824,9973,10046,10118,10195,10271,10343,10413,10482,10663,10731,10801,10868",
                         "endColumns": "65,71,66,65,74,64,64,68,70,72,74,66,69,72,71,76,75,71,69,68,79,67,69,66,68",
                         "endOffsets": "2874,3498,5900,6025,6100,6223,7062,7131,7202,9677,9752,9819,9889,10041,10113,10190,10266,10338,10408,10477,10557,10726,10796,10863,10932"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-zh-rHK\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "199",
-                        "endColumns": "103",
-                        "endOffsets": "302"
-                    },
-                    "to": {
-                        "startLines": "49",
-                        "startColumns": "4",
-                        "startOffsets": "4367",
-                        "endColumns": "107",
-                        "endOffsets": "4470"
                     }
                 },
                 {
@@ -103,6 +86,23 @@
                         "startOffsets": "3503,3604,3732,3847,3949,4056,4172,4274,4475,4585,4686,4815,4930,5037,5145,5200,5257",
                         "endColumns": "100,127,114,101,106,115,101,92,109,100,128,114,106,107,54,56,71",
                         "endOffsets": "3599,3727,3842,3944,4051,4167,4269,4362,4580,4681,4810,4925,5032,5140,5195,5252,5324"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-zh-rHK\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "199",
+                        "endColumns": "103",
+                        "endOffsets": "302"
+                    },
+                    "to": {
+                        "startLines": "49",
+                        "startColumns": "4",
+                        "startOffsets": "4367",
+                        "endColumns": "107",
+                        "endOffsets": "4470"
                     }
                 },
                 {

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-48:/values-eu/values-eu.xml",
+            "outputFile": "com.app-mergeDebugResources-50:/values-eu/values-eu.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\5824d8be0c93a6d745b2b6e1c925266c\\transformed\\browser-1.4.0\\res\\values-eu\\values-eu.xml",
@@ -35,23 +35,6 @@
                         "startOffsets": "3025,3138",
                         "endColumns": "112,119",
                         "endOffsets": "3133,3253"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-eu\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "138",
-                        "endOffsets": "333"
-                    },
-                    "to": {
-                        "startLines": "47",
-                        "startColumns": "4",
-                        "startOffsets": "4652",
-                        "endColumns": "142",
-                        "endOffsets": "4790"
                     }
                 },
                 {
@@ -105,6 +88,23 @@
                         "startOffsets": "3634,3738,3910,4034,4143,4295,4420,4544,4795,4973,5081,5244,5372,5526,5686,5752,5817",
                         "endColumns": "103,171,123,108,151,124,123,107,177,107,162,127,153,159,65,64,91",
                         "endOffsets": "3733,3905,4029,4138,4290,4415,4539,4647,4968,5076,5239,5367,5521,5681,5747,5812,5904"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-eu\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "138",
+                        "endOffsets": "333"
+                    },
+                    "to": {
+                        "startLines": "47",
+                        "startColumns": "4",
+                        "startOffsets": "4652",
+                        "endColumns": "142",
+                        "endOffsets": "4790"
                     }
                 },
                 {

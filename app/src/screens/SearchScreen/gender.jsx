@@ -70,16 +70,12 @@ export default function SearchGenderScreen({ route, navigation }) {
         if (!selectedBook) return;
 
         try {
-            // Close the delete dialog
             setIsDeleteDialogVisible(false);
 
-            // Make API call to delete the book
             const response = await axios.delete(`http://10.0.2.2:8085/api/deleteBook/${selectedBook.id}`);
 
-            // Close bottom sheet
             bottomSheetref.current?.close();
 
-            // Show success toast
             ToastAndroid.show("Livro excluído com sucesso", ToastAndroid.SHORT);
 
             await buscarLivros();
@@ -99,24 +95,21 @@ export default function SearchGenderScreen({ route, navigation }) {
             try {
                 const response = await axios.get("http://10.0.2.2:8085/api/generos");
 
-                // Adiciona a opção "Todos" no início da lista
                 const updatedGenres = [
                     { id_genero: null, nome_genero: "Todos" },
                     ...response.data
                 ];
                 setGenres(updatedGenres);
 
-                // Define o gênero inicial se passado, caso contrário seleciona "Todos"
                 let initialGenre;
                 if (initialSelectedGenre) {
                     initialGenre = updatedGenres.find(
                         genre => genre.id_genero === initialSelectedGenre.id_genero
                     ) || updatedGenres[0];
                 } else {
-                    initialGenre = updatedGenres[0]; // "Todos" por padrão
+                    initialGenre = updatedGenres[0]; 
                 }
 
-                // Força a atualização do estado do gênero selecionado
                 setSelectedGenre(initialGenre);
                 setLoading(false);
                 setIsInitialLoad(false);

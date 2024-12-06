@@ -9,7 +9,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app\\RNFBApp.podspec",
-          "version": "21.2.0",
+          "version": "21.6.1",
           "configurations": [],
           "scriptPhases": [
             {
@@ -53,6 +53,30 @@
           "buildTypes": [],
           "componentDescriptors": [],
           "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/auth/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-firebase/messaging": {
+      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging",
+      "name": "@react-native-firebase/messaging",
+      "platforms": {
+        "ios": {
+          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging\\RNFBMessaging.podspec",
+          "version": "21.6.1",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging\\android",
+          "packageImportPath": "import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;",
+          "packageInstance": "new ReactNativeFirebaseMessagingPackage()",
+          "buildTypes": [],
+          "componentDescriptors": [],
+          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/messaging/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,

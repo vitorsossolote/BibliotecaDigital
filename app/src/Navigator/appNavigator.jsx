@@ -6,9 +6,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { MotiView } from 'moti';
-import { Alert } from 'react-native';  // Adicione esta importação
+import { Alert, Linking } from 'react-native';  // Adicione esta importação
 import messaging from '@react-native-firebase/messaging';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeApp } from 'firebase-admin/app';
+import firebase from '@react-native-firebase/app';
 
 // Telas de Autenticação
 import UserSelectScreen from '../screens/UserSelectScreen/index';
@@ -40,12 +42,16 @@ import RegisterGender from '../screens/RegisterGender';
 import StudentManagementScreen from '../screens/StudentManagement';
 import EditStudentScreen from '../screens/EditStudent';
 import LoanManagement from '../screens/LoanManagement';
-import EditAuthor from '../screens/EditAuthor';
+import EditAuthor from '../screens/EditAutor';
 import MostViewedBooks from '../screens/MostViewed';
+import SuportScreen from '../screens/Suport';
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+// Inicializar Firebase antes de qualquer uso
+firebase.initializeApp();
 
 const requestUserPermissions = async () => {
   try {
@@ -59,37 +65,102 @@ const requestUserPermissions = async () => {
         const tokenFcm = await messaging().getToken();
         console.log('User FCM Token:', tokenFcm);
         
-        // Aqui você deve salvar o token no backend ou no estado do app
-        // Por exemplo: await saveTokenToDatabase(tokenFcm);
+        // Recuperar token e dados do usuário de forma segura
+        const token = await AsyncStorage.getItem('@userToken');
+        const studentString = await AsyncStorage.getItem('@userData');
+        const student = studentString ? JSON.parse(studentString) : null;
+        
+        // Verificação adicional de token e estudante
+        if (token && student && student.id) {
+          try {
+            await axios.post('http://10.0.2.2:8085/api/updateFcmToken', {
+              fcmToken: tokenFcm
+            }, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              timeout: 10000 // Timeout de 10 segundos
+            });
+          } catch (updateError) {
+            console.error('Erro ao atualizar token FCM:', updateError);
+            // Log de erro mais detalhado
+            if (updateError.response) {
+              console.error('Detalhes do erro:', updateError.response.data);
+            }
+          }
+        }
 
-        messaging().onTokenRefresh(newToken => {
-          console.log('New FCM Token:', newToken);
-          // Atualize o token no backend/estado
+        // Configuração de atualização de token
+        messaging().onTokenRefresh(async (newToken) => {
+          console.log('Novo FCM Token:', newToken);
+          
+          try {
+            const token = await AsyncStorage.getItem('@userToken');
+            const studentString = await AsyncStorage.getItem('@userData');
+            const student = studentString ? JSON.parse(studentString) : null;
+            
+            if (token && student && student.id) {
+              await axios.post('http://10.0.2.2:8085/api/updateFcmToken', {
+                fcmToken: newToken
+              }, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+                },
+                timeout: 10000
+              });
+            }
+          } catch (refreshError) {
+            console.error('Erro ao atualizar token no refresh:', refreshError);
+          }
         });
 
+        // Configuração de notificações em primeiro plano
         const unsubscribe = messaging().onMessage(async remoteMessage => {
-          // Trate a notificação em primeiro plano
           Alert.alert(
-            'Nova Notificação', 
-            remoteMessage.notification?.body || 'Você tem uma nova mensagem'
+            remoteMessage.notification?.title || 'Notificação',
+            remoteMessage.notification?.body || 'Você tem uma nova mensagem',
+            [
+              { 
+                text: 'OK', 
+                onPress: () => {
+                  console.log('Notificação reconhecida');
+                }
+              }
+            ]
           );
         });
 
         return unsubscribe;
       } catch (tokenError) {
-        console.error('Erro ao obter token FCM:', tokenError);
-        // Trate o erro de obtenção do token
+        console.error('Erro crítico ao obter/processar token FCM:', tokenError);
+        Alert.alert(
+          'Erro de Token',
+          'Não foi possível processar o token de notificação'
+        );
       }
     } else {
-      // Usuário negou permissão
       Alert.alert(
         'Notificações Desativadas', 
-        'Você não receberá notificações do app. Pode ativar nas configurações.'
+        'Você não receberá notificações do app. Pode ativar nas configurações.',
+        [
+          { 
+            text: 'Abrir Configurações', 
+            onPress: () => {
+              Linking.openSettings();
+            }
+          },
+          { text: 'Cancelar', style: 'cancel' }
+        ]
       );
     }
   } catch (permissionError) {
-    console.error('Erro ao solicitar permissão:', permissionError);
-    // Trate o erro de permissão
+    console.error('Erro ao solicitar permissão de notificação:', permissionError);
+    Alert.alert(
+      'Erro de Permissão',
+      'Não foi possível solicitar permissão para notificações'
+    );
   }
 
   return null;
@@ -339,6 +410,7 @@ export default function AppNavigator() {
             <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
             <Stack.Screen name="BorrowedBooks" component={BorrowedBooks} />
             <Stack.Screen name="MostViewed" component={MostViewedBooks} />
+            <Stack.Screen name="Suport" component={SuportScreen} />
           </>
         ) : (
           // Authentication Routes

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-48:/values-nb/values-nb.xml",
+            "outputFile": "com.app-mergeDebugResources-50:/values-nb/values-nb.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\343d4f1321dc92882dfa6bd3ddde9cd3\\transformed\\material-1.6.1\\res\\values-nb\\values-nb.xml",
@@ -20,23 +20,6 @@
                         "endLines": "5,35,36,37,38,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110",
                         "endColumns": "12,86,98,118,81,63,91,67,59,86,61,63,67,64,53,108,57,61,53,74,119,81,79,103,77,79,87,66,65,67,73,89,70,77,69,69,88,77,87,89,71,71,83,50,65,80,82,61,63,62,99,97,92,97,77",
                         "endOffsets": "261,3212,3311,3430,3512,5900,5992,6370,6430,6517,6579,6643,6711,6776,6830,6939,6997,7059,7113,7188,7308,7390,7470,7574,7652,7732,7820,7887,7953,8021,8095,8185,8256,8334,8404,8474,8563,8641,8729,8819,8891,8963,9047,9098,9164,9245,9328,9390,9454,9517,9617,9715,9808,9906,9984"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-nb\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "125",
-                        "endOffsets": "320"
-                    },
-                    "to": {
-                        "startLines": "47",
-                        "startColumns": "4",
-                        "startOffsets": "4526",
-                        "endColumns": "129",
-                        "endOffsets": "4651"
                     }
                 },
                 {
@@ -71,6 +54,23 @@
                         "startOffsets": "5731,5997,6098,6210",
                         "endColumns": "109,100,111,96",
                         "endOffsets": "5836,6093,6205,6302"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-nb\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "125",
+                        "endOffsets": "320"
+                    },
+                    "to": {
+                        "startLines": "47",
+                        "startColumns": "4",
+                        "startOffsets": "4526",
+                        "endColumns": "129",
+                        "endOffsets": "4651"
                     }
                 },
                 {

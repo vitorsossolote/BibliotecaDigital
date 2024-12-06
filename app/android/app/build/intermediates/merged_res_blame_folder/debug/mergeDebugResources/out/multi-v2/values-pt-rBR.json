@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-48:/values-pt-rBR/values-pt-rBR.xml",
+            "outputFile": "com.app-mergeDebugResources-50:/values-pt-rBR/values-pt-rBR.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\352c8906a1838b768052b17e8b9604bd\\transformed\\play-services-base-18.3.0\\res\\values-pt-rBR\\values.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "3633,3738,3886,4013,4121,4288,4418,4540,4790,4960,5068,5232,5362,5519,5676,5745,5811",
                         "endColumns": "104,147,126,107,166,129,121,104,169,107,163,129,156,156,68,65,83",
                         "endOffsets": "3733,3881,4008,4116,4283,4413,4535,4640,4955,5063,5227,5357,5514,5671,5740,5806,5890"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-pt-rBR\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "199",
-                        "endColumns": "140",
-                        "endOffsets": "339"
-                    },
-                    "to": {
-                        "startLines": "47",
-                        "startColumns": "4",
-                        "startOffsets": "4645",
-                        "endColumns": "144",
-                        "endOffsets": "4785"
                     }
                 },
                 {
@@ -69,6 +52,23 @@
                         "startOffsets": "3016,3125",
                         "endColumns": "108,121",
                         "endOffsets": "3120,3242"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-pt-rBR\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "199",
+                        "endColumns": "140",
+                        "endOffsets": "339"
+                    },
+                    "to": {
+                        "startLines": "47",
+                        "startColumns": "4",
+                        "startOffsets": "4645",
+                        "endColumns": "144",
+                        "endOffsets": "4785"
                     }
                 },
                 {

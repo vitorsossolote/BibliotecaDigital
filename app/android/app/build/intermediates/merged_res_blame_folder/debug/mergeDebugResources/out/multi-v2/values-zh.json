@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-48:/values-zh/values-zh.xml",
+            "outputFile": "com.app-mergeDebugResources-50:/values-zh/values-zh.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\d6781fd093f471fa4d54311f9fff3004\\transformed\\ucrop-2.2.6-native\\res\\values-zh\\values-zh.xml",

@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Alert} from 'react-native'
+import { Alert } from 'react-native'
 const AuthContext = createContext({});
 import axios from 'axios';
 const api = axios.create({
@@ -21,6 +21,9 @@ export const AuthProvider = ({ children }) => {
     const [students, setStudents] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedLoanBooks, setSelectedLoanBooks] = useState([]);
+    const [activeLoan, setActiveLoan] = useState(null);
+    const [loanError, setLoanError] = useState(null);
+    const [LivrosMaisEmprestados, setLivrosMaisEmprestados] = useState([])
 
     useEffect(() => {
         Promise.all([
@@ -29,18 +32,174 @@ export const AuthProvider = ({ children }) => {
             loadFavorites(),
             buscarLivros(),
             buscarAutor(),
+            fetchLivrosMaisEmprestados(),
         ]).finally(() => {
             setLoading(false);
         });
     }, []);
 
 
+    const fetchLivrosMaisEmprestados = useCallback(async () => {
+        // Se já tem dados, não recarregar
+        if (LivrosMaisEmprestados.length > 0) {
+            return LivrosMaisEmprestados;
+        }
+    
+        setLoading(true);
+        setError(null);
+    
+        try {
+            const response = await axios.get('http://10.0.2.2:8085/api/mostViewed');
+            
+            // Só atualiza se receber dados válidos
+            if (response.data && response.data.length > 0) {
+                setLivrosMaisEmprestados(response.data);
+            }
+            
+            return response.data;
+        } catch (err) {
+            setError(err.response?.data?.message || 'Erro ao buscar livros mais emprestados');
+            console.error(err);
+            return [];
+        } finally {
+            setLoading(false);
+        }
+    }, [LivrosMaisEmprestados]);
+
+    const fetchAuthorBooks = async (authorId) => {
+        try {
+            const response = await axios.get(`http://10.0.2.2:8085/api/ListBooks/autor/${authorId}`);
+            return response.data;
+        } catch (error) {
+            console.error("Erro ao buscar livros do autor:", error);
+            return [];
+        }
+    };
+
+    // Criar empréstimo
+    const createLoan = async (livros_ids, prazo_dias = 14) => {
+        // Limpar erros anteriores
+        setLoanError(null);
+
+        try {
+            // Verificar se o usuário está autenticado
+            if (!authData?.user?.rm) {
+                throw new Error('Usuário não autenticado');
+            }
+
+            // Verificar se há livros selecionados
+            if (!livros_ids || livros_ids.length === 0) {
+                throw new Error('Nenhum livro selecionado');
+            }
+
+            // Verificar limite de livros
+            if (livros_ids.length > 2) {
+                throw new Error('Não é permitido emprestar mais de 2 livros');
+            }
+
+            // Verificar prazo
+            if (![7, 14].includes(prazo_dias)) {
+                throw new Error('O prazo deve ser de 7 ou 14 dias');
+            }
+
+            // Fazer a requisição de empréstimo
+            const response = await api.post('/emprestimo', {
+                user_rm: authData.user.rm,
+                livros_ids,
+                prazo_dias
+            });
+
+            // Atualizar estado de empréstimos ativos
+            await checkActiveLoan();
+
+            // Mostrar mensagem de sucesso
+            Alert.alert(
+                'Empréstimo Realizado',
+                `${livros_ids.length} livro(s) emprestado(s) por ${prazo_dias} dias`
+            );
+
+            return response.data;
+        } catch (error) {
+            // Tratar erros específicos de empréstimo
+            if (error.response) {
+                const errorMessage = error.response.data.msg || 'Erro ao realizar empréstimo';
+                const details = error.response.data.detalhes || [];
+
+                setLoanError({
+                    message: errorMessage,
+                    details: details
+                });
+
+                // Mostrar alerta de erro
+                Alert.alert('Erro no Empréstimo', errorMessage);
+            } else {
+                // Erro de configuração ou sem resposta do servidor
+                setLoanError({
+                    message: error.message || 'Erro desconhecido ao realizar empréstimo',
+                    details: []
+                });
+
+                Alert.alert('Erro', error.message);
+            }
+
+            throw error;
+        }
+    };
+
+    const checkActiveLoan = async () => {
+        if (!authData?.user?.rm) return null;
+
+        try {
+            const response = await api.get(`/emprestimo/listEmprestimo/${authData.user.rm}`);
+            const activeLoans = response.data.filter(loan => loan.estado === 'ativo');
+
+            setActiveLoan(activeLoans.length > 0 ? activeLoans[0] : null);
+            return activeLoans.length > 0 ? activeLoans[0] : null;
+        } catch (error) {
+            console.error('Erro ao verificar empréstimos ativos:', error);
+            setActiveLoan(null);
+            return null;
+        }
+    };
+
+    const returnLoan = async (emprestimoId) => {
+        try {
+            await api.put(`/emprestimo/${emprestimoId}/atualizarEstado`, {
+                novo_estado: 'concluído',
+                avaliacao: 5 // Opcional: você pode permitir que o usuário avalie
+            });
+
+            // Atualizar estado de empréstimos ativos
+            await checkActiveLoan();
+
+            Alert.alert('Sucesso', 'Livro devolvido com sucesso');
+        } catch (error) {
+            console.error('Erro ao devolver livro:', error);
+
+            const errorMessage = error.response?.data?.msg || 'Erro ao devolver livro';
+            Alert.alert('Erro', errorMessage);
+
+            throw error;
+        }
+    };
+
+    const getLoanHistory = async () => {
+        try {
+            const response = await api.get(`/emprestimo/listEmprestimo/${authData.user.rm}`);
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar histórico de empréstimos', error);
+            Alert.alert('Erro', 'Não foi possível carregar o histórico de empréstimos');
+            throw error;
+        }
+    };
+
     const fetchUserLoans = async () => {
         if (!authData?.user?.rm) {
             console.log('Usuário não autenticado');
             return [];
         }
-    
+
         try {
             const response = await api.get(`/emprestimo/listEmprestimo/${authData.user.rm}`);
             return response.data;
@@ -49,93 +208,93 @@ export const AuthProvider = ({ children }) => {
             return [];
         }
     };
-    
 
-    const realizarEmprestimo = async (livrosIds, prazo_dias) => {
-        console.log('Iniciando realizarEmprestimo');
-        console.log('IDs dos livros:', livrosIds);
-        console.log('Prazo:', prazo_dias);
-        console.log('Dados de autenticação:', authData);
-    
-        try {
-            // Verificar se há livros selecionados
-            if (!livrosIds || livrosIds.length === 0) {
-                console.log('Erro: Nenhum livro selecionado');
-                Alert.alert('Erro', 'Nenhum livro selecionado');
-                throw new Error('Nenhum livro selecionado');
-            }
-    
-            // Verificar prazo
-            if (![7, 14].includes(prazo_dias)) {
-                console.log('Erro: Prazo inválido');
-                Alert.alert('Erro', 'O prazo deve ser de 7 ou 14 dias');
-                throw new Error('Prazo inválido');
-            }
-    
-            // Verificar se o usuário está autenticado
-            if (!authData?.user?.rm) {
-                console.log('Erro: Usuário não autenticado');
-                Alert.alert('Erro', 'Usuário não autenticado');
-                throw new Error('Usuário não autenticado');
-            }
-    
-            // Criar promises para cada empréstimo
-            const emprestimosPromises = livrosIds.map(livroId => {
-                console.log(`Preparando empréstimo para livro ${livroId}`);
-                return api.post('/emprestimo', {
-                    user_rm: authData.user.rm,
-                    livro_id: livroId,
-                    prazo_dias: prazo_dias
-                });
-            });
-    
-            console.log('Enviando requisições de empréstimo');
-            const resultados = await Promise.all(emprestimosPromises);
-    
-            console.log('Resultados dos empréstimos:', resultados);
-    
-            // Limpar seleção após sucesso
-            clearSelectedLoanBooks();
-    
-            // Feedback de sucesso personalizado
-            Alert.alert(
-                'Empréstimo Realizado', 
-                `${livrosIds.length} livro(s) emprestado(s) por ${prazo_dias} dias`
-            );
-    
-            return resultados;
-        } catch (error) {
-            console.error('Erro completo durante o empréstimo:', error);
-            
-            // Log detalhado do erro
-            if (error.response) {
-                console.error('Detalhes da resposta:', {
-                    status: error.response.status,
-                    data: error.response.data,
-                    headers: error.response.headers
-                });
-    
-                switch(error.response.status) {
-                    case 400:
-                        Alert.alert('Erro', error.response.data.msg || 'Erro na solicitação');
-                        break;
-                    case 404:
-                        Alert.alert('Livro não encontrado', 'Um dos livros selecionados não está disponível');
-                        break;
-                    default:
-                        Alert.alert('Erro', 'Não foi possível realizar o empréstimo');
-                }
-            } else if (error.request) {
-                console.error('Erro na requisição:', error.request);
-                Alert.alert('Erro', 'Não foi possível conectar ao servidor');
-            } else {
-                console.error('Erro configuração:', error.message);
-                Alert.alert('Erro', error.message || 'Erro desconhecido');
-            }
-            
-            throw error;
-        }
-    };
+
+    // const realizarEmprestimo = async (livrosIds, prazo_dias) => {
+    //     console.log('Iniciando realizarEmprestimo');
+    //     console.log('IDs dos livros:', livrosIds);
+    //     console.log('Prazo:', prazo_dias);
+    //     console.log('Dados de autenticação:', authData);
+
+    //     try {
+    //         // Verificar se há livros selecionados
+    //         if (!livrosIds || livrosIds.length === 0) {
+    //             console.log('Erro: Nenhum livro selecionado');
+    //             Alert.alert('Erro', 'Nenhum livro selecionado');
+    //             throw new Error('Nenhum livro selecionado');
+    //         }
+
+    //         // Verificar prazo
+    //         if (![7, 14].includes(prazo_dias)) {
+    //             console.log('Erro: Prazo inválido');
+    //             Alert.alert('Erro', 'O prazo deve ser de 7 ou 14 dias');
+    //             throw new Error('Prazo inválido');
+    //         }
+
+    //         // Verificar se o usuário está autenticado
+    //         if (!authData?.user?.rm) {
+    //             console.log('Erro: Usuário não autenticado');
+    //             Alert.alert('Erro', 'Usuário não autenticado');
+    //             throw new Error('Usuário não autenticado');
+    //         }
+
+    //         // Criar promises para cada empréstimo
+    //         const emprestimosPromises = livrosIds.map(livroId => {
+    //             console.log(`Preparando empréstimo para livro ${livroId}`);
+    //             return axios.post('http://10.0.2.2:8085/api/emprestimo', {
+    //                 user_rm: authData.user.rm,
+    //                 livro_id: livroId,
+    //                 prazo_dias: prazo_dias
+    //             });
+    //         });
+
+    //         console.log('Enviando requisições de empréstimo');
+    //         const resultados = await Promise.all(emprestimosPromises);
+
+    //         console.log('Resultados dos empréstimos:', resultados);
+
+    //         // Limpar seleção após sucesso
+    //         clearSelectedLoanBooks();
+
+    //         // Feedback de sucesso personalizado
+    //         Alert.alert(
+    //             'Empréstimo Realizado', 
+    //             `${livrosIds.length} livro(s) emprestado(s) por ${prazo_dias} dias`
+    //         );
+
+    //         return resultados;
+    //     } catch (error) {
+    //         console.error('Erro completo durante o empréstimo:', error);
+
+    //         // Log detalhado do erro
+    //         if (error.response) {
+    //             console.error('Detalhes da resposta:', {
+    //                 status: error.response.status,
+    //                 data: error.response.data,
+    //                 headers: error.response.headers
+    //             });
+
+    //             switch(error.response.status) {
+    //                 case 400:
+    //                     Alert.alert('Erro', error.response.data.msg || 'Erro na solicitação');
+    //                     break;
+    //                 case 404:
+    //                     Alert.alert('Livro não encontrado', 'Um dos livros selecionados não está disponível');
+    //                     break;
+    //                 default:
+    //                     Alert.alert('Erro', 'Não foi possível realizar o empréstimo');
+    //             }
+    //         } else if (error.request) {
+    //             console.error('Erro na requisição:', error.request);
+    //             Alert.alert('Erro', 'Não foi possível conectar ao servidor');
+    //         } else {
+    //             console.error('Erro configuração:', error.message);
+    //             Alert.alert('Erro', error.message || 'Erro desconhecido');
+    //         }
+
+    //         throw error;
+    //     }
+    // };
 
     const selectBookForLoan = (book) => {
         // Verificar se o livro já está na lista
@@ -216,6 +375,7 @@ export const AuthProvider = ({ children }) => {
             const response = await api.get('/listBooks');
             console.log('Resposta da API:', response.data); // Debug
             setLivros(response.data);
+            return response.data;
             setError(null);
         } catch (err) {
             console.error('Erro completo:', err); // Debug
@@ -471,6 +631,12 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
+                checkActiveLoan,
+                createLoan,
+                returnLoan,
+                getLoanHistory,
+                activeLoan,
+                loanError,
                 authData,
                 authLibrarianData,
                 loading,
@@ -492,6 +658,8 @@ export const AuthProvider = ({ children }) => {
                 selectUserForEdit,
                 updateStudent,
                 deleteStudent,
+                LivrosMaisEmprestados,
+                fetchLivrosMaisEmprestados,
                 // loading,
                 error,
                 searchLivros,
@@ -503,8 +671,8 @@ export const AuthProvider = ({ children }) => {
                 selectBookForLoan,
                 clearSelectedLoanBooks,
                 removeSelectedLoanBook,
-                realizarEmprestimo,
                 fetchUserLoans,
+                fetchAuthorBooks,
                 // acessar dados de cada usuário
                 user: authData?.user || null,
                 token: authData?.token || null,

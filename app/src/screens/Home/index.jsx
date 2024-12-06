@@ -1,6 +1,3 @@
-//Tela Home 
-
-//Bibliotecas Utilizadas
 import React, { useRef, useMemo, useState } from "react";
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {
@@ -47,7 +44,7 @@ function signOut() {
 }
 
 export default function Home({ navigation }) {
-    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, selectBookForLoan ,livros, librarian, isLibrarianAuthenticated, buscarLivros } = useAuth();
+    const { user, addToFavorites, removeFromFavorites, checkFavoriteStatus, selectBookForLoan, livros, librarian, isLibrarianAuthenticated, buscarLivros } = useAuth();
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], []);
     const [selectedBook, setSelectedBook] = useState(null);
@@ -77,7 +74,6 @@ export default function Home({ navigation }) {
 
         // Seleciona o livro para empréstimo no contexto
         selectBookForLoan(selectedBook);
-
     };
 
     const handleFavoritePress = () => {
@@ -112,16 +108,12 @@ export default function Home({ navigation }) {
         if (!selectedBook) return;
 
         try {
-            // Close the delete dialog
             setIsDeleteDialogVisible(false);
 
-            // Make API call to delete the book
             const response = await axios.delete(`http://10.0.2.2:8085/api/deleteBook/${selectedBook.id}`);
 
-            // Close bottom sheet
             bottomSheetref.current?.close();
 
-            // Show success toast
             ToastAndroid.show("Livro excluído com sucesso", ToastAndroid.SHORT);
 
             await buscarLivros();
@@ -143,9 +135,14 @@ export default function Home({ navigation }) {
                     <MotiView from={{ translateX: 50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
-                    <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
-                        <Reservar onPress={handleOpenPress} />
-                    </MotiView>
+                    
+                    {/* Conditionally render Reservar component only for non-librarian users */}
+                    {!isLibrarianAuthenticated() && (
+                        <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
+                            <Reservar onPress={handleOpenPress} />
+                        </MotiView>
+                    )}
+                    
                     <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
                         <Section title="Novidades" onPress={() => navigation.navigate("SearchScreen")} />
                         <TrendingBooks onPress={handleOpenPress} />
@@ -171,7 +168,7 @@ export default function Home({ navigation }) {
                                     <View style={styles.headerContainer}>
                                         <Text style={styles.title}>{selectedBook.titulo}</Text>
                                         {isLibrarianAuthenticated() ? (
-                                            <></>
+                                            <><Text style={{color:"#000", fontSize:15, fontWeight:"semibold", top:8}}>Quantidade : {selectedBook.quantidade}</Text></>
                                         ) : (<Pressable
                                             size="md"
                                             bg="transparent"
@@ -205,9 +202,8 @@ export default function Home({ navigation }) {
                                         starContainerStyle={styles.starRating}
                                         isDisabled={true}
                                     />
-                                    <Text style={[styles.status,
-                                    { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
-                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
+                                    <Text style={[styles.status,{ color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel': 'mprestado'}
                                     </Text>
                                 </View>
                                 <View style={styles.buttonContainer}>

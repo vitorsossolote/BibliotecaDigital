@@ -64,7 +64,7 @@ const RegisterAutor = ({ navigation }) => {
     };
 
     const handleCadastrarAutor = async () => {
-        if (!image || !nome_autor || !data_nascimento || !sobre) {
+        if (!nome_autor) {
             Alert.alert('Todos os campos são obrigatórios')
             return
         }

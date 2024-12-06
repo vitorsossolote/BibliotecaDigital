@@ -83,7 +83,6 @@ const SearchScreen = ({ navigation }) => {
         if (!selectedBook) return;
 
         try {
-            // Close the delete dialog
             setIsDeleteDialogVisible(false);
             const response = await axios.delete(`http://10.0.2.2:8085/api/deleteBook/${selectedBook.id}`);
             bottomSheetref.current?.close();

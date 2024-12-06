@@ -24,14 +24,12 @@ export default function LoanManagement() {
 
     const { authLibrarianData } = useAuth();
 
-    // Update loan state and rating
     const updateLoanStateAndRating = async (novoEstado, avaliacao = null) => {
         if (!selectedLoan) {
             Alert.alert('Erro', 'Nenhum empréstimo selecionado');
             return;
         }
 
-        // Validation for rating when concluding loan
         if (novoEstado === 'concluído' && (!avaliacao || avaliacao < 1 || avaliacao > 5)) {
             Alert.alert('Erro', 'Por favor, insira uma avaliação válida entre 1 e 5');
             return;
@@ -52,7 +50,6 @@ export default function LoanManagement() {
                 }
             );
 
-            // Update local state
             const updatedLoans = loans.map(loan => 
                 loan.emprestimo_id === selectedLoan.emprestimo_id 
                     ? { ...loan, estado: novoEstado } 
@@ -61,7 +58,6 @@ export default function LoanManagement() {
             
             setLoans(updatedLoans);
             
-            // Close modals and reset
             setStateUpdateModalVisible(false);
             setRatingModalVisible(false);
             setSelectedLoan(null);
@@ -218,7 +214,6 @@ export default function LoanManagement() {
         );
     };
 
-    // Fetch loans on component mount
     useEffect(() => {
         const fetchLoans = async () => {
             try {
@@ -242,7 +237,6 @@ export default function LoanManagement() {
         fetchLoans();
     }, []);
 
-    // Rendering logic
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Empréstimos Registrados</Text>

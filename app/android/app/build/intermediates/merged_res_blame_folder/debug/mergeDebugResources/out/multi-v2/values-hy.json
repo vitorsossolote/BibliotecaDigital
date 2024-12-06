@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.app-mergeDebugResources-48:/values-hy/values-hy.xml",
+            "outputFile": "com.app-mergeDebugResources-50:/values-hy/values-hy.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\54e47014ad813f368c5d20639dda24d8\\transformed\\credentials-1.2.0-rc01\\res\\values-hy\\values-hy.xml",
@@ -21,23 +21,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\ebfc90fe67fbc366ffd8ccbfba7d2d1a\\transformed\\play-services-basement-18.3.0\\res\\values-hy\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "146",
-                        "endOffsets": "341"
-                    },
-                    "to": {
-                        "startLines": "48",
-                        "startColumns": "4",
-                        "startOffsets": "4712",
-                        "endColumns": "150",
-                        "endOffsets": "4858"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\343d4f1321dc92882dfa6bd3ddde9cd3\\transformed\\material-1.6.1\\res\\values-hy\\values-hy.xml",
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59",
@@ -54,6 +37,23 @@
                         "endLines": "5,35,36,37,38,59,60,64,67,69,70,71,72,73,74,75,76,77,78,79,80,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115",
                         "endColumns": "12,79,94,129,80,63,96,84,61,86,63,60,66,60,53,121,56,59,53,80,134,83,84,105,74,74,94,66,65,73,79,85,70,75,75,76,87,79,95,95,73,77,99,50,68,86,90,61,63,62,104,100,99,104,84",
                         "endOffsets": "265,3281,3376,3506,3587,6147,6244,6646,6857,7012,7076,7137,7204,7265,7319,7441,7498,7558,7612,7693,7828,7984,8069,8175,8250,8325,8420,8487,8553,8627,8707,8793,8864,8940,9016,9093,9181,9261,9357,9453,9527,9605,9705,9756,9825,9912,10003,10065,10129,10192,10297,10398,10498,10603,10688"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Aluno\\.gradle\\caches\\8.8\\transforms\\49f3aa762ce804d6093209fd4206fc02\\transformed\\play-services-basement-18.4.0\\res\\values-hy\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "146",
+                        "endOffsets": "341"
+                    },
+                    "to": {
+                        "startLines": "48",
+                        "startColumns": "4",
+                        "startOffsets": "4712",
+                        "endColumns": "150",
+                        "endOffsets": "4858"
                     }
                 },
                 {

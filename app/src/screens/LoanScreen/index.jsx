@@ -15,11 +15,13 @@ import { useAuth } from '../../contexts/AuthContext'; // Ajuste o caminho confor
 import DateOptionGroup from "./dateOptionGroup"
 
 export default function LoanScreen({ navigation }) {
-    // Acessar o contexto
     const {
-        selectedLoanBooks,
         realizarEmprestimo,
-        clearSelectedLoanBooks
+        createLoan, 
+        selectedLoanBooks, 
+        clearSelectedLoanBooks,
+        checkActiveLoan,
+        activeLoan 
     } = useAuth();
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [deliveryDate, setDeliveryDate] = useState();
@@ -36,19 +38,24 @@ export default function LoanScreen({ navigation }) {
             month: 'short'
         });
 
-        // Update the delivery date
         setDeliveryDate(formattedDate);
         setSelectedDuration(days);
-        // Close the bottom sheet
         handleCloseDateTimeSheet();
+    };
+    const handleCreateLoan = async () => {
+        try {
+            const livrosIds = selectedLoanBooks.map(book => book.id);
+            await createLoan(livrosIds);
+            clearSelectedLoanBooks();
+        } catch (error) {
+        }
     };
 
     const handleConfirmLoan = async () => {
-        cconsole.log('Iniciando confirmação de empréstimo');
+        console.log('Iniciando confirmação de empréstimo');
         console.log('Livros selecionados:', selectedLoanBooks);
         console.log('Duração selecionada:', selectedDuration);
 
-        // Check if user has active loans
         if (emprestimosAtivos.data.length > 0) {
             Alert.alert(
                 'Empréstimo Pendente',
@@ -57,8 +64,7 @@ export default function LoanScreen({ navigation }) {
                     {
                         text: 'OK',
                         onPress: () => {
-                            // Optionally navigate to active loans screen or do nothing
-                            // navigation.navigate('ActiveLoansScreen');
+                            navigation.navigate('LoanHistory');
                         }
                     }
                 ]
@@ -66,7 +72,6 @@ export default function LoanScreen({ navigation }) {
             return;
         }
 
-        // Rest of the existing validation and loan process...
         if (!selectedDuration) {
             console.log('Erro: Nenhum prazo selecionado');
             Alert.alert('Erro', 'Por favor, selecione um prazo de empréstimo');
@@ -78,7 +83,6 @@ export default function LoanScreen({ navigation }) {
             Alert.alert('Erro', 'Nenhum livro selecionado para empréstimo');
             return;
         }
-        // Já existente
         if (!selectedDuration) {
             console.log('Erro: Nenhum prazo selecionado');
             Alert.alert('Erro', 'Por favor, selecione um prazo de empréstimo');
@@ -91,7 +95,6 @@ export default function LoanScreen({ navigation }) {
             return;
         }
 
-        // Nova validação: Verificar prazo
         if (![7, 14].includes(selectedDuration)) {
             console.log('Erro: Prazo inválido');
             Alert.alert('Erro', 'O prazo deve ser de 7 ou 14 dias');
@@ -102,7 +105,6 @@ export default function LoanScreen({ navigation }) {
             setLoading(true);
             console.log('Iniciando realizarEmprestimo');
 
-            // Extrair IDs dos livros selecionados
             const bookIds = selectedLoanBooks.map(book => book.id);
             console.log('IDs dos livros:', bookIds);
 
@@ -111,8 +113,6 @@ export default function LoanScreen({ navigation }) {
             console.log('Empréstimo realizado com sucesso');
             Alert.alert('Sucesso', 'Empréstimo realizado com sucesso');
 
-            // Navegar para outra tela ou atualizar estado
-            // navigation.navigate('SuccessScreen'); // Exemplo de navegação
         } catch (error) {
             console.error('Erro completo durante o empréstimo:', error);
             console.error('Detalhes do erro:',
@@ -130,7 +130,6 @@ export default function LoanScreen({ navigation }) {
 
     const { width: screenWidth } = Dimensions.get('window');
 
-    //Carrosel Livros Emprestados
     const BorrowedBooksCarrosel = () => {
         const renderItem = ({ item }) => (
             <View style={Detailstyles.carroselContainer}>
@@ -196,16 +195,13 @@ export default function LoanScreen({ navigation }) {
 
 
 
-    // Refs for Bottom Sheets
     const detailsBottomSheetRef = useRef(null);
     const dateTimeBottomSheetRef = useRef(null);
     const booksBottomSheetRef = useRef(null);
 
-    // Snappoints for bottom sheets (adjust as needed)
     const snapPoints = useMemo(() => ['67%', '75%'], []);
     const snapPointsDate = useMemo(() => ['37%', '40%'], []);
 
-    // Handle opening bottom sheets
     const handleOpenDetailsSheet = useCallback(() => {
         detailsBottomSheetRef.current?.present();
     }, []);
@@ -294,7 +290,7 @@ export default function LoanScreen({ navigation }) {
                         </View>
                         <Button
                             style={styles.finishButton}
-                            onPress={handleConfirmLoan}
+                            onPress={handleCreateLoan}
                             isDisabled={loading}
                         >
                             <ButtonText style={styles.finishButtonText}>
