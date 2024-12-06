@@ -7,7 +7,11 @@ const client = mysql.createPool({
     port: 3306,
     user: "root",
     password: "",
-    database: "bibliotecainteligente"
+    database: "bibliotecainteligente",
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    multipleStatements: true
 });
 
 module.exports = client;

@@ -9,9 +9,9 @@ const { parse, isValid, format } = require("date-fns");
 const useController = {
   getRoot: async (req, res) => {
     res.status(200).json({
-        message: "The API is running!!!" 
+      message: "The API is running!!!"
     });
-},
+  },
 
   //Criar novo estudante
   createNewStudent: async (req, res) => {
@@ -570,7 +570,7 @@ const useController = {
 
   ListarLivrosByID: async (req, res) => {
     const { id } = req.params;
-    
+
     try {
       const livro = await clientController.getLivroById(id);
 
@@ -979,23 +979,19 @@ const useController = {
       return res.status(400).json({ msg: "Todos os campos são obrigatórios" });
     }
 
-    if (![7, 14].includes(prazo_dias)) {
-      return res.status(400).json({ msg: "O prazo deve ser de 7 ou 14 dias" });
-    }
-
-    if (!user_rm) {
-      return res.status(400).json({ msg: "O RM é obrigatório" });
-    }
-
     try {
-      // Verificar se o usuário possui empréstimos ativos primeiro
+      // Verificar empréstimos ativos
       const emprestimosAtivos = await clientController.checkActiveLoans(user_rm);
-      
-      // Se tiver qualquer empréstimo ativo, bloquear novo empréstimo
+
       if (emprestimosAtivos.length > 0) {
         return res.status(400).json({
-          msg: "Você possui um empréstimo ativo. Devolva o livro antes de fazer um novo empréstimo.",
-          emprestimosAtivos: emprestimosAtivos
+          msg: "Você possui empréstimo(s) ativo(s). Devolva o(s) livro(s) antes de fazer um novo empréstimo.",
+          emprestimosAtivos: emprestimosAtivos.map(loan => ({
+            livroId: loan.livro_id,
+            titulo: loan.titulo,
+            dataEmprestimo: loan.data_emprestimo,
+            dataDevolucao: loan.data_devolucao
+          }))
         });
       }
 
@@ -1004,16 +1000,6 @@ const useController = {
         return res.status(404).json({ msg: "Estudante não encontrado" });
       }
 
-      // Manter a lógica existente para contagem de empréstimos ativos
-      const totalEmprestimosAtivos = await clientController.countEmprestimosAtivos(user_rm);
-
-      if (totalEmprestimosAtivos >= 2) {
-        return res.status(400).json({
-          msg: "Você já possui 2 empréstimos ativos. Por favor, devolva um dos livros antes de fazer um novo empréstimo."
-        });
-      }
-
-      // Restante do código permanece igual
       const livro = await clientController.getQntLivrosById(livro_id);
       if (!livro) {
         return res.status(404).json({ msg: `Livro não encontrado: ID ${livro_id}` });
@@ -1023,6 +1009,7 @@ const useController = {
         return res.status(400).json({ msg: "Nenhum exemplar disponível para empréstimo" });
       }
 
+      // Restante do código de criação de empréstimo permanece igual
       const dataAtual = new Date();
       const dataDevolucao = new Date();
       dataDevolucao.setDate(dataDevolucao.getDate() + prazo_dias);
@@ -1050,6 +1037,7 @@ const useController = {
     }
   },
 
+  // Atualiza emprestimos
   atualizarEstadoEmprestimo: async (req, res) => {
     const { id } = req.params;
     const { novo_estado, avaliacao } = req.body;
@@ -1121,46 +1109,46 @@ const useController = {
 
   getEmprestimosByUserRm: async (req, res) => {
     const { user_rm } = req.params;
-  
+
     console.log('Received RM:', user_rm);
     console.log('RM Type:', typeof user_rm);
-  
+
     try {
       const emprestimos = await clientController.getEmprestimosByUserRm(user_rm);
-      
+
       // Se nenhum empréstimo for encontrado, retorne um array vazio
       if (emprestimos.length === 0) {
-        return res.status(404).json({ 
+        return res.status(404).json({
           message: 'Nenhum empréstimo encontrado para este usuário',
-          user_rm: user_rm 
+          user_rm: user_rm
         });
       }
-  
+
       return res.status(200).json(emprestimos);
     } catch (error) {
       console.error(`Erro ao obter empréstimos do usuário RM ${user_rm}:`, error);
-      return res.status(500).json({ 
+      return res.status(500).json({
         msg: 'Erro interno do servidor',
-        error: error.message 
+        error: error.message
       });
     }
   },
-  
+
 
   atualizarAtrasos: async (req, res) => {
     try {
       // Obter empréstimos cuja data_devolucao expirou
       const emprestimosAtrasados = await clientController.getEmprestimosAtrasados();
-  
+
       if (emprestimosAtrasados.length === 0) {
         return res.status(200).json({ msg: "Nenhum empréstimo atrasado encontrado." });
       }
-  
+
       // Atualizar o estado de cada empréstimo para "atrasado"
       for (const emprestimo of emprestimosAtrasados) {
         await clientController.updateEmprestimoEstado(emprestimo.emprestimo_id, "atrasado");
       }
-  
+
       return res.status(200).json({
         msg: `${emprestimosAtrasados.length} empréstimo(s) atualizado(s) para 'atrasado'.`,
       });
@@ -1279,24 +1267,30 @@ const useController = {
     }
 
     try {
-      // Verifica se o gênero existe
+      // Verificar se o gênero existe primeiro
       const gender = await clientController.getGenderById(id_genero);
       if (gender.length === 0) {
         return res.status(404).json({ msg: "Gênero não encontrado" });
       }
 
-      // Deleta o gênero
+      // Tentar deletar o gênero
       const result = await clientController.deleteGenderFromDB(id_genero);
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ msg: "Gênero não encontrado" });
-      }
+
       return res.status(200).json({ msg: "Gênero deletado com sucesso" });
     } catch (error) {
-      console.error("Erro ao deletar gênero:", error);
+      console.error("Erro ao deletar o Gênero:", error);
+
+      // Tratar especificamente o erro de gênero em uso
+      if (error.message === 'Este gênero não pode ser deletado pois está em uso em livros existentes') {
+        return res.status(400).json({
+          msg: error.message
+        });
+      }
 
       return res.status(500).json({ msg: "Erro interno do servidor" });
     }
   },
+
 
   deleteAutor: async (req, res) => {
     const { id_autor } = req.params;

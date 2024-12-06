@@ -1,5 +1,6 @@
 const connection = require("../config/db");
 const bcrypt = require("bcrypt");
+const client = require("../config/db");
 
 const useModel = {
   getStudentByID: async (id) => {
@@ -299,11 +300,12 @@ const useModel = {
   },
 
   //Buscar livros por ID
-  getLivroById: async (id) => {
-    const [result] = await connection
-      .query("SELECT * FROM livros WHERE id =?", [id])
-      .catch((erro) => console.log(erro));
-    return result;
+  getQntLivrosById: async (id) => {
+    const [result] = await connection.query(
+      "SELECT livro_id, quantidade FROM livros WHERE livro_id = ?",
+      [id]
+    );
+    return result[0];
   },
 
   searchLivros: async (searchTerm) => {
@@ -644,10 +646,21 @@ const useModel = {
 
   // Atualizar a quantidade de livros (subtrair 1)
   subtrairQuantidadeLivro: async (id) => {
-    await connection.query(
-      "UPDATE livros SET quantidade = quantidade - 1 WHERE id = ?",
-      [id]
-    );
+    try {
+      const [result] = await connection.query(
+        "UPDATE livros SET quantidade = quantidade - 1 WHERE id = ? AND quantidade > 0",
+        [id]
+      );
+      
+      if (result.affectedRows === 0) {
+        throw new Error(`Não foi possível subtrair quantidade do livro ID: ${id}`);
+      }
+      
+      return result;
+    } catch (error) {
+      console.error(`Erro ao subtrair quantidade do livro ${id}:`, error);
+      throw error;
+    }
   },
 
   // Atualizar o estado de um livro (D ou E) e incrementar sua avalição (1~5)
@@ -756,13 +769,19 @@ const useModel = {
   checkActiveLoans: async (user_rm) => {
     try {
       const query = `
-        SELECT e.*, l.titulo 
+        SELECT 
+          e.livro_id, 
+          l.titulo, 
+          e.data_emprestimo, 
+          e.data_devolucao
         FROM emprestimos e
-        JOIN livros l ON e.livro_id = l.livro_id
+        JOIN livros l ON e.livro_id = l.id
         WHERE e.user_rm = ? AND e.estado = 'ativo'
       `;
-      const activeLoans = await database.query(query, [user_rm]);
-      return activeLoans;
+      const result = await client.query(query, [user_rm]);
+      
+      // Ensure we return the rows directly
+      return result.rows || [];
     } catch (error) {
       console.error('Erro ao verificar empréstimos ativos:', error);
       throw error;
@@ -963,6 +982,7 @@ const useModel = {
     }
   },
 
+
   updateAutorInDB: async (id_autor, updateData) => {
     if (!id_autor) {
       throw new Error('O ID é obrigatório');
@@ -991,16 +1011,20 @@ const useModel = {
       throw new Error('O ID do gênero é obrigatório');
     }
 
+    const connection = await client.getConnection();
+
     try {
       // Primeiro, verificar se o gênero está sendo usado em algum livro
       const [existingBooks] = await connection.query(
-        "SELECT * FROM livros WHERE nome_genero = ?",
+        "SELECT * FROM livros WHERE id_genero = ?",
         [id_genero]
       );
 
       // Se existem livros usando este gênero, impedir a deleção
       if (existingBooks.length > 0) {
-        throw new Error('Este gênero não pode ser deletado pois está em uso em livros existentes');
+        const error = new Error('Erro interno do servidor');
+        error.status = 500;
+        throw error;
       }
 
       // Se não estiver em uso, realizar a deleção
@@ -1012,8 +1036,12 @@ const useModel = {
       return result;
     } catch (error) {
       throw error;
+    } finally {
+      // Liberar a conexão
+      connection.release();
     }
-  },
+},
+
 
   deleteAutorFromDB: async (id_autor) => {
     if (!id_autor) {
