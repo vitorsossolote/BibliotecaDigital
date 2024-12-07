@@ -135,14 +135,14 @@ export default function Home({ navigation }) {
                     <MotiView from={{ translateX: 50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
                         <Carrosel onPress={handleOpenPress} />
                     </MotiView>
-                    
+
                     {/* Conditionally render Reservar component only for non-librarian users */}
                     {!isLibrarianAuthenticated() && (
                         <MotiView from={{ translateX: -50, opacity: 0, }} animate={{ translateX: 0, opacity: 1, }} transition={{ duration: 2000, type: "timing" }}>
                             <Reservar onPress={handleOpenPress} />
                         </MotiView>
                     )}
-                    
+
                     <MotiView from={{ translateY: 200, opacity: 0, }} animate={{ translateY: 0, opacity: 1 }} transition={{ delay: 1000, duration: 2000, type: "timing" }}>
                         <Section title="Novidades" onPress={() => navigation.navigate("SearchScreen")} />
                         <TrendingBooks onPress={handleOpenPress} />
@@ -157,18 +157,20 @@ export default function Home({ navigation }) {
                     ref={bottomSheetref}
                     snapPoints={snapPoints}
                     index={-1}
-                    enablePanDownToClose={true}>
+                    enablePanDownToClose={true}
+                    animateOnMount={true}
+                    animatedIndex={true}>
                     <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
                         {selectedBook && ( // Só renderiza se houver um livro selecionado
                             <>
                                 <View style={styles.bookContainer}>
-                                    <Image source={selectedBook.image} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                                    <Image source={selectedBook.image} alt="livro" style={styles.bookStyle} />
                                 </View>
                                 <View style={styles.detailContainer}>
                                     <View style={styles.headerContainer}>
                                         <Text style={styles.title}>{selectedBook.titulo}</Text>
                                         {isLibrarianAuthenticated() ? (
-                                            <><Text style={{color:"#000", fontSize:15, fontWeight:"semibold", top:8}}>Quantidade : {selectedBook.quantidade}</Text></>
+                                            <><Text style={{ color: "#000", fontSize: 15, fontWeight: "semibold", top: 8 }}>Quantidade : {selectedBook.quantidade}</Text></>
                                         ) : (<Pressable
                                             size="md"
                                             bg="transparent"
@@ -202,8 +204,8 @@ export default function Home({ navigation }) {
                                         starContainerStyle={styles.starRating}
                                         isDisabled={true}
                                     />
-                                    <Text style={[styles.status,{ color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
-                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel': 'mprestado'}
+                                    <Text style={[styles.status, { color: selectedBook.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                        {selectedBook.estado}{selectedBook.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                     </Text>
                                 </View>
                                 <View style={styles.buttonContainer}>
@@ -319,6 +321,27 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     //BottomSheetStyles
+    bottomSheetContainer: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: -4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 10,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: 'white',
+    },
+    dragIndicator: {
+        width: 50,
+        height: 5,
+        backgroundColor: '#E0E0E0',
+        borderRadius: 5,
+        alignSelf: 'center',
+        marginTop: 10,
+    },
     bookContainer: {
         flex: 1,
         justifyContent: "center",

@@ -71,15 +71,19 @@ export default function LoanHistory({ navigation }) {
     // Função para formatar a data
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        return date.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
     };
 
     // Função para determinar a cor dos status
     const getStatusColor = (status) => {
         switch (status) {
-            case 'CONCLUIDO': return '#4CAF50';
-            case 'ATRASADO': return '#ee2d32'; 
-            case 'PENDENTE': return '#FFC107'; 
+            case 'concluído': return '#4CAF50';
+            case 'atrasado': return '#ee2d32';
+            case 'ativo': return '#000';
             default: return '#000';
         }
     };
@@ -133,7 +137,7 @@ export default function LoanHistory({ navigation }) {
                                         <React.Fragment key={loan.id}>
                                             <View style={styles.loanDetailsContainer}>
                                                 <Image
-                                                    source={{ uri: loan.image || 'fallback_image_url' }}
+                                                    source={{ uri: loan.image }}
                                                     style={styles.loanImage}
                                                 />
                                                 <View style={styles.loanDetailsTextContainer}>
@@ -150,9 +154,20 @@ export default function LoanHistory({ navigation }) {
                                                             {loan.estado}
                                                         </Text>
                                                         <Text style={styles.loanItems}> • 1 item</Text>
-                                                        
+
                                                     </View>
-                                                    <Text style={{color:"#ee2d32"}}>Devolver  {loan.data_devolucao}</Text>
+                                                    <Text
+                                                        style={{
+                                                            color: loan.estado === 'concluído'
+                                                                ? '#4CAF50' 
+                                                                : '#ee2d32'
+                                                        }}
+                                                    >
+                                                        {loan.estado === 'concluído'
+                                                            ? 'Devolvido'
+                                                            : `Devolver ${formatDate(loan.data_devolucao)}`
+                                                        }
+                                                    </Text>
                                                 </View>
                                             </View>
                                             {index < monthLoans.length - 1 && (
@@ -202,8 +217,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     loanImage: {
-        width: 60,
-        height: 60,
+        width: 80,
+        height: 100,
         borderRadius: 10
     },
     loanDetailsTextContainer: {

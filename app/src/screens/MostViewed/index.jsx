@@ -19,14 +19,14 @@ import MainHeader from "../../components/MainHeader";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function MostViewedBooks({ navigation }) {
-    const { 
-        user, 
-        addToFavorites, 
-        removeFromFavorites, 
-        checkFavoriteStatus, 
-        selectBookForLoan, 
-        LivrosMaisEmprestados, 
-        loading, 
+    const {
+        user,
+        addToFavorites,
+        removeFromFavorites,
+        checkFavoriteStatus,
+        selectBookForLoan,
+        LivrosMaisEmprestados,
+        loading,
         error,
         isLibrarianAuthenticated
     } = useAuth();
@@ -44,13 +44,20 @@ export default function MostViewedBooks({ navigation }) {
     };
 
     const handleContinueToLoan = () => {
+        // Verifica se o usuário está logado
         if (!user) {
             ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
             return;
         }
 
+        // Verifica se o livro está disponível
+        if (selectedBook.estado.toLowerCase() !== 'd') {
+            ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
+            return;
+        }
+
+        // Seleciona o livro para empréstimo no contexto
         selectBookForLoan(selectedBook);
-        navigation.navigate("LoanScreen");
     };
 
     const handleFavoritePress = () => {
@@ -82,16 +89,16 @@ export default function MostViewedBooks({ navigation }) {
     };
 
     const renderBookItem = (livro) => (
-        <Pressable 
-            style={styles.bookContainer} 
+        <Pressable
+            style={styles.bookContainer}
             key={livro.livro_id}
             onPress={() => handleOpenPress(livro)}
         >
             <View style={styles.imageContainer}>
-                <Image 
-                    source={{uri: livro.image }} 
-                    alt={livro.titulo} 
-                    style={styles.bookImage} 
+                <Image
+                    source={{ uri: livro.image }}
+                    alt={livro.titulo}
+                    style={styles.bookImage}
                 />
             </View>
             <View style={styles.infoSection}>
@@ -110,7 +117,7 @@ export default function MostViewedBooks({ navigation }) {
                 </Text>
                 <View style={styles.statusContainer}>
                     <Text style={styles.statusText}>Status: </Text>
-                    <Text style={[styles.availabilityText,{color: livro.quantidade > 0 ? "#34a853": "#ee2d32"}]}>
+                    <Text style={[styles.availabilityText, { color: livro.quantidade > 0 ? "#34a853" : "#ee2d32" }]}>
                         {livro.quantidade > 0 ? 'Disponível' : 'Emprestado'}
                     </Text>
                 </View>
@@ -127,10 +134,10 @@ export default function MostViewedBooks({ navigation }) {
             <SafeAreaView style={{ backgroundColor: "#fff", flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.container}>
-                        <MainHeader 
-                            title="Livros mais vistos" 
-                            icon1={ArrowLeft} 
-                            onPress={() => navigation.goBack()} 
+                        <MainHeader
+                            title="Livros mais vistos"
+                            icon1={ArrowLeft}
+                            onPress={() => navigation.goBack()}
                         />
                         <View style={styles.booksSection}>
                             {loading ? (
@@ -160,11 +167,11 @@ export default function MostViewedBooks({ navigation }) {
                         {selectedBook && (
                             <>
                                 <View style={styles.bottomSheetBookContainer}>
-                                    <Image 
-                                        source={{uri: selectedBook.image}} 
-                                        alt={selectedBook.titulo} 
-                                        style={styles.bookStyle} 
-                                        resizeMode="contain" 
+                                    <Image
+                                        source={{ uri: selectedBook.image }}
+                                        alt={selectedBook.titulo}
+                                        style={styles.bookStyle}
+                                        resizeMode="contain"
                                     />
                                 </View>
                                 <View style={styles.detailContainer}>
@@ -203,29 +210,31 @@ export default function MostViewedBooks({ navigation }) {
                                     />
                                 </View>
                                 <View style={styles.buttonContainer}>
-                                        <Button
-                                            size="md"
-                                            variant="solid"
-                                            action="primary"
-                                            style={styles.buttonPrincipal}
-                                            onPress={handleContinueToLoan}
-                                        >
-                                            <ButtonText style={styles.buttonPrincipalText}>
-                                                Continuar com Empréstimo
-                                            </ButtonText>
-                                        </Button>
-                                        <Button
-                                            size="md"
-                                            variant="solid"
-                                            action="primary"
-                                            style={styles.buttonSecondary}
-                                            onPress={() => navigation.navigate("SearchScreen")}
-                                        >
-                                            <ButtonText style={styles.buttonSecondaryText}>
-                                                Ver Livros
-                                            </ButtonText>
-                                        </Button>
-                                    
+                                    <Button
+                                        size="md"
+                                        variant="solid"
+                                        action="primary"
+                                        isDisabled={selectedBook.estado.toLowerCase() !== 'd'}
+                                        isFocusVisible={false}
+                                        style={styles.buttonPrincipal}
+                                        onPress={handleContinueToLoan}
+                                    >
+                                        <ButtonText style={styles.buttonPrincipalText}>
+                                            Continuar com Empréstimo
+                                        </ButtonText>
+                                    </Button>
+                                    <Button
+                                        size="md"
+                                        variant="solid"
+                                        action="primary"
+                                        style={styles.buttonSecondary}
+                                        onPress={() => navigation.navigate("SearchScreen")}
+                                    >
+                                        <ButtonText style={styles.buttonSecondaryText}>
+                                            Ver Livros
+                                        </ButtonText>
+                                    </Button>
+
                                 </View>
                             </>
                         )}
@@ -265,10 +274,10 @@ const styles = StyleSheet.create({
     booksSection: {
         width: "85%",
         marginTop: 20,
-        borderWidth:1,
-        borderColor:"#e6e6e6",
-        borderRadius:30,
-        height:170
+        borderWidth: 1,
+        borderColor: "#e6e6e6",
+        borderRadius: 30,
+        height: 170
     },
     bookContainer: {
         flexDirection: "row",
@@ -281,7 +290,7 @@ const styles = StyleSheet.create({
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-        marginRight:7,
+        marginRight: 7,
     },
     bookImage: {
         width: 120,
@@ -292,7 +301,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         marginTop: 7,
         alignItems: "flex-start",
-        marginLeft:7,
+        marginLeft: 7,
     },
     bookTitle: {
         color: "#000",

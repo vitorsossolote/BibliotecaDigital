@@ -14,7 +14,7 @@ import {
     Text
 } from "@gluestack-ui/themed";
 import { ScrollView, StyleSheet, Pressable, SafeAreaView, View, ToastAndroid } from "react-native"
-import { MoveLeft,Pencil,Trash2 } from "lucide-react-native"
+import { MoveLeft, Pencil, Trash2 } from "lucide-react-native"
 import { AirbnbRating } from 'react-native-ratings';
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import MotiView from "moti";
@@ -31,7 +31,7 @@ export default function AuthorsScreen({ route, navigation }) {
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
     const { author, data } = route.params;
-    
+
     const handleEditAuthor = () => {
         // Navegar para tela de edição de autor
         navigation.navigate("EditAuthor", { author });
@@ -42,21 +42,21 @@ export default function AuthorsScreen({ route, navigation }) {
     const confirmDeleteAuthor = () => {
         setIsDeleteAuthorDialogVisible(true);
     };
-    
+
     const bottomSheetref = useRef(null);
     const snapPoints = useMemo(() => ["30%", "80%", "90%", "100%"], [])
 
     //Função para carregar livros do autor
     useEffect(() => {
         const loadAuthorBooks = async () => {
-          try {
-            const books = await fetchAuthorBooks(author.id_autor);
-            setAuthorBooks(books);
-          } catch (error) {
-            console.error("Erro ao carregar livros do autor:", error);
-          }
+            try {
+                const books = await fetchAuthorBooks(author.id_autor);
+                setAuthorBooks(books);
+            } catch (error) {
+                console.error("Erro ao carregar livros do autor:", error);
+            }
         };
-      
+
         loadAuthorBooks();
     }, [author.id_autor, livros]);
 
@@ -132,13 +132,13 @@ export default function AuthorsScreen({ route, navigation }) {
             ToastAndroid.show("Por favor, faça login", ToastAndroid.SHORT);
             return;
         }
-    
+
         // Verifica se o livro está disponível
         if (selectedBook.estado.toLowerCase() !== 'd') {
             ToastAndroid.show("Livro não disponível para empréstimo", ToastAndroid.SHORT);
             return;
         }
-    
+
         // Seleciona o livro para empréstimo no contexto
         selectBookForLoan(selectedBook);
     };
@@ -164,15 +164,15 @@ export default function AuthorsScreen({ route, navigation }) {
                             <Text style={styles.authorGenderText}>{author.genero}</Text>
                             <Text style={styles.authorNameText}>{author.nome_autor}</Text>
                             {isLibrarianAuthenticated() && (
-                            <View style={styles.headerActions}>
-                                <Pressable onPress={handleEditAuthor} style={styles.headerActionButton}>
-                                    <Pencil color={"#000"} size={24} />
-                                </Pressable>
-                                <Pressable onPress={confirmDeleteAuthor} style={styles.headerActionButton}>
-                                    <Trash2 color={"#ee2d32"} size={24} />
-                                </Pressable>
-                            </View>
-                        )}
+                                <View style={styles.headerActions}>
+                                    <Pressable onPress={handleEditAuthor} style={styles.headerActionButton}>
+                                        <Pencil color={"#000"} size={24} />
+                                    </Pressable>
+                                    <Pressable onPress={confirmDeleteAuthor} style={styles.headerActionButton}>
+                                        <Trash2 color={"#ee2d32"} size={24} />
+                                    </Pressable>
+                                </View>
+                            )}
                         </View>
                         <View style={styles.aboutContainer}>
                             <Text style={styles.aboutHeader}>Sobre</Text>
@@ -189,13 +189,12 @@ export default function AuthorsScreen({ route, navigation }) {
                                                     <Image
                                                         source={{ uri: book.image }}
                                                         alt="livro"
-                                                        resizeMode="contain"
                                                         style={styles.bookImage}
                                                     />
                                                 </Pressable>
                                                 <Text style={styles.bookName}>{book.titulo}</Text>
-                                                <Text style={styles.bookStatus}>
-                                                    {book.status ? 'D' : 'Indisponível'}
+                                                <Text style={[styles.bookStatus, { color: book.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                                    {book.estado}{book.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                                 </Text>
                                             </View>
                                         ))}
@@ -230,7 +229,7 @@ export default function AuthorsScreen({ route, navigation }) {
                                     <View style={bottomSheetStyles.headerContainer}>
                                         <Text style={bottomSheetStyles.title}>{selectedBook.titulo}</Text>
                                         {isLibrarianAuthenticated() ? (
-                                            <Text style={{color:"#fff"}}>a</Text>
+                                            <Text style={{ color: "#fff" }}>a</Text>
                                         ) : (
                                             <Pressable
                                                 size="md"
@@ -450,7 +449,7 @@ const styles = StyleSheet.create({
     },
     bookImage: {
         width: 210,
-        height: 250,
+        height: 200,
         borderRadius: 20,
     },
     bookName: {
@@ -464,7 +463,7 @@ const styles = StyleSheet.create({
         color: "#34A853",
         fontWeight: "bold",
     },
-     header: {
+    header: {
         alignSelf: "flex-start",
         flexDirection: "row",
         width: "100%",
@@ -527,7 +526,7 @@ const bottomSheetStyles = StyleSheet.create({
     },
     starRating: {
         justifyContent: "flex-start",
-        right:120
+        right: 120
     },
     status: {
         fontSize: 18,

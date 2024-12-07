@@ -49,3 +49,5 @@
 ## npm install --save express body-parser supertest mysql
 ## npm install --save-dev jest
 ## npm install date-fns
+## npm i firebase-admin
+## npm i react-native-firebase  

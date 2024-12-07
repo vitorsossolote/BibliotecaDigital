@@ -1,19 +1,15 @@
 {
-  "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app",
-  "reactNativePath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native",
+  "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app",
+  "reactNativePath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native",
   "reactNativeVersion": "0.75",
   "dependencies": {
     "@react-native-firebase/app": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app",
       "name": "@react-native-firebase/app",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app\\RNFBApp.podspec",
-<<<<<<< HEAD
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app\\RNFBApp.podspec",
           "version": "21.6.1",
-=======
-          "version": "21.2.0",
->>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
           "configurations": [],
           "scriptPhases": [
             {
@@ -27,12 +23,12 @@
           ]
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\app\\android",
           "packageImportPath": "import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;",
           "packageInstance": "new ReactNativeFirebaseAppPackage()",
           "buildTypes": [],
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/app/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/app/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -41,23 +37,22 @@
       }
     },
     "@react-native-firebase/auth": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\auth",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\auth",
       "name": "@react-native-firebase/auth",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\auth\\RNFBAuth.podspec",
-          "version": "21.2.0",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\auth\\RNFBAuth.podspec",
+          "version": "21.6.1",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\auth\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\auth\\android",
           "packageImportPath": "import io.invertase.firebase.auth.ReactNativeFirebaseAuthPackage;",
           "packageInstance": "new ReactNativeFirebaseAuthPackage()",
           "buildTypes": [],
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/auth/android/build/generated/source/codegen/jni/CMakeLists.txt",
-<<<<<<< HEAD
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/auth/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -66,24 +61,22 @@
       }
     },
     "@react-native-firebase/messaging": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging",
       "name": "@react-native-firebase/messaging",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging\\RNFBMessaging.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging\\RNFBMessaging.podspec",
           "version": "21.6.1",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-firebase\\messaging\\android",
           "packageImportPath": "import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;",
           "packageInstance": "new ReactNativeFirebaseMessagingPackage()",
           "buildTypes": [],
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/messaging/android/build/generated/source/codegen/jni/CMakeLists.txt",
-=======
->>>>>>> efd1c9a6b7be809f500f103cd305bede5c1ae5de
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-firebase/messaging/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -92,22 +85,22 @@
       }
     },
     "react-native-image-crop-picker": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-image-crop-picker",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-image-crop-picker",
       "name": "react-native-image-crop-picker",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-image-crop-picker\\RNImageCropPicker.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-image-crop-picker\\RNImageCropPicker.podspec",
           "version": "0.41.5",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-image-crop-picker\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-image-crop-picker\\android",
           "packageImportPath": "import com.reactnative.ivpusic.imagepicker.PickerPackage;",
           "packageInstance": "new PickerPackage()",
           "buildTypes": [],
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-image-crop-picker/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-image-crop-picker/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -116,23 +109,23 @@
       }
     },
     "react-native-vector-icons": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons",
       "name": "react-native-vector-icons",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\RNVectorIcons.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\RNVectorIcons.podspec",
           "version": "10.2.0",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-vector-icons\\android",
           "packageImportPath": "import com.oblador.vectoricons.VectorIconsPackage;",
           "packageInstance": "new VectorIconsPackage()",
           "buildTypes": [],
           "libraryName": "RNVectorIconsSpec",
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -141,23 +134,23 @@
       }
     },
     "@react-native-async-storage/async-storage": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage",
       "name": "@react-native-async-storage/async-storage",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\RNCAsyncStorage.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\RNCAsyncStorage.podspec",
           "version": "1.24.0",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-async-storage\\async-storage\\android",
           "packageImportPath": "import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;",
           "packageInstance": "new AsyncStoragePackage()",
           "buildTypes": [],
           "libraryName": "rnasyncstorage",
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -166,22 +159,22 @@
       }
     },
     "@react-native-masked-view/masked-view": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view",
       "name": "@react-native-masked-view/masked-view",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view\\RNCMaskedView.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view\\RNCMaskedView.podspec",
           "version": "0.3.2",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\@react-native-masked-view\\masked-view\\android",
           "packageImportPath": "import org.reactnative.maskedview.RNCMaskedViewPackage;",
           "packageInstance": "new RNCMaskedViewPackage()",
           "buildTypes": [],
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/@react-native-masked-view/masked-view/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/@react-native-masked-view/masked-view/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -190,17 +183,17 @@
       }
     },
     "react-native-gesture-handler": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler",
       "name": "react-native-gesture-handler",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler\\RNGestureHandler.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler\\RNGestureHandler.podspec",
           "version": "2.21.2",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-gesture-handler\\android",
           "packageImportPath": "import com.swmansion.gesturehandler.RNGestureHandlerPackage;",
           "packageInstance": "new RNGestureHandlerPackage()",
           "buildTypes": [],
@@ -209,7 +202,7 @@
             "RNGestureHandlerButtonComponentDescriptor",
             "RNGestureHandlerRootViewComponentDescriptor"
           ],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-gesture-handler/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-gesture-handler/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -218,23 +211,23 @@
       }
     },
     "react-native-reanimated": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-reanimated",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-reanimated",
       "name": "react-native-reanimated",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-reanimated\\RNReanimated.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-reanimated\\RNReanimated.podspec",
           "version": "3.16.1",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-reanimated\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-reanimated\\android",
           "packageImportPath": "import com.swmansion.reanimated.ReanimatedPackage;",
           "packageInstance": "new ReanimatedPackage()",
           "buildTypes": [],
           "libraryName": "rnreanimated",
           "componentDescriptors": [],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -243,17 +236,17 @@
       }
     },
     "react-native-safe-area-context": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context",
       "name": "react-native-safe-area-context",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context\\react-native-safe-area-context.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context\\react-native-safe-area-context.podspec",
           "version": "4.14.0",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-safe-area-context\\android",
           "packageImportPath": "import com.th3rdwave.safeareacontext.SafeAreaContextPackage;",
           "packageInstance": "new SafeAreaContextPackage()",
           "buildTypes": [],
@@ -262,7 +255,7 @@
             "RNCSafeAreaProviderComponentDescriptor",
             "RNCSafeAreaViewComponentDescriptor"
           ],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-safe-area-context/android/src/main/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-safe-area-context/android/src/main/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -271,17 +264,17 @@
       }
     },
     "react-native-screens": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens",
       "name": "react-native-screens",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens\\RNScreens.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens\\RNScreens.podspec",
           "version": "4.2.0",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-screens\\android",
           "packageImportPath": "import com.swmansion.rnscreens.RNScreensPackage;",
           "packageInstance": "new RNScreensPackage()",
           "buildTypes": [],
@@ -299,7 +292,7 @@
             "RNSScreenContentWrapperComponentDescriptor",
             "RNSModalScreenComponentDescriptor"
           ],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-screens/android/src/main/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-screens/android/src/main/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -308,17 +301,17 @@
       }
     },
     "react-native-svg": {
-      "root": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg",
+      "root": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg",
       "name": "react-native-svg",
       "platforms": {
         "ios": {
-          "podspecPath": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg\\RNSVG.podspec",
+          "podspecPath": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg\\RNSVG.podspec",
           "version": "13.4.0",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg\\android",
+          "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\node_modules\\react-native-svg\\android",
           "packageImportPath": "import com.horcrux.svg.SvgPackage;",
           "packageInstance": "new SvgPackage()",
           "buildTypes": [],
@@ -346,7 +339,7 @@
             "RNSVGTSpanComponentDescriptor",
             "RNSVGUseComponentDescriptor"
           ],
-          "cmakeListsPath": "C:/Users/Aluno/Desktop/BibliotecaDigital/app/node_modules/react-native-svg/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cmakeListsPath": "C:/Users/Vitor/Desktop/BibliotecaDigital/app/node_modules/react-native-svg/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -516,7 +509,7 @@
         {
           "name": "--path <path>",
           "description": "Path to the React Native project root.",
-          "default": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app"
+          "default": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app"
         },
         {
           "name": "--platform <string>",
@@ -803,7 +796,7 @@
   "assets": [],
   "project": {
     "ios": {
-      "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\ios",
+      "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\ios",
       "xcodeProject": {
         "name": "app.xcodeproj",
         "path": ".",
@@ -812,7 +805,7 @@
       "assets": []
     },
     "android": {
-      "sourceDir": "C:\\Users\\Aluno\\Desktop\\BibliotecaDigital\\app\\android",
+      "sourceDir": "C:\\Users\\Vitor\\Desktop\\BibliotecaDigital\\app\\android",
       "appName": "app",
       "packageName": "com.app",
       "applicationId": "com.app",

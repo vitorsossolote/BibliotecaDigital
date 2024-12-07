@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { MotiView } from 'moti';
-import { Alert, Linking } from 'react-native';  // Adicione esta importação
+import { Alert, Linking } from 'react-native'; 
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase-admin/app';
@@ -19,7 +19,7 @@ import LibrarianScreen from '../screens/LibrarianScreen/index';
 import LoginLibrarian from '../screens/Login/LoginLibrarian/index';
 import LoginStudent from '../screens/Login/LoginStudent/index';
 import CreateStudentAccount from '../screens/CreateAccount/CreateStudentAccount/index';
-import CreateLibrarianAccount from '../screens/CreateAccount/CreateLibrarianAccount/index';
+import CreateLibrarianAccount from '../screens/CreateAccount/createLibrarianAccount/index';
 import ForgotPassword from '../screens/ForgotPassword/index';
 import NewPasswordScreen from '../screens/ForgotPassword/newPassword';
 

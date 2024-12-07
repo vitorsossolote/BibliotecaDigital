@@ -107,7 +107,7 @@ export default function SearchGenderScreen({ route, navigation }) {
                         genre => genre.id_genero === initialSelectedGenre.id_genero
                     ) || updatedGenres[0];
                 } else {
-                    initialGenre = updatedGenres[0]; 
+                    initialGenre = updatedGenres[0];
                 }
 
                 setSelectedGenre(initialGenre);
@@ -259,13 +259,12 @@ export default function SearchGenderScreen({ route, navigation }) {
                                                     <Image
                                                         source={{ uri: book.image }}
                                                         style={styles.bookImage}
-                                                        resizeMode="cover"
                                                     />
                                                     <Text style={styles.bookTitle} numberOfLines={2}>
                                                         {book.titulo}
                                                     </Text>
-                                                    <Text style={styles.bookStatus}>
-                                                        {book.quantidade > 0 ? "Disponível" : "Indisponível"}
+                                                    <Text style={[styles.bookStatus, { color: book.estado.toLowerCase() === 'd' ? '#34A853' : '#ee2d32' }]}>
+                                                        {book.estado}{book.estado.toLowerCase() === 'd' ? 'isponivel' : 'mprestado'}
                                                     </Text>
                                                 </View>
                                             </TouchableOpacity>
@@ -282,15 +281,15 @@ export default function SearchGenderScreen({ route, navigation }) {
                     snapPoints={snapPoints}
                     index={-1}
                     enablePanDownToClose={true}>
-                    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
+                    <BottomSheetScrollView contentContainerStyle={bottomSheetStyles.contentContainer}>
                         {selectedBook && ( // Só renderiza se houver um livro selecionado
                             <>
-                                <View style={styles.bookContainer}>
-                                    <Image source={{ uri: selectedBook.image }} alt="livro" style={styles.bookStyle} resizeMode="contain" />
+                                <View style={bottomSheetStyles.bookContainer}>
+                                    <Image source={{ uri: selectedBook.image }} alt="livro" style={bottomSheetStyles.bookStyle} />
                                 </View>
-                                <View style={styles.detailContainer}>
-                                    <View style={styles.headerContainer}>
-                                        <Text style={styles.title}>{selectedBook.titulo}</Text>
+                                <View style={bottomSheetStyles.detailContainer}>
+                                    <View style={bottomSheetStyles.headerContainer}>
+                                        <Text style={bottomSheetStyles.title}>{selectedBook.titulo}</Text>
                                         {isLibrarianAuthenticated() ? (
                                             <></>
                                         ) : (
@@ -312,28 +311,28 @@ export default function SearchGenderScreen({ route, navigation }) {
                                             </Pressable>
                                         )}
                                     </View>
-                                    <View style={styles.genderContainer}>
-                                        <Text style={styles.genderText}>{selectedBook.nome_genero}</Text>
+                                    <View style={bottomSheetStyles.genderContainer}>
+                                        <Text style={bottomSheetStyles.genderText}>{selectedBook.nome_genero}</Text>
                                     </View>
-                                    <Text style={styles.description}>{selectedBook.descricao}</Text>
+                                    <Text style={bottomSheetStyles.description}>{selectedBook.descricao}</Text>
                                 </View>
-                                <View style={styles.ratingContainer}>
-                                    <Text style={styles.ratingTitle}>Avaliação</Text>
+                                <View style={bottomSheetStyles.ratingContainer}>
+                                    <Text style={bottomSheetStyles.ratingTitle}>Avaliação</Text>
                                     <AirbnbRating
                                         count={5}
                                         defaultRating={selectedBook.rating || 1}
                                         size={20}
                                         showRating={false}
                                         unSelectedColor="#000"
-                                        starContainerStyle={styles.starRating}
+                                        starContainerStyle={bottomSheetStyles.starRating}
                                         isDisabled={true}
                                     />
-                                    <Text style={[styles.status,
+                                    <Text style={[bottomSheetStyles.status,
                                     { color: selectedBook.quantidade > 0 ? '#34A853' : '#ee2d32' }]}>
-                                        {selectedBook.quantidade > 0 ? 'Disponível' : 'Indisponível'}
+                                        {selectedBook.quantidade > 0 ? 'Disponível' : 'Emprestado'}
                                     </Text>
                                 </View>
-                                <View style={styles.buttonContainer}>
+                                <View style={bottomSheetStyles.buttonContainer}>
                                     {isLibrarianAuthenticated() ? (
                                         <Button
                                             size="md"
@@ -341,10 +340,10 @@ export default function SearchGenderScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={false}
                                             isFocusVisible={false}
-                                            style={styles.buttonPrincipal}
+                                            style={bottomSheetStyles.buttonPrincipal}
                                             onPress={confirmDeleteBook}
                                         >
-                                            <ButtonText style={styles.buttonPrincipalText}>
+                                            <ButtonText style={bottomSheetStyles.buttonPrincipalText}>
                                                 Excluir Livro
                                             </ButtonText>
                                         </Button>
@@ -355,10 +354,10 @@ export default function SearchGenderScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={selectedBook.quantidade <= 0}
                                             isFocusVisible={false}
-                                            style={styles.buttonPrincipal}
+                                            style={bottomSheetStyles.buttonPrincipal}
                                             onPress={handleContinueToLoan}
                                         >
-                                            <ButtonText style={styles.buttonPrincipalText}>
+                                            <ButtonText style={bottomSheetStyles.buttonPrincipalText}>
                                                 Continuar com Empréstimo
                                             </ButtonText>
                                         </Button>
@@ -370,12 +369,12 @@ export default function SearchGenderScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={false}
                                             isFocusVisible={false}
-                                            style={styles.buttonSecondary}
+                                            style={bottomSheetStyles.buttonSecondary}
                                             onPress={() => navigation.navigate("EditBooks", {
                                                 bookData: selectedBook
                                             })}
                                         >
-                                            <ButtonText style={styles.buttonSecondaryText}>
+                                            <ButtonText style={bottomSheetStyles.buttonSecondaryText}>
                                                 Editar Livro
                                             </ButtonText>
                                         </Button>
@@ -386,10 +385,10 @@ export default function SearchGenderScreen({ route, navigation }) {
                                             action="primary"
                                             isDisabled={false}
                                             isFocusVisible={false}
-                                            style={styles.buttonSecondary}
+                                            style={bottomSheetStyles.buttonSecondary}
                                             onPress={() => navigation.navigate("SearchScreen")}
                                         >
-                                            <ButtonText style={styles.buttonSecondaryText}>
+                                            <ButtonText style={bottomSheetStyles.buttonSecondaryText}>
                                                 Ver Livros
                                             </ButtonText>
                                         </Button>
@@ -488,7 +487,7 @@ const styles = StyleSheet.create({
     },
     bookImage: {
         width: 160,
-        height: 160,
+        height: 210,
         borderRadius: 10
     },
     bookTitle: {
@@ -502,14 +501,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold'
     },
-    // Novos estilos para BottomSheet
-    bottomSheetBookContainer: {
+})
+
+const bottomSheetStyles = StyleSheet.create({
+
+    bookContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         padding: 10,
     },
-    bottomSheetBookStyle: {
+    bookStyle: {
         width: 237,
         height: 310,
         borderRadius: 20,
@@ -532,10 +534,19 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
     },
+    icon: {
+        height: 24,
+        width: 24,
+        marginTop: 7,
+    },
     description: {
         fontSize: 16,
     },
-
+    genderContainer: {
+        height: 50,
+        width: 130,
+        justifyContent: 'center',
+    },
     genderText: {
         fontSize: 22,
         fontWeight: 'bold',
@@ -544,6 +555,61 @@ const styles = StyleSheet.create({
         textShadowRadius: 2,
         color: '#2c3e50',
         letterSpacing: 3,
-        textShadowColor: 'rgba(44, 62, 80)',
-    }
+        textShadowColor: 'rgba(44, 62, 80, 0.5)',
+    },
+    image: {
+        width: 100,
+        height: 24,
+    },
+    ratingContainer: {
+        flex: 1,
+        flexDirection: "column",
+        padding: 10,
+        paddingHorizontal: 22,
+        gap: 10,
+        width: 160,
+    },
+    ratingTitle: {
+        color: "black",
+        fontSize: 24,
+        fontWeight: "bold",
+    },
+    starRating: {
+        flex: 1,
+        justifyContent: "flex-start",
+        marginLeft: 28,
+        gap: 4,
+    },
+    status: {
+        fontSize: 18,
+        color: "#34A853",
+        fontWeight: "bold",
+    },
+    buttonContainer: {
+        flex: 1,
+        flexDirection: "row",
+        padding: 10,
+        marginTop: 10,
+        gap: 15,
+    },
+    buttonPrincipal: {
+        backgroundColor: "#ee2d32",
+        width: 250,
+        height: 50,
+        borderRadius: 25,
+    },
+    buttonSecondary: {
+        backgroundColor: "#EBF2EF",
+        width: 115,
+        height: 50,
+        borderRadius: 25,
+        paddingLeft: 15,
+    },
+    buttonPrincipalText: {
+        fontWeight: "bold",
+    },
+    buttonSecondaryText: {
+        color: "#54408C",
+        fontWeight: 'bold',
+    },
 })
