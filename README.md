@@ -92,6 +92,7 @@ Distribuído sob a licença [ESCOLHA SUA LICENÇA]. Veja `LICENSE` para mais inf
 
 ## 📞 Contato
 - Vitor Sossolote - [vitorchg11@gmail.com](mailto:vitorchg11@gmail.com)
+- Fausto Iriu - [faustoagostinho1177@gmail.com](mailto:faustoagostinho1177@gmail.com)
 - Link do Projeto: [https://github.com/vitorsossolote/BibliotecaDigital](https://github.com/vitorsossolote/BibliotecaDigital)
 
 ## 🌟 Agradecimentos
